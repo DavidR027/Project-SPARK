@@ -1,7 +1,14 @@
+using Client.Repositories;
+using Client.Repositories.Data;
+using Client.Repositories.Interface;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(GeneralRepository<,>));
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
 var app = builder.Build();
 
