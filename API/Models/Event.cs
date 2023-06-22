@@ -30,8 +30,6 @@ namespace API.Models
         public string Organizer { get; set; }
 
         public ICollection<Payment>? Payments { get; set; }
-        /*public Account? Account { get; set; }
-        public User? User { get; set; }
-*/
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using API.Contracts;
+using API.Models;
 using API.ViewModels.Others;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,19 @@ namespace API.Controllers
     {
         private readonly IGeneralRepository<TModel> _repository;
         private readonly IMapper<TModel, TViewModel> _mapper;
+        private IGeneralRepository<Account> repository;
+        private IMapper<Account, Account> mapper;
 
         public GeneralController(IGeneralRepository<TModel> repository, IMapper<TModel, TViewModel> mapper)
         {
             _repository = repository;
             _mapper = mapper;
+        }
+
+        public GeneralController(IGeneralRepository<Account> repository, IMapper<Account, Account> mapper)
+        {
+            this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet]

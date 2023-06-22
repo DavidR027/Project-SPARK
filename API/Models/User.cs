@@ -16,10 +16,6 @@ namespace API.Models
         public DateTime BirthDate { get; set; }
         [Column("gender")]
         public GenderLevel Gender { get; set; }
-        [Column("age")]
-        public int Age { get; set; }
-        [Column("role")]
-        public string Role { get; set; }
         [Column("email", TypeName = "nvarchar(100)")]
         public string Email { get; set; }
         [Column("phone_number", TypeName = "nvarchar(20)")]
