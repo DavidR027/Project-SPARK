@@ -27,7 +27,7 @@ namespace API.Models
         [Column("end_date")]
         public DateTime EndDate { get; set; }
         [Column("organizer")]
-        public string Orginizer { get; set; }
+        public string Organizer { get; set; }
 
         public ICollection<Payment>? Payments { get; set; }
         /*public Account? Account { get; set; }

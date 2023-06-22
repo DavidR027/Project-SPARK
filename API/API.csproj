@@ -17,4 +17,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Account\" />
+    <Folder Include="ViewModels\Event\" />
+    <Folder Include="ViewModels\User\" />
+    <Folder Include="ViewModels\Payment\" />
+  </ItemGroup>
+
 </Project>
