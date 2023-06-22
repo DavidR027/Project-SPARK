@@ -14,7 +14,6 @@ namespace Client.Controllers
             this.repository = repository;
         }
 
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             var result = await repository.Get();
@@ -41,6 +40,117 @@ namespace Client.Controllers
 
             return View(universities);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Event acara)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await repository.Post(acara);
+                if (result.Code == 200)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else if (result.Code == 409)
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                    return View();
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Event acara, Guid guid)
+        {
+            var result = await repository.Put(acara);
+            if (result.Code == 200)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if (result.Code == 409)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid guid)
+        {
+            var result = await repository.Get(guid);
+            var acara = new Event();
+            if (result.Data?.Guid is null)
+            {
+                return View(acara);
+            }
+            else
+            {
+                acara.Guid = result.Data.Guid;
+                acara.Name = result.Data.Name;
+                acara.Description = result.Data.Description;
+                acara.Poster = result.Data.Poster;
+                acara.Status = result.Data.Status;
+                acara.Quota = result.Data.Quota;
+                acara.IsPaid = result.Data.IsPaid;
+                acara.Price = result.Data.Price;
+                acara.Location = result.Data.Location;
+                acara.StartDate = result.Data.StartDate;
+                acara.EndDate = result.Data.EndDate;
+                acara.Organizer = result.Data.Organizer;
+
+            }
+
+            return View(acara);
+        }
+
+        public async Task<IActionResult> Delete(Guid guid)
+        {
+            var result = await repository.Get(guid);
+            var acara = new Event();
+            if (result.Data?.Guid is null)
+            {
+                return View(acara);
+            }
+            else
+            {
+                acara.Guid = result.Data.Guid;
+                acara.Name = result.Data.Name;
+                acara.Description = result.Data.Description;
+                acara.Poster = result.Data.Poster;
+                acara.Status = result.Data.Status;
+                acara.Quota = result.Data.Quota;
+                acara.IsPaid = result.Data.IsPaid;
+                acara.Price = result.Data.Price;
+                acara.Location = result.Data.Location;
+                acara.StartDate = result.Data.StartDate;
+                acara.EndDate = result.Data.EndDate;
+                acara.Organizer = result.Data.Organizer;
+            }
+            return View(acara);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(Guid guid)
+        {
+            var result = await repository.Delete(guid);
+            if (result.Code == 200)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
 

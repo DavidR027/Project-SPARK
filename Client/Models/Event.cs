@@ -1,6 +1,4 @@
-﻿using API.Utility;
-
-namespace Client.Models
+﻿namespace Client.Models
 {
     public class Event
     {
@@ -16,5 +14,10 @@ namespace Client.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Organizer { get; set; }
+    }
+    public enum EventStatus
+    {
+        Offline,
+        Online
     }
 }
