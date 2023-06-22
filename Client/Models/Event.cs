@@ -5,7 +5,7 @@
         public Guid? Guid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public byte[]? Poster { get; set; }
+        public byte[] Poster { get; set; }
         public EventStatus Status { get; set; }
         public int Quota { get; set; }
         public bool IsPaid { get; set; }

@@ -2,6 +2,7 @@
 using Client.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace Client.Controllers
 {
@@ -12,6 +13,15 @@ namespace Client.Controllers
         public EventController(IEventRepository repository)
         {
             this.repository = repository;
+        }
+
+        private byte[] ReadFile(IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                file.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
 
         public async Task<IActionResult> Index()
@@ -51,19 +61,18 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Event acara)
         {
-            if (ModelState.IsValid)
+
+            var result = await repository.Post(acara);
+            if (result.Code == 200)
             {
-                var result = await repository.Post(acara);
-                if (result.Code == 200)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else if (result.Code == 409)
-                {
-                    ModelState.AddModelError(string.Empty, result.Message);
-                    return View();
-                }
+                return RedirectToAction(nameof(Index));
             }
+            else if (result.Code == 409)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
