@@ -30,9 +30,9 @@ public class SparkDbContext : DbContext
         }).IsUnique();
 
         builder.Entity<Payment>()
-           .HasOne(u => u.User)
-           .WithMany(p => p.Payments)
-           .HasForeignKey(p => p.UserGuid);
+            .HasOne(p => p.User)
+            .WithMany(u => u.Payments)
+            .HasForeignKey(p => p.UserGuid);
 
         builder.Entity<Payment>()
             .HasOne(e => e.Event)
@@ -54,10 +54,7 @@ public class SparkDbContext : DbContext
             .WithOne(a => a.Account)
             .HasForeignKey<Account>(a => a.Guid);
 
-        builder.Entity<Event>()
-           .HasOne(u => u.User)
-           .WithMany(e => e.Events)
-           .HasForeignKey(e => e.CreateBy);
+       
 
     }
 }

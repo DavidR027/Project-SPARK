@@ -26,11 +26,12 @@ namespace API.Models
         public DateTime StartDate { get; set; }
         [Column("end_date")]
         public DateTime EndDate { get; set; }
-        [Column("create_by")]
-        public Guid CreateBy { get; set; }
+        [Column("organizer")]
+        public string Orginizer { get; set; }
 
         public ICollection<Payment>? Payments { get; set; }
+        /*public Account? Account { get; set; }
         public User? User { get; set; }
-
+*/
     }
 }
