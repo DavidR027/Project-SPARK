@@ -1,6 +1,15 @@
-﻿namespace API.Controllers
+﻿using API.Contracts;
+using API.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers
 {
-    public class AccountController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AccountController : GeneralController<Account, Account>
     {
+        public AccountController(IGeneralRepository<Account> repository, IMapper<Account, Account> mapper) : base(repository, mapper)
+        {
+        }
     }
 }

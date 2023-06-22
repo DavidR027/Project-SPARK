@@ -4,7 +4,7 @@ using API.Models;
 
 namespace API.Repositories
 {
-    public class RoleRepository : GeneralRepository<Role>, IRoleRespository
+    public class RoleRepository : GeneralRepository<Role>, IRoleRepository
     {
         public RoleRepository(SparkDbContext context) : base(context)
         {
