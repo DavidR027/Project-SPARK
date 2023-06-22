@@ -21,6 +21,6 @@ namespace API.Models
         public DateTime ExpiredTime { get; set; }
 
         public User? User { get; set; }
-        public Admin? Admin { get; set; }
+        public ICollection<AccountRole>? AccountRoles { get; set; }
     }
 }
