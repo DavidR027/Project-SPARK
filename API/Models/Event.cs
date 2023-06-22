@@ -21,7 +21,11 @@ namespace API.Models
         public Guid CreateBy { get; set; }
 
         public Account? Account { get; set; }
-        public ICollection<EventForm> EventForms { get; set; }
+        public Payment? Payment { get; set; }
+        public EventForm? EventForm { get; set; }
+        public User? User { get; set; }
+        public ICollection<EventForm>? EventForms { get; set; }
+        public ICollection<User>? Users { get; set; }
 
     }
 }

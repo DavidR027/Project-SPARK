@@ -13,6 +13,7 @@ namespace API.Models
         public string Description { get; set; }
 
         public ICollection<Event>? Events { get; set;}
+        public Event? Event { get; set; }
         public User? User { get; set; }
     }
 }

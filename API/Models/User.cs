@@ -26,7 +26,9 @@ namespace API.Models
         public string PhoneNumber { get; set; }
 
         public Account? Account { get; set; }
+        public ICollection<Event>? Events { get; set; }
         public Payment? Payment { get; set; }
-        public EventForm? Form { get; set; }
+        public EventForm? EventForm { get; set; }
+        public Event? Event { get; set; }
     }
 }
