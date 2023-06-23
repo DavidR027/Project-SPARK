@@ -7,9 +7,10 @@ namespace API.Repositories
 {
     public class AccountRepository : GeneralRepository<Account>, IAccountRepository
     {
-        public AccountRepository(SparkDbContext context) : base(context)
+        private readonly IUserRepository _userRepository;
+        public AccountRepository(SparkDbContext context, IUserRepository userRepository) : base(context)
         {
-
+            _userRepository = userRepository;
         }
 
         public int ChangePasswordAccount(Guid? userId, ChangePasswordVM changePasswordVM)
@@ -65,6 +66,11 @@ namespace API.Repositories
             return getAccountRoles.ToList();
         }
 
+        public User GetUserByUsername(string username)
+        {
+            return _context.Set<User>().FirstOrDefault(a => a.Username == username);
+        }
+
         public LoginVM Login(LoginVM loginVM)
         {
             var account = GetAll();
@@ -73,7 +79,7 @@ namespace API.Repositories
             var query = from us in user
                         join acc in account
                         on us.Guid equals acc.Guid
-                        where us.Email == loginVM.Username
+                        where us.Username == loginVM.Username || us.Email == loginVM.Username
                         select new LoginVM
                         {
                             Username = us.Username,
@@ -83,10 +89,57 @@ namespace API.Repositories
 
             if (data != null && Hashing.ValidatePassword(loginVM.Password, data.Password))
             {
-                loginVM.Password = data.Password;
+                // Password is valid
+                return data;
             }
+            else
+            {
+                // Password is invalid or account doesn't exist
+                return null;
+            }
+        }
 
-            return data;
+        public int Register(RegisterVM registerVM)
+        {
+            try
+            {
+                var user = new User
+                {
+                    Username= registerVM.Username,
+                    FirstName = registerVM.FirstName,
+                    LastName = registerVM.LastName,
+                    BirthDate = registerVM.BirthDate,
+                    Gender = registerVM.Gender,
+                    Email = registerVM.Email,
+                    PhoneNumber = registerVM.PhoneNumber,
+                };
+                var result = _userRepository.Create(user);
+
+                var account = new Account
+                {
+                    Guid = user.Guid,
+                    Password = Hashing.HashPassword(registerVM.Password),
+                    IsDeleted = false,
+                    IsUsed = true,
+                    OTP = 0
+                };
+                Create(account);
+
+                var accountRole = new AccountRole
+                {
+                    RoleGuid = Guid.Parse("a4c1b16c-9753-4d01-7804-08db60296455"),
+                    AccountGuid = user.Guid
+                };
+                _context.AccountRoles.Add(accountRole);
+                _context.SaveChanges();
+
+                return 3;
+
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public int UpdateOTP(Guid? userId)

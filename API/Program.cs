@@ -3,6 +3,9 @@ using API.Contracts;
 using API.Repositories;
 using API.Utility;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,23 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+       .AddJwtBearer(options => {
+           options.RequireHttpsMetadata = false;
+           options.SaveToken = true;
+           options.TokenValidationParameters = new TokenValidationParameters
+           {
+               ValidateAudience = false,
+               ValidAudience = builder.Configuration["JWT:Audience"],
+               ValidateIssuer = false,
+               ValidIssuer = builder.Configuration["JWT:Issuer"],
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+               ValidateLifetime = true,
+               ClockSkew = TimeSpan.Zero
+           };
+       });
 
 
 var app = builder.Build();
