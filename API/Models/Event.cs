@@ -11,15 +11,15 @@ namespace API.Models
         [Column("description")]
         public string Description { get; set; }
         [Column("poster")]
-        public byte[]? Poster { get; set; }
+        public byte[] Poster { get; set; }
         [Column("status")]
         public EventStatus Status { get; set; }
         [Column("quota")]
-        public int Quota { get; set; }
+        public int? Quota { get; set; }
         [Column("is_paid")]
         public bool IsPaid { get; set; }
         [Column("price")]
-        public string Price { get; set; }
+        public string? Price { get; set; }
         [Column("location")]
         public string Location { get; set; }
         [Column("start_date")]
@@ -28,7 +28,8 @@ namespace API.Models
         public DateTime EndDate { get; set; }
         [Column("organizer")]
         public string Organizer { get; set; }
-
+        [Column("is_valid")]
+        public bool IsValid { get; set; }
         public ICollection<Payment>? Payments { get; set; }
 
     }

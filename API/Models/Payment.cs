@@ -11,6 +11,8 @@ namespace API.Models
         public Guid EventGuid { get; set; }
         [Column("invoice")]
         public byte[]? Invoice { get; set; }
+        [Column("is_valid")]
+        public bool IsValid { get; set; }
 
         public User? User { get; set; }
         public Event? Event { get; set; }

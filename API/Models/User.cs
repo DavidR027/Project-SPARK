@@ -11,7 +11,7 @@ namespace API.Models
         [Column("first_name")]
         public string FirstName { get; set; }
         [Column("last_name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
         [Column("birth_date")]
         public DateTime BirthDate { get; set; }
         [Column("gender")]
@@ -22,7 +22,6 @@ namespace API.Models
         public string PhoneNumber { get; set; }
 
         public Account? Account { get; set; }
-        /*public ICollection<Event>? Events { get; set; }*/
         public ICollection<Payment>? Payments { get; set; }
     }
 }
