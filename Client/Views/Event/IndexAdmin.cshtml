@@ -23,7 +23,7 @@
             <div class="col-lg-8 col-md-12 left-box">
                 @foreach (var item in Model)
                 {
-                    @if (item.IsValid)
+                    @if (item.IsValid == false)
                     {
                         <div class="card single_post">
                             <div class="body">
@@ -44,7 +44,12 @@
                                     <li><a href="javascript:void(0);">@Html.DisplayFor(modelItem => item.Status)</a></li>
                                     <li><a href="javascript:void(0);">@Html.DisplayFor(modelItem => item.Price)</a></li>
                                     <li><a href="javascript:void(0);">Quota(@Html.DisplayFor(modelItem => item.Quota))</a></li>
+                                    <li><a href="javascript:void(0);">Valid(@Html.DisplayFor(modelItem => item.IsValid))</a></li>
                                 </ul>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { @item.Guid }) |
+                                    @Html.ActionLink("Delete", "Delete", new { @item.Guid })
+                                </td>
                             </div>
                         </div>
                     }

@@ -1,4 +1,6 @@
-﻿namespace Client.Models
+﻿using Microsoft.Identity.Client;
+
+namespace Client.Models
 {
     public class Event
     {
@@ -14,6 +16,7 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Organizer { get; set; }
+        public bool IsValid { get; set; }
     }
     public enum EventStatus
     {

@@ -15,15 +15,6 @@ namespace Client.Controllers
             this.repository = repository;
         }
 
-        private byte[] ReadFile(IFormFile file)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                file.CopyTo(memoryStream);
-                return memoryStream.ToArray();
-            }
-        }
-
         public async Task<IActionResult> Index()
         {
             var result = await repository.Get();
@@ -44,7 +35,36 @@ namespace Client.Controllers
                     Location = e.Location,
                     StartDate = e.StartDate,
                     EndDate = e.EndDate,
-                    Organizer = e.Organizer
+                    Organizer = e.Organizer,
+                    IsValid = e.IsValid,
+                }).ToList();
+            }
+
+            return View(universities);
+        }
+
+        public async Task<IActionResult> IndexAdmin()
+        {
+            var result = await repository.Get();
+            var universities = new List<Event>();
+
+            if (result.Data != null)
+            {
+                universities = result.Data.Select(e => new Event
+                {
+                    Guid = e.Guid,
+                    Name = e.Name,
+                    Description = e.Description,
+                    Poster = e.Poster,
+                    Status = e.Status,
+                    Quota = e.Quota,
+                    IsPaid = e.IsPaid,
+                    Price = e.Price,
+                    Location = e.Location,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                    Organizer = e.Organizer,
+                    IsValid = e.IsValid,
                 }).ToList();
             }
 
@@ -116,7 +136,7 @@ namespace Client.Controllers
                 acara.StartDate = result.Data.StartDate;
                 acara.EndDate = result.Data.EndDate;
                 acara.Organizer = result.Data.Organizer;
-
+                acara.IsValid = result.Data.IsValid;
             }
 
             return View(acara);
@@ -144,6 +164,7 @@ namespace Client.Controllers
                 acara.StartDate = result.Data.StartDate;
                 acara.EndDate = result.Data.EndDate;
                 acara.Organizer = result.Data.Organizer;
+                acara.IsValid = result.Data.IsValid;
             }
             return View(acara);
         }
