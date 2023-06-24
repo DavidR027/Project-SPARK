@@ -1,7 +1,9 @@
-﻿@model IEnumerable<Client.Models.Event>
+﻿@using System.Globalization;
+@model IEnumerable<Client.Models.Event>
 
 @{
     ViewData["Title"] = "Index";
+    CultureInfo cultureId = new CultureInfo("id-ID");
 }
 
 <h1>Index</h1>
@@ -29,11 +31,12 @@
                                     }
                                 </div>
                                 <h3><a href="blog-details.html">@Html.DisplayFor(modelItem => item.Name)</a></h3>
-                                <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                                <p>@Html.DisplayFor(modelItem => item.Location)</p>
+                                <p>@(item.StartDate.ToString("dddd, d MMMM yyyy", cultureId)) - @(item.EndDate.ToString("dddd, d MMMM yyyy", cultureId)) | @(item.StartDate.ToString("t")) - @(item.EndDate.ToString("t"))</p>
                             </div>
                             <div class="footer">
                                 <div class="actions">
-                                    <a href="javascript:void(0);" class="btn btn-outline-secondary">Continue Reading</a>
+                                    <a asp-controller="Event" asp-action="Detail" asp-route-id="@item.Guid" class="btn btn-outline-secondary">Continue Reading</a>
                                 </div>
                                 <ul class="stats">
                                     <li><a href="javascript:void(0);">@Html.DisplayFor(modelItem => item.Status)</a></li>

@@ -18,11 +18,11 @@ namespace Client.Controllers
         public async Task<IActionResult> Index()
         {
             var result = await repository.Get();
-            var universities = new List<Event>();
+            var events = new List<Event>();
 
             if (result.Data != null)
             {
-                universities = result.Data.Select(e => new Event
+                events = result.Data.Select(e => new Event
                 {
                     Guid = e.Guid,
                     Name = e.Name,
@@ -40,17 +40,34 @@ namespace Client.Controllers
                 }).ToList();
             }
 
-            return View(universities);
+            return View(events);
+        }
+
+        [HttpGet("Event/Detail/{Guid}")]
+        public async Task<IActionResult> Detail(Guid guid)
+        {
+            var result = await repository.Get(guid);
+
+            if (result.Data == null)
+            {
+                // If the event is not found, you can handle the error or redirect to an error page
+                return NotFound();
+            }
+
+            var eventDetail = result.Data; // Assuming the returned data is of type Event or replace it with your actual model
+
+            // Pass the event detail to the view
+            return View(eventDetail);
         }
 
         public async Task<IActionResult> IndexAdmin()
         {
             var result = await repository.Get();
-            var universities = new List<Event>();
+            var events = new List<Event>();
 
             if (result.Data != null)
             {
-                universities = result.Data.Select(e => new Event
+                events = result.Data.Select(e => new Event
                 {
                     Guid = e.Guid,
                     Name = e.Name,
@@ -68,7 +85,7 @@ namespace Client.Controllers
                 }).ToList();
             }
 
-            return View(universities);
+            return View(events);
         }
 
         [HttpGet]
@@ -93,7 +110,7 @@ namespace Client.Controllers
                 return View();
             }
 
-            return RedirectToAction(nameof(Index));
+            return View();
         }
 
         [HttpPost]
@@ -110,7 +127,7 @@ namespace Client.Controllers
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
             }
-            return RedirectToAction(nameof(Index));
+            return View();
         }
 
         [HttpGet]
@@ -178,7 +195,7 @@ namespace Client.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            return View();
         }
 
     }
