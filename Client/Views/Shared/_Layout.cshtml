@@ -26,6 +26,19 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-black" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Settings
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="userDropdown">
+                                <a class="dropdown-item text-black" href="/Account/Logins">Login</a>
+                                <a class="dropdown-item text-black" href="/Logout">Logout</a>
+                                <a class="dropdown-item text-black" href="/Event/Create">Create Event</a>
+                                <a class="dropdown-item text-black" href="/Event/IndexAdmin">Validate Event</a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

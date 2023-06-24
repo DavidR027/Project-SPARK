@@ -1,4 +1,4 @@
-﻿namespace Client.ViewModel
+﻿namespace Client.ViewModels
 {
     public class ResponseMessageVM
     {

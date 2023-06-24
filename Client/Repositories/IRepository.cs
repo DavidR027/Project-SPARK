@@ -1,4 +1,4 @@
-﻿using Client.ViewModel;
+﻿using Client.ViewModels;
 
 namespace Client.Repositories
 {
