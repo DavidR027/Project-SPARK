@@ -38,7 +38,7 @@ namespace Client.Controllers
             else if (result.Code == 200)
             {
                 HttpContext.Session.SetString("JWToken", result.Data);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Event");
             }
             return View();
 
@@ -77,9 +77,9 @@ namespace Client.Controllers
             else if (result.Code == 200)
             {
                 TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
-                return RedirectToAction("GetAll", "Employee");
+                return RedirectToAction("Logins", "Account");
             }
-            return RedirectToAction("GetAll", "Employee");
+            return View();
         }
 
     }
