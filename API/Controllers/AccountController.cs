@@ -16,13 +16,21 @@ namespace API.Controllers
     public class AccountController : GeneralController<Account, AccountVM>
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper<Account, AccountVM> _mapper;
         private readonly ITokenService _tokenService;
-        public AccountController(IAccountRepository accountRepository, IMapper<Account, AccountVM> mapper, ITokenService tokenService) : base(accountRepository, mapper)
+        private readonly IEmailService _emailService;
+        public AccountController(IAccountRepository accountRepository, 
+            IMapper<Account, AccountVM> mapper, 
+            ITokenService tokenService,
+            IUserRepository userRepository,
+            IEmailService emailService) : base(accountRepository, mapper)
         {
             _accountRepository = accountRepository;
             _mapper = mapper;
             _tokenService = tokenService;
+            _userRepository = userRepository;
+            _emailService = emailService;
         }
 
         [HttpPost("Login")]
@@ -146,9 +154,9 @@ namespace API.Controllers
 
 
         //kel 5
-        /*[HttpPost("ForgotPassword/{email}")]
+        [HttpPost("ForgotPassword/{email}")]
         [AllowAnonymous]
-        public IActionResult UpdateResetPass(String email)
+        public IActionResult UpdateResetPass(string email)
         {
 
             var getGuid = _userRepository.FindGuidByEmail(email);
@@ -198,10 +206,10 @@ namespace API.Controllers
             }
 
 
-        }*/
+        }
 
         //kel 6
-        /*[HttpPost("ChangePassword")]
+        [HttpPost("ChangePassword")]
         [AllowAnonymous]
         public IActionResult ChangePassword(ChangePasswordVM changePasswordVM)
         {
@@ -267,6 +275,6 @@ namespace API.Controllers
                         Data = null
                     });
             }
-        }*/
+        }
     }
 }

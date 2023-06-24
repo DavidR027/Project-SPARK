@@ -10,5 +10,22 @@ namespace API.Repositories
         {
 
         }
+
+        public Guid? FindGuidByEmail(string email)
+        {
+            try
+            {
+                var employee = _context.Users.FirstOrDefault(e => e.Email == email);
+                if (employee == null)
+                {
+                    return null;
+                }
+                return employee.Guid;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
