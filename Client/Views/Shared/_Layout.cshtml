@@ -12,6 +12,7 @@
 @{
     var username = User.Identity.Name;
 }
+</pre>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -38,7 +39,7 @@
                             <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="userDropdown">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <a class="dropdown-item text-black" href="#">
+                                    <a class="dropdown-item text-black" href="/User/Detail/@(ViewContext.RouteData.Values["Guid"] ?? "")">
                                         <i class="fas fa-user"></i> @username
                                     </a>
                                     <a class="dropdown-item text-black" href="/Logout">
@@ -82,6 +83,7 @@
             &copy; 2023 - Client - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
