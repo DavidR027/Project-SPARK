@@ -60,6 +60,7 @@ namespace Client.Controllers
             return View(eventDetail);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> IndexAdmin()
         {
             var result = await repository.Get();
@@ -89,6 +90,7 @@ namespace Client.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> Create()
         {
             return View();
@@ -96,6 +98,7 @@ namespace Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> Create(Event acara)
         {
 
@@ -115,6 +118,7 @@ namespace Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> Edit(Event acara, Guid guid)
         {
             var result = await repository.Put(acara);
@@ -131,6 +135,7 @@ namespace Client.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> Edit(Guid guid)
         {
             var result = await repository.Get(guid);
@@ -159,6 +164,7 @@ namespace Client.Controllers
             return View(acara);
         }
 
+        [Authorize(Roles = "Admin, EventMaker")]
         public async Task<IActionResult> Delete(Guid guid)
         {
             var result = await repository.Get(guid);
@@ -188,6 +194,7 @@ namespace Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, EventMaker")]
         public async Task<IActionResult> Remove(Guid guid)
         {
             var result = await repository.Delete(guid);

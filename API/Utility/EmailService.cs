@@ -1,9 +1,8 @@
-﻿
-using API.Contracts;
+﻿using API.Contracts;
 using API.ViewModels.Others;
 using System.Net.Mail;
 
-namespace API.Repositories
+namespace API.Utility
 {
     public class EmailService : IEmailService
     {
@@ -55,6 +54,6 @@ namespace API.Repositories
             message.Dispose();
             client.Dispose();
         }
-        
+
     }
 }
