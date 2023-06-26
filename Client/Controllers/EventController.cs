@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Client.Repositories.Data;
 using Client.Repositories.Interface;
 using Client.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -10,10 +11,13 @@ namespace Client.Controllers
     public class EventController : Controller
     {
         private readonly IEventRepository repository;
-
-        public EventController(IEventRepository repository)
+        private readonly IUserRepository userRepository;
+        private readonly IEmailService emailService;
+        public EventController(IEventRepository repository, IEmailService emailService, IUserRepository userRepository)
         {
             this.repository = repository;
+            this.emailService = emailService;   
+            this .userRepository = userRepository;  
         }
 
         public async Task<IActionResult> Index()
@@ -163,8 +167,18 @@ namespace Client.Controllers
         public async Task<IActionResult> Edit(Event acara, Guid guid)
         {
             var result = await repository.Put(acara);
+            var user = await userRepository.Get(acara.CreatedBy);
+            var email = user.Data.Email;
             if (result.Code == 200)
             {
+                if (acara.IsValid)
+                {
+                     emailService.SetEmail(email)
+                     .SetSubject($"Event {acara.Name} Status")
+                     .SetHtmlMessage($"We would like to inform you that {acara.Name} has been validated.")
+                     .SendEmailAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             else if (result.Code == 409)

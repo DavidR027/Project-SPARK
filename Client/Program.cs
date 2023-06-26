@@ -16,6 +16,10 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddTransient<IEmailService, EmailService>(_ => new EmailService(
+                smtpServer: builder.Configuration["Email:SmtpServer"],
+                smtpPort: int.Parse(builder.Configuration["Email:SmtpPort"]),
+                fromEmailAddress: builder.Configuration["Email:FromEmailAddress"]));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
