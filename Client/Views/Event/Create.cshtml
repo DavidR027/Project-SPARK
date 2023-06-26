@@ -1,7 +1,18 @@
-﻿@model Client.Models.Event
+﻿@using System.Security.Claims;
+@model Client.Models.Event
 
 @{
     ViewData["Title"] = "Create";
+
+    string customClaimType = "GuidValue";
+    Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
+    Guid? guidValue = null;
+
+    if (guidClaim != null && Guid.TryParse(guidClaim.Value, out Guid parsedGuid))
+    {
+        guidValue = parsedGuid;
+    }
+
 }
 
 <h1>Create</h1>
@@ -87,6 +98,11 @@
                     <input class="form-check-input" type="checkbox" asp-for="IsValid" value="false" /> 
                     @Html.DisplayNameFor(model => model.IsValid)
                 </label>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" value=@guidValue class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

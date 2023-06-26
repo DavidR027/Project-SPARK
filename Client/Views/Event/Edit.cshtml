@@ -73,6 +73,11 @@
                 <input asp-for="Organizer" class="form-control" />
                 <span asp-validation-for="Organizer" class="text-danger"></span>
             </div>
+            <div class="form-group" hidden>
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsValid" /> @Html.DisplayNameFor(model => model.IsValid)

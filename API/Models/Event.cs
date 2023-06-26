@@ -30,6 +30,8 @@ namespace API.Models
         public string Organizer { get; set; }
         [Column("is_valid")]
         public bool IsValid { get; set; }
+        [Column("created_by")]
+        public Guid CreatedBy { get; set; }
         public ICollection<Payment>? Payments { get; set; }
 
     }

@@ -17,6 +17,7 @@ namespace Client.Models
         public DateTime EndDate { get; set; }
         public string Organizer { get; set; }
         public bool IsValid { get; set; }
+        public Guid CreatedBy { get; set; }
     }
     public enum EventStatus
     {

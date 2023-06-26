@@ -38,6 +38,7 @@ namespace Client.Controllers
                     EndDate = e.EndDate,
                     Organizer = e.Organizer,
                     IsValid = e.IsValid,
+                    CreatedBy = e.CreatedBy,
                 }).ToList();
             }
 
@@ -101,6 +102,7 @@ namespace Client.Controllers
                     EndDate = e.EndDate,
                     Organizer = e.Organizer,
                     IsValid = e.IsValid,
+                    CreatedBy = e.CreatedBy,
                 }).ToList();
             }
 
@@ -177,6 +179,7 @@ namespace Client.Controllers
                 acara.EndDate = result.Data.EndDate;
                 acara.Organizer = result.Data.Organizer;
                 acara.IsValid = result.Data.IsValid;
+                acara.CreatedBy = result.Data.CreatedBy;
             }
 
             return View(acara);
@@ -206,6 +209,7 @@ namespace Client.Controllers
                 acara.EndDate = result.Data.EndDate;
                 acara.Organizer = result.Data.Organizer;
                 acara.IsValid = result.Data.IsValid;
+                acara.CreatedBy = result.Data.CreatedBy;
             }
             return View(acara);
         }

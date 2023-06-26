@@ -1,7 +1,16 @@
-﻿@model Client.Models.Event
+﻿@using System.Security.Claims;
+@model Client.Models.Event
 
 @{
     ViewData["Title"] = "Detail";
+    string customClaimType = "GuidValue";
+    Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
+    Guid? guidValue = null;
+
+    if (guidClaim != null && Guid.TryParse(guidClaim.Value, out Guid parsedGuid))
+    {
+        guidValue = parsedGuid;
+    }
 }
 
 <h1>Detail</h1>
@@ -88,6 +97,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IsValid)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
     </dl>
 </div>
 <div>
@@ -97,7 +112,7 @@
 <div>
     <a href="/Payment/Create?eventGuid=@Model.Guid">Join Event</a>
     @*<a href="/Event/ListParticipant/@Model.Guid">Show Participants</a>*@
-    @if (User.IsInRole("EventMaker"))
+    @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
     {
         @Html.ActionLink("Show Participant", "ListParticipant", new { @Model.Guid })
     }

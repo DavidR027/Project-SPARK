@@ -17,5 +17,6 @@ namespace API.ViewModels.Event
         public DateTime EndDate { get; set; }
         public string Organizer { get; set; }
         public bool IsValid { get; set; }
+        public Guid CreatedBy { get; set; }
     }
 }
