@@ -77,7 +77,8 @@ namespace API.Controllers
         {
             new(ClaimTypes.NameIdentifier, user.Username),
             new(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-            new(ClaimTypes.Email, user.Email)
+            new(ClaimTypes.Email, user.Email),
+            new Claim("GuidValue", user.Guid.ToString())
         };
 
             var roles = _accountRepository.GetRoles(user.Guid);

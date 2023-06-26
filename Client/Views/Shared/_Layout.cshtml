@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,6 +12,14 @@
 </head>
 @{
     var username = User.Identity.Name;
+    string customClaimType = "GuidValue";
+    Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
+    Guid? guidValue = null;
+
+    if (guidClaim != null && Guid.TryParse(guidClaim.Value, out Guid parsedGuid))
+    {
+        guidValue = parsedGuid;
+    }
 }
 </pre>
 <body>
@@ -39,7 +48,7 @@
                             <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="userDropdown">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <a class="dropdown-item text-black" href="/User/Detail/@(ViewContext.RouteData.Values["Guid"] ?? "")">
+                                    <a class="dropdown-item text-black" href="/User/Detail/@guidValue ?? " ")">
                                         <i class="fas fa-user"></i> @username
                                     </a>
                                     <a class="dropdown-item text-black" href="/Logout">
