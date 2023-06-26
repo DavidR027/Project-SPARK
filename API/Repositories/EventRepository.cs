@@ -4,6 +4,8 @@ using API.Models;
 using API.ViewModels.Event;
 using API.Contexts;
 using API.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace API.Repositories
 {
@@ -18,5 +20,19 @@ namespace API.Repositories
             _userRepository = userRepository;
         }
 
+        public IEnumerable<ListParticipantVM>? GetListParticipantByGuid(Guid guid)
+        {
+            var participants = _context.Payments
+            .Where(payment => payment.EventGuid == guid)
+            .Select(payment => new ListParticipantVM
+            {
+                FullName = payment.User.FirstName+ " " +payment.User.LastName,
+                Email = payment.User.Email,
+                PhoneNumber = payment.User.PhoneNumber
+            })
+            .ToList();
+
+            return participants;
+        }
     }
 }

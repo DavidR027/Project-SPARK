@@ -28,7 +28,7 @@
             <div class="form-group">
                 <label asp-for="Poster" class="control-label"></label>
                 <input type="hidden" asp-for="Poster" class="form-control" />
-                <input type="file" class="form-control" onchange="validateAndEncodeFile(this)" />
+                <input type="file" accept="image/*" class="form-control" onchange="validateAndEncodeFile(this)" maxlength="5000000" />
                 <span asp-validation-for="Poster" class="text-danger"></span>
                 <input type="hidden" id="encodedFile" name="encodedFile" />
             </div>

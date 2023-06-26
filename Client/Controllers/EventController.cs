@@ -1,5 +1,6 @@
 ﻿using Client.Models;
 using Client.Repositories.Interface;
+using Client.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
@@ -37,6 +38,25 @@ namespace Client.Controllers
                     EndDate = e.EndDate,
                     Organizer = e.Organizer,
                     IsValid = e.IsValid,
+                }).ToList();
+            }
+
+            return View(events);
+        }
+
+        [Authorize(Roles = "Admin, EventMaker")]
+        public async Task<IActionResult> ListParticipant(Guid guid)
+        {
+            var result = await repository.GetListParticipantByGuid(guid);
+            var events = new List<ListParticipant>();
+
+            if (result.Data != null)
+            {
+                events = result.Data.Select(e => new ListParticipant
+                {
+                    FullName = e.FullName,
+                    Email = e.Email,
+                    PhoneNumber = e.PhoneNumber
                 }).ToList();
             }
 
@@ -116,7 +136,7 @@ namespace Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "EventMaker")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Event acara, Guid guid)
         {
             var result = await repository.Put(acara);
@@ -133,7 +153,7 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "EventMaker")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid guid)
         {
             var result = await repository.Get(guid);

@@ -96,5 +96,15 @@
 </div>
 <div>
     <a href="/Payment/Create?eventGuid=@Model.Guid">Join Event</a>
+    @*<a href="/Event/ListParticipant/@Model.Guid">Show Participants</a>*@
+    @if (User.IsInRole("EventMaker"))
+    {
+        @Html.ActionLink("Show Participant", "ListParticipant", new { @Model.Guid })
+    }
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Show Participant", "ListParticipant", new { @Model.Guid })
+    }
+    
 </div>
 
