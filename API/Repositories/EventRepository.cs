@@ -23,7 +23,7 @@ namespace API.Repositories
         public IEnumerable<ListParticipantVM>? GetListParticipantByGuid(Guid guid)
         {
             var participants = _context.Payments
-            .Where(payment => payment.EventGuid == guid)
+            .Where(payment => payment.EventGuid == guid && payment.IsValid == true)
             .Select(payment => new ListParticipantVM
             {
                 FullName = payment.User.FirstName+ " " +payment.User.LastName,
@@ -33,6 +33,23 @@ namespace API.Repositories
             .ToList();
 
             return participants;
+        }
+
+        public IEnumerable<WaitingListVM>? GetWaitingListByGuid(Guid guid)
+        {
+            var waitingList = _context.Payments
+            .Where(payment => payment.EventGuid == guid && payment.IsValid == false)
+            .Select(payment => new WaitingListVM
+            {
+                FullName = payment.User.FirstName + " " + payment.User.LastName,
+                Email = payment.User.Email,
+                PhoneNumber = payment.User.PhoneNumber,
+                PaymentGuid = payment.Guid,
+                Invoice = payment.Invoice
+            })
+            .ToList();
+
+            return waitingList;
         }
     }
 }

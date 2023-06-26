@@ -7,5 +7,7 @@ namespace API.Contracts
     {
         IEnumerable<ListParticipantVM>? GetListParticipantByGuid (Guid guid);
 
+        IEnumerable<WaitingListVM>? GetWaitingListByGuid(Guid guid);
+
     }
 }

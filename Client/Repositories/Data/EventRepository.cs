@@ -28,5 +28,16 @@ namespace Client.Repositories.Data
             }
             return entityVM;
         }
+
+        public async Task<ResponseListVM<WaitingList>> GetWaitingListByGuid(Guid guid)
+        {
+            ResponseListVM<WaitingList> entityVM = null;
+            using (var response = httpClient.GetAsync(request + "GetWaitingListByGuid?guid=" + guid).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseListVM<WaitingList>>(apiResponse);
+            }
+            return entityVM;
+        }
     }
 }

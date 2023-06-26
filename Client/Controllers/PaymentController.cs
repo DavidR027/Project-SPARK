@@ -62,7 +62,48 @@ namespace Client.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> Edit(Payment payment, Guid guid)
+        {
+            var result = await repository.Put(payment);
+            if (result.Code == 200)
+            {
+                return RedirectToAction("WaitingList", "Event", new { Guid = payment.EventGuid});
+            }
+            else if (result.Code == 409)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> Edit(Guid guid)
+        {
+            var result = await repository.Get(guid);
+            var payment = new Payment();
+            if (result.Data?.Guid is null)
+            {
+                return View(payment);
+            }
+            else
+            {
+                payment.Guid = result.Data.Guid;
+                payment.UserGuid = result.Data.UserGuid;
+                payment.EventGuid = result.Data.EventGuid;
+                payment.Invoice = result.Data.Invoice;
+                payment.IsValid = result.Data.IsValid;
+            }
+
+            return View(payment);
+        }
+
+
+        [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> Delete(Guid guid)
         {
             var result = await repository.Get(guid);
@@ -77,6 +118,7 @@ namespace Client.Controllers
                 payment.EventGuid = result.Data.EventGuid;
                 payment.UserGuid = result.Data.UserGuid;
                 payment.Invoice = result.Data.Invoice;
+                payment.IsValid = result.Data.IsValid;
 
             }
             return View(payment);

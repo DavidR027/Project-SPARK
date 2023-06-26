@@ -64,6 +64,27 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [Authorize(Roles = "Admin, EventMaker")]
+        public async Task<IActionResult> WaitingList(Guid guid)
+        {
+            var result = await repository.GetWaitingListByGuid(guid);
+            var waitingList = new List<WaitingList>();
+
+            if (result.Data != null)
+            {
+                waitingList = result.Data.Select(e => new WaitingList
+                {
+                    FullName = e.FullName,
+                    Email = e.Email,
+                    PhoneNumber = e.PhoneNumber,
+                    PaymentGuid = e.PaymentGuid,
+                    Invoice = e.Invoice
+                }).ToList();
+            }
+
+            return View(waitingList);
+        }
+
         [HttpGet("Event/Detail/{Guid}")]
         public async Task<IActionResult> Detail(Guid guid)
         {

@@ -31,12 +31,36 @@ namespace API.Controllers
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
-                    Message = "Get Master Employee by Guid not Found",
+                    Message = "Not Found",
                     Data = null
                 });
             }
 
             return Ok(new ResponseVM<IEnumerable<ListParticipantVM>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success",
+                Data = listParticipant
+            });
+        }
+
+        [HttpGet("GetWaitingListByGuid")]
+        public IActionResult GetWaitingListByGuid(Guid guid)
+        {
+            var listParticipant = _eventRepository.GetWaitingListByGuid(guid);
+            if (listParticipant is null)
+            {
+                return NotFound(new ResponseVM<WaitingListVM>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Not Found",
+                    Data = null
+                });
+            }
+
+            return Ok(new ResponseVM<IEnumerable<WaitingListVM>>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
