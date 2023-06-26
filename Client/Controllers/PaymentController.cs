@@ -2,6 +2,7 @@
 using Client.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Client.Controllers
 {
@@ -50,7 +51,7 @@ namespace Client.Controllers
             var result = await repository.Post(payment);
             if (result.Code == 200)
             {
-                return RedirectToAction(nameof(Index));
+                return Redirect($"/Event/Detail/{payment.EventGuid}");
             }
             else if (result.Code == 409)
             {

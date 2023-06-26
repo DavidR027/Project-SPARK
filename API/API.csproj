@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="ViewModels\Event\" />
     <Folder Include="ViewModels\User\" />
     <Folder Include="ViewModels\Payment\" />
   </ItemGroup>

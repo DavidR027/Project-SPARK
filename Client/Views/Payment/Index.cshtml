@@ -28,26 +28,29 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Guid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserGuid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventGuid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Invoice)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserGuid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventGuid)
+                </td>
+                <td>
+                    @if (item.Invoice != null)
+                    {
+                        <img class="d-block img-fluid" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Invoice)" alt="Poster" />
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Validate", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { item.Guid })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
