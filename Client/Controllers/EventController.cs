@@ -50,13 +50,11 @@ namespace Client.Controllers
 
             if (result.Data == null)
             {
-                // If the event is not found, you can handle the error or redirect to an error page
                 return NotFound();
             }
 
-            var eventDetail = result.Data; // Assuming the returned data is of type Event or replace it with your actual model
+            var eventDetail = result.Data;
 
-            // Pass the event detail to the view
             return View(eventDetail);
         }
 

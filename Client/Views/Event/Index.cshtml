@@ -22,6 +22,21 @@
                 {
                     @if (item.IsValid)
                     {
+                        string startDate = item.StartDate.ToString("dddd, d MMMM yyyy", cultureId);
+                        string endDate = item.EndDate.ToString("dddd, d MMMM yyyy", cultureId);
+                        string startTime = item.StartDate.ToString("t");
+                        string endTime = item.EndDate.ToString("t");
+
+                        string formattedDate;
+                        if (item.StartDate.Date == item.EndDate.Date)
+                        {
+                            formattedDate = $"{startDate} | {startTime} - {endTime}";
+                        }
+                        else
+                        {
+                            formattedDate = $"{startDate} - {endDate} | {startTime} - {endTime}";
+                        }
+
                         <div class="card single_post">
                             <div class="body">
                                 <div class="img-post">
@@ -32,7 +47,7 @@
                                 </div>
                                 <h3><a href="blog-details.html">@Html.DisplayFor(modelItem => item.Name)</a></h3>
                                 <p>@Html.DisplayFor(modelItem => item.Location)</p>
-                                <p>@(item.StartDate.ToString("dddd, d MMMM yyyy", cultureId)) - @(item.EndDate.ToString("dddd, d MMMM yyyy", cultureId)) | @(item.StartDate.ToString("t")) - @(item.EndDate.ToString("t"))</p>
+                                <p>@formattedDate</p>
                             </div>
                             <div class="footer">
                                 <div class="actions">

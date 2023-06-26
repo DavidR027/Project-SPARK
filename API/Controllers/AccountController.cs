@@ -100,7 +100,6 @@ namespace API.Controllers
 
         }
 
-        //kel 2
         [HttpPost("Register")]
         [AllowAnonymous]
         public IActionResult Register(RegisterVM registerVM)
@@ -153,8 +152,58 @@ namespace API.Controllers
 
         }
 
+        [HttpPost("RegisterEM")]
+        [AllowAnonymous]
+        public IActionResult RegisterEM(RegisterVM registerVM)
+        {
 
-        //kel 5
+            var result = _accountRepository.RegisterEM(registerVM);
+            switch (result)
+            {
+                case 0:
+                    return BadRequest(new ResponseVM<AccountVM>
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Status = HttpStatusCode.BadRequest.ToString(),
+                        Message = "Registration Failed",
+                        Data = null
+                    });
+                case 1:
+                    return BadRequest(new ResponseVM<AccountVM>
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Status = HttpStatusCode.BadRequest.ToString(),
+                        Message = "Email already exists",
+                        Data = null
+                    });
+                case 2:
+                    return BadRequest(new ResponseVM<AccountVM>
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Status = HttpStatusCode.BadRequest.ToString(),
+                        Message = "Phone number already exists",
+                        Data = null
+                    });
+                case 3:
+                    return Ok(new ResponseVM<AccountVM>
+                    {
+                        Code = StatusCodes.Status200OK,
+                        Status = HttpStatusCode.OK.ToString(),
+                        Message = "Registration Success",
+                        Data = null
+                    });
+            }
+
+            return BadRequest(new ResponseVM<AccountVM>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Registration Failed",
+                Data = null
+            });
+
+        }
+
         [HttpPost("ForgotPassword/{email}")]
         [AllowAnonymous]
         public IActionResult UpdateResetPass(string email)
@@ -209,7 +258,6 @@ namespace API.Controllers
 
         }
 
-        //kel 6
         [HttpPost("ChangePassword")]
         [AllowAnonymous]
         public IActionResult ChangePassword(ChangePasswordVM changePasswordVM)

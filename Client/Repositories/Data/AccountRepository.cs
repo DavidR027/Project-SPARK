@@ -43,5 +43,17 @@ namespace Client.Repositories.Data
             }
             return entityVM;
         }
+
+        public async Task<ResponseMessageVM> RegisterEM(RegisterVM entity)
+        {
+            ResponseMessageVM entityVM = null;
+            StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            using (var response = httpClient.PostAsync(request + "RegisterEM", content).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseMessageVM>(apiResponse);
+            }
+            return entityVM;
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace API.Contracts
     {
         LoginVM Login(LoginVM loginVM);
         int Register(RegisterVM registerVM);
+        int RegisterEM(RegisterVM registerVM);
         int ChangePasswordAccount(Guid? userId, ChangePasswordVM changePasswordVM);
         int UpdateOTP(Guid? userId);
 

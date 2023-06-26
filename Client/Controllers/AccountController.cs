@@ -82,5 +82,36 @@ namespace Client.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public IActionResult RegisterEM()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterEM(RegisterVM registerVM)
+        {
+
+            var result = await repository.RegisterEM(registerVM);
+            if (result is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            else if (result.Code == 409)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
+                return View();
+            }
+            else if (result.Code == 200)
+            {
+                TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
+                return RedirectToAction("Logins", "Account");
+            }
+            return View();
+        }
+
     }
 }

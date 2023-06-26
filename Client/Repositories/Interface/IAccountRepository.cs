@@ -7,5 +7,7 @@ namespace Client.Repositories.Interface
     {
         public Task<ResponseViewModel<string>> Logins(LoginVM entity);
         public Task<ResponseMessageVM> Registers(RegisterVM entity);
+
+        public Task<ResponseMessageVM> RegisterEM(RegisterVM entity);
     }
 }

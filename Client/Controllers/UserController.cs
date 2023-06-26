@@ -39,6 +39,7 @@ namespace Client.Controllers
             return View(users);
         }
 
+        [Authorize]
         [HttpGet("User/Detail/{Guid}")]
         public async Task<IActionResult> Detail(Guid guid)
         {
@@ -64,7 +65,7 @@ namespace Client.Controllers
             var result = await repository.Put(user);
             if (result.Code == 200)
             {
-                return RedirectToAction(nameof(Index));
+                return Redirect($"/User/Detail/{guid}");
             }
             else if (result.Code == 409)
             {

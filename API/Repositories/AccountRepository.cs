@@ -142,6 +142,49 @@ namespace API.Repositories
             }
         }
 
+        public int RegisterEM(RegisterVM registerVM)
+        {
+            try
+            {
+                var user = new User
+                {
+                    Username = registerVM.Username,
+                    FirstName = registerVM.FirstName,
+                    LastName = registerVM.LastName,
+                    BirthDate = registerVM.BirthDate,
+                    Gender = registerVM.Gender,
+                    Email = registerVM.Email,
+                    PhoneNumber = registerVM.PhoneNumber,
+                };
+                var result = _userRepository.Create(user);
+
+                var account = new Account
+                {
+                    Guid = user.Guid,
+                    Password = Hashing.HashPassword(registerVM.Password),
+                    IsDeleted = false,
+                    IsUsed = true,
+                    OTP = 0
+                };
+                Create(account);
+
+                var accountRole = new AccountRole
+                {
+                    RoleGuid = Guid.Parse("5e735041-ce30-43b9-d7aa-08db60bf349a"),
+                    AccountGuid = user.Guid
+                };
+                _context.AccountRoles.Add(accountRole);
+                _context.SaveChanges();
+
+                return 3;
+
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public int UpdateOTP(Guid? userId)
         {
             var account = new Account();
