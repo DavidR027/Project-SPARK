@@ -11,6 +11,12 @@ namespace API.Repositories
 
         }
 
+        public bool CheckEmailAndPhoneAndUsername(string value)
+        {
+            return _context.Users.Any(e => e.Email == value ||
+                        e.PhoneNumber == value || e.Username == value);
+        }
+
         public Guid? FindGuidByEmail(string email)
         {
             try
