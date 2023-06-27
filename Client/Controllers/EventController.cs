@@ -49,7 +49,7 @@ namespace Client.Controllers
             return View(events);
         }
 
-        [Authorize(Roles = "Admin, EventMaker")]
+        [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> ListParticipant(Guid guid)
         {
             var result = await repository.GetListParticipantByGuid(guid);
@@ -68,7 +68,7 @@ namespace Client.Controllers
             return View(events);
         }
 
-        [Authorize(Roles = "Admin, EventMaker")]
+        [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> WaitingList(Guid guid)
         {
             var result = await repository.GetWaitingListByGuid(guid);
@@ -108,6 +108,66 @@ namespace Client.Controllers
         public async Task<IActionResult> IndexAdmin()
         {
             var result = await repository.Get();
+            var events = new List<Event>();
+
+            if (result.Data != null)
+            {
+                events = result.Data.Select(e => new Event
+                {
+                    Guid = e.Guid,
+                    Name = e.Name,
+                    Description = e.Description,
+                    Poster = e.Poster,
+                    Status = e.Status,
+                    Quota = e.Quota,
+                    IsPaid = e.IsPaid,
+                    Price = e.Price,
+                    Location = e.Location,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                    Organizer = e.Organizer,
+                    IsValid = e.IsValid,
+                    CreatedBy = e.CreatedBy,
+                }).ToList();
+            }
+
+            return View(events);
+        }
+
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> MyEvent(Guid guid)
+        {
+            var result = await repository.GetMyEvent(guid);
+            var events = new List<Event>();
+
+            if (result.Data != null)
+            {
+                events = result.Data.Select(e => new Event
+                {
+                    Guid = e.Guid,
+                    Name = e.Name,
+                    Description = e.Description,
+                    Poster = e.Poster,
+                    Status = e.Status,
+                    Quota = e.Quota,
+                    IsPaid = e.IsPaid,
+                    Price = e.Price,
+                    Location = e.Location,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                    Organizer = e.Organizer,
+                    IsValid = e.IsValid,
+                    CreatedBy = e.CreatedBy,
+                }).ToList();
+            }
+
+            return View(events);
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> JoinedEvent(Guid guid)
+        {
+            var result = await repository.GetMyEventUser(guid);
             var events = new List<Event>();
 
             if (result.Data != null)

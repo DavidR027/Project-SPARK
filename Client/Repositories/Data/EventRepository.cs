@@ -39,5 +39,27 @@ namespace Client.Repositories.Data
             }
             return entityVM;
         }
+
+        public async Task<ResponseListVM<Event>> GetMyEvent(Guid guid)
+        {
+            ResponseListVM<Event> entityVM = null;
+            using (var response = httpClient.GetAsync(request + "GetMyEvent?guid=" + guid).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseListVM<Event>>(apiResponse);
+            }
+            return entityVM;
+        }
+
+        public async Task<ResponseListVM<Event>> GetMyEventUser(Guid guid)
+        {
+            ResponseListVM<Event> entityVM = null;
+            using (var response = httpClient.GetAsync(request + "GetMyEventUser?guid=" + guid).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseListVM<Event>>(apiResponse);
+            }
+            return entityVM;
+        }
     }
 }

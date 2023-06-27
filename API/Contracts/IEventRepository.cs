@@ -8,6 +8,8 @@ namespace API.Contracts
         IEnumerable<ListParticipantVM>? GetListParticipantByGuid (Guid guid);
 
         IEnumerable<WaitingListVM>? GetWaitingListByGuid(Guid guid);
+        IEnumerable<EventVM>? GetMyEvent(Guid guid);
+        IEnumerable<EventVM>? GetMyEventUser(Guid guid);
 
     }
 }

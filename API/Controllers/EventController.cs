@@ -5,6 +5,7 @@ using API.ViewModels.AccountRole;
 using API.ViewModels.Event;
 using API.ViewModels.Others;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
 
 namespace API.Controllers
@@ -66,6 +67,54 @@ namespace API.Controllers
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Success",
                 Data = listParticipant
+            });
+        }
+
+        [HttpGet("GetMyEvent")]
+        public IActionResult GetMyEvent(Guid guid)
+        {
+            var listEvent = _eventRepository.GetMyEvent(guid);
+            if (listEvent is null)
+            {
+                return NotFound(new ResponseVM<EventVM>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Not Found",
+                    Data = null
+                });
+            }
+
+            return Ok(new ResponseVM<IEnumerable<EventVM>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success",
+                Data = listEvent
+            });
+        }
+
+        [HttpGet("GetMyEventUser")]
+        public IActionResult GetMyEventUser(Guid guid)
+        {
+            var listEvent = _eventRepository.GetMyEventUser(guid);
+            if (listEvent is null)
+            {
+                return NotFound(new ResponseVM<EventVM>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Not Found",
+                    Data = null
+                });
+            }
+
+            return Ok(new ResponseVM<IEnumerable<EventVM>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success",
+                Data = listEvent
             });
         }
     }

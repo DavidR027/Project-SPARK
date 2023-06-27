@@ -9,7 +9,7 @@ namespace API.ViewModels.Event
         public string Description { get; set; }
         public byte[]? Poster { get; set; }
         public EventStatus Status { get; set; }
-        public int Quota { get; set; }
+        public int? Quota { get; set; }
         public bool IsPaid { get; set; }
         public string Price { get; set; }
         public string Location { get; set; }

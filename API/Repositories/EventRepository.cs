@@ -26,13 +26,64 @@ namespace API.Repositories
             .Where(payment => payment.EventGuid == guid && payment.IsValid == true)
             .Select(payment => new ListParticipantVM
             {
-                FullName = payment.User.FirstName+ " " +payment.User.LastName,
+                FullName = payment.User.FirstName + " " + payment.User.LastName,
                 Email = payment.User.Email,
                 PhoneNumber = payment.User.PhoneNumber
             })
             .ToList();
 
             return participants;
+        }
+
+        public IEnumerable<EventVM>? GetMyEvent(Guid guid)
+        {
+            var acara = _context.Events
+                .Where(acara => acara.CreatedBy == guid)
+                .Select(acara => new EventVM
+                {
+                    Guid = acara.Guid,
+                    Name = acara.Name,
+                    Description = acara.Description,
+                    Poster = acara.Poster,
+                    Status = acara.Status,
+                    Quota = acara.Quota,
+                    IsPaid = acara.IsPaid,
+                    Price = acara.Price,
+                    Location = acara.Location,
+                    StartDate = acara.StartDate,
+                    EndDate = acara.EndDate,
+                    Organizer = acara.Organizer,
+                    IsValid = acara.IsValid,
+                    CreatedBy = acara.CreatedBy,
+                }).ToList();
+
+            return acara;
+        }
+
+        public IEnumerable<EventVM>? GetMyEventUser(Guid guid)
+        {
+            var events = from e in _context.Events
+                         join p in _context.Payments on e.Guid equals p.EventGuid
+                         where p.UserGuid == guid
+                         select new EventVM
+                         {
+                             Guid = e.Guid,
+                             Name = e.Name,
+                             Description = e.Description,
+                             Poster = e.Poster,
+                             Status = e.Status,
+                             Quota = e.Quota,
+                             IsPaid = e.IsPaid,
+                             Price = e.Price,
+                             Location = e.Location,
+                             StartDate = e.StartDate,
+                             EndDate = e.EndDate,
+                             Organizer = e.Organizer,
+                             IsValid = e.IsValid,
+                             CreatedBy = e.CreatedBy
+                         };
+
+            return events.ToList();
         }
 
         public IEnumerable<WaitingListVM>? GetWaitingListByGuid(Guid guid)
