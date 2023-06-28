@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using API.Utility;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
 {
@@ -9,19 +10,29 @@ namespace API.Models
         public string Name { get; set; }
         [Column("description")]
         public string Description { get; set; }
+        [Column("poster")]
+        public byte[] Poster { get; set; }
         [Column("status")]
-        public string Status { get; set; }
+        public EventStatus Status { get; set; }
+        [Column("quota")]
+        public int? Quota { get; set; }
+        [Column("is_paid")]
+        public bool IsPaid { get; set; }
+        [Column("price")]
+        public string? Price { get; set; }
         [Column("location")]
         public string Location { get; set; }
         [Column("start_date")]
         public DateTime StartDate { get; set; }
         [Column("end_date")]
         public DateTime EndDate { get; set; }
-        [Column("create_by")]
-        public Guid CreateBy { get; set; }
-
-        public Account? Account { get; set; }
-        public ICollection<EventForm> EventForms { get; set; }
+        [Column("organizer")]
+        public string Organizer { get; set; }
+        [Column("is_valid")]
+        public bool IsValid { get; set; }
+        [Column("created_by")]
+        public Guid CreatedBy { get; set; }
+        public ICollection<Payment>? Payments { get; set; }
 
     }
 }

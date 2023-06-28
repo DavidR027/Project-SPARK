@@ -11,22 +11,17 @@ namespace API.Models
         [Column("first_name")]
         public string FirstName { get; set; }
         [Column("last_name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
         [Column("birth_date")]
         public DateTime BirthDate { get; set; }
         [Column("gender")]
         public GenderLevel Gender { get; set; }
-        [Column("age")]
-        public int Age { get; set; }
-        [Column("role")]
-        public string Role { get; set; }
         [Column("email", TypeName = "nvarchar(100)")]
         public string Email { get; set; }
         [Column("phone_number", TypeName = "nvarchar(20)")]
         public string PhoneNumber { get; set; }
 
         public Account? Account { get; set; }
-        public Payment? Payment { get; set; }
-        public EventForm? Form { get; set; }
+        public ICollection<Payment>? Payments { get; set; }
     }
 }

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Client.Models.Payment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Guid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Invoice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserGuid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventGuid)
+                </td>
+                <td>
+                    @if (item.Invoice != null)
+                    {
+                        <img class="d-block img-fluid" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Invoice)" alt="Poster" />
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Validate", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { item.Guid })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

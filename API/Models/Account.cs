@@ -9,7 +9,7 @@ namespace API.Models
         public string Password { get; set; }
         
         [Column("otp")]
-        public int OTP { get; set; }
+        public int? OTP { get; set; }
 
         [Column("is_used")]
         public bool IsUsed { get; set; }
@@ -18,9 +18,9 @@ namespace API.Models
         public bool IsDeleted { get; set; }
         
         [Column("expired_time")]
-        public DateTime ExpiredTime { get; set; }
+        public DateTime? ExpiredTime { get; set; }
 
         public User? User { get; set; }
-        public Admin? Admin { get; set; }
+        public ICollection<AccountRole>? AccountRoles { get; set; }
     }
 }

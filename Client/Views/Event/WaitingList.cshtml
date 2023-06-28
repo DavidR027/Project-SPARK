@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Client.ViewModels.WaitingList>
+
+@{
+    ViewData["Title"] = "WaitingList";
+}
+
+<h1>WaitingList</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Invoice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentGuid)
+                </td>
+                <td>
+                    @if (item.Invoice != null)
+                    {
+                        <img class="d-block img-fluid" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Invoice)" alt="Poster" />
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Validate", "Edit", "Payment", new {Guid = item.PaymentGuid }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

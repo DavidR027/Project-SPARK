@@ -1,0 +1,98 @@
+﻿@using System.Security.Claims;
+@model Client.Models.Payment
+
+@{
+    ViewData["Title"] = "Create";
+
+    string customClaimType = "GuidValue";
+    Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
+    Guid? guidValue = null;
+
+    if (guidClaim != null && Guid.TryParse(guidClaim.Value, out Guid parsedGuid))
+    {
+        guidValue = parsedGuid;
+    }
+}
+
+<h1>Create</h1>
+
+<h4>Payment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="UserGuid" class="control-label"></label>
+                <input asp-for="UserGuid" value=@guidValue class="form-control" />
+                <span asp-validation-for="UserGuid" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="EventGuid" class="control-label">Event Guid</label>
+                <input asp-for="EventGuid" id="EventGuid" type="text" class="form-control" />
+                <span asp-validation-for="EventGuid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice" class="control-label"></label>
+                <input type="hidden" asp-for="Invoice" class="form-control" />
+                <input type="file" class="form-control" onchange="validateAndEncodeFile(this)" />
+                <span asp-validation-for="Invoice" class="text-danger"></span>
+                <input type="hidden" id="encodedFile" name="encodedFile" />
+            </div>
+            <div class="form-group form-check" hidden>
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" asp-for="IsValid" value="false" />
+                    @Html.DisplayNameFor(model => model.IsValid)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function validateAndEncodeFile(input) {
+        const file = input.files[0];
+        const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+
+        if (file && file.size > maxSizeInBytes) {
+            // File size exceeds the limit, handle the error
+            alert('File size exceeds the limit of 5MB.');
+            input.value = ''; // Reset the input
+            return;
+        }
+
+        encodeFile(input);
+    }
+
+    function encodeFile(input) {
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function () {
+            const bytes = new Uint8Array(reader.result);
+            const encodedString = btoa(String.fromCharCode.apply(null, bytes));
+            input.previousElementSibling.value = encodedString;
+        }
+
+        if (file) {
+            reader.readAsArrayBuffer(file);
+        }
+    }
+
+    // Get the value of the "eventGuid" query parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventGuid = urlParams.get("eventGuid");
+
+    // Set the retrieved value to the input field
+    document.getElementById("EventGuid").value = eventGuid;
+</script>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
