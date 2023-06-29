@@ -9,10 +9,16 @@ namespace Client.Controllers
     public class PaymentController : Controller
     {
         private readonly IPaymentRepository repository;
+        private readonly IUserRepository userRepository;
+        private readonly IEventRepository eventRepository;
+        private readonly IEmailService emailService;
 
-        public PaymentController(IPaymentRepository repository)
+        public PaymentController(IPaymentRepository repository, IUserRepository userRepository, IEventRepository eventRepository, IEmailService emailService)
         {
             this.repository = repository;
+            this.userRepository = userRepository;
+            this.eventRepository = eventRepository;
+            this.emailService = emailService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -126,13 +132,21 @@ namespace Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, User")]
-        public async Task<IActionResult> Remove(Guid guid)
+        [Authorize(Roles = "Admin, EventMaker")]
+        public async Task<IActionResult> Remove(Guid guid, Guid userGuid, Guid eventGuid)
         {
+            var user = await userRepository.Get(userGuid);
+            var acara = await eventRepository.Get(eventGuid);
+            var eventmaker = await userRepository.Get(acara.Data.CreatedBy);
             var result = await repository.Delete(guid);
+            var email = user.Data.Email;
             if (result.Code == 200)
             {
-                return RedirectToAction(nameof(Index));
+                emailService.SetEmail(email)
+                     .SetSubject($"SPARK: '{acara.Data.Name}' Payment Status")
+                     .SetHtmlMessage($"Hello {user.Data.Username}! We regret to inform you that your payment for event '{acara.Data.Name}' has been declined by Organizer {eventmaker.Data.Username}. Please contact {eventmaker.Data.Email} for further information.")
+                     .SendEmailAsync();
+                return RedirectToAction("Index", "Event");
             }
             return View();
         }

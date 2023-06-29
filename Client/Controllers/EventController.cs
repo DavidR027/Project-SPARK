@@ -234,8 +234,8 @@ namespace Client.Controllers
                 if (acara.IsValid)
                 {
                      emailService.SetEmail(email)
-                     .SetSubject($"Event {acara.Name} Status")
-                     .SetHtmlMessage($"We would like to inform you that {acara.Name} has been validated.")
+                     .SetSubject($"SPARK: '{acara.Name}' Event Status")
+                     .SetHtmlMessage($"Hello {acara.Organizer}! We would like to inform you that your event '{acara.Name}' has been validated.")
                      .SendEmailAsync();
                 }
 
@@ -312,12 +312,20 @@ namespace Client.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, EventMaker")]
-        public async Task<IActionResult> Remove(Guid guid)
+        public async Task<IActionResult> Remove(Guid guid, Guid adminguid)
         {
+            var acara = await repository.Get(guid);
+            var user = await userRepository.Get(acara.Data.CreatedBy);
+            var admin = await userRepository.Get(adminguid);
+            var email = user.Data.Email;
             var result = await repository.Delete(guid);
             if (result.Code == 200)
             {
-                return RedirectToAction(nameof(Index));
+                emailService.SetEmail(email)
+                     .SetSubject($"SPARK: '{acara.Data.Name}' Event Status")
+                     .SetHtmlMessage($"Hello {acara.Data.Organizer}! We regret to inform you that your event '{acara.Data.Name}' has been invalidated by Admin {admin.Data.Username}. Please contact {admin.Data.Email} for further information.")
+                     .SendEmailAsync();
+                return RedirectToAction(nameof(IndexAdmin));
             }
             return View();
         }

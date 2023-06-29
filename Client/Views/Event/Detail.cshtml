@@ -20,12 +20,6 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Guid)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Guid)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class = "col-sm-10">
@@ -54,12 +48,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Quota)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsPaid)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsPaid)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
@@ -91,18 +79,6 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Organizer)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsValid)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsValid)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
     </dl>
 </div>
 <div>
@@ -110,7 +86,10 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <div>
-    <a href="/Payment/Create?eventGuid=@Model.Guid">Join Event</a>
+    @if (User.IsInRole("User"))
+    {
+        <a href="/Payment/Create?eventGuid=@Model.Guid">Join Event</a>
+    }
     @*<a href="/Event/ListParticipant/@Model.Guid">Show Participants</a>*@
     @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
     {
