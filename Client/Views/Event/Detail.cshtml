@@ -30,7 +30,9 @@
     }
 }
 
+<head>
 
+</head>
 
 <div class="breadcrumbs">
     <div class="container">
@@ -98,7 +100,7 @@
                                         </div>
 
                                         <div>
-                                            @if(guidValue != null)
+                                            @if (guidValue != null)
                                             {
                                                 <a href="/Payment/Create?eventGuid=@Model.Guid" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
                                             }
@@ -106,7 +108,7 @@
                                             {
                                                 <a href="/Account/Logins" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
                                             }
-                                            
+
                                             @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
                                             {
                                                 <a href="@Url.Action("ListParticipant", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
@@ -130,14 +132,21 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <a hidden id="userGuid" data-value=@guidValue name="userGuid"></a>
+<a hidden id="eventGuid" data-value=@Model.Guid name="eventGuid"></a>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@*<script src="~/js/event-detail.js"></script>*@
 <script>
-    const eventGuid = '@Model.Guid';
+    const guidEvents = document.getElementById('eventGuid');
+    const eventGuid = guidEvents.getAttribute('data-value');
     const apiUrl = 'https://localhost:7042/api/Event/GetParticipantListByGuid?guid=' + eventGuid;
     const apiUrl2 = 'https://localhost:7042/api/Event/GetWaitingListByGuid?guid=' + eventGuid;
     const guidElement = document.getElementById('userGuid');
     const userGuid = guidElement.getAttribute('data-value');
+
+    console.log(eventGuid);
 
     $.ajax({
         url: apiUrl,
@@ -158,8 +167,7 @@
 
             const quota = @Model.Quota;
             const remainingQuota = quota - count;
-            if(remainingQuota == 0)
-            {
+            if (remainingQuota == 0) {
                 joinEventButton.textContent = 'Quota is Full';
                 joinEventButton.removeAttribute('href'); // Remove the href attribute to prevent navigation
                 joinEventButton.onclick = function (event) {
