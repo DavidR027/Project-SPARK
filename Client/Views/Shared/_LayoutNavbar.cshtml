@@ -1,0 +1,370 @@
+﻿@using System.Security.Claims;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.svg" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/animate.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/glightbox.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tiny-slider.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/LineIcons.3.0.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+
+        /*--------------------------------------------------------------
+                        # Navigation Menu
+                        --------------------------------------------------------------*/
+        /**
+                        * Desktop Navigation
+                        */
+        .navbar {
+            padding: 0;
+            margin: 5px;
+        }
+
+            .navbar ul {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                list-style: none;
+                align-items: center;
+            }
+
+            .navbar li {
+                position: relative;
+            }
+
+            .navbar a,
+            .navbar a:focus {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 5px 15px 7px 15px;
+                margin-left: 5px;
+                font-size: 14px;
+                color: #fff;
+                white-space: nowrap;
+                transition: 0.3s;
+                border-radius: 50px;
+            }
+
+                .navbar a i,
+                .navbar a:focus i {
+                    font-size: 12px;
+                    line-height: 0;
+                    margin-left: 5px;
+                }
+
+                .navbar a:hover,
+                .navbar .active,
+                .navbar .active:focus,
+                .navbar li:hover > a {
+                    background: #ef6603;
+                    color: white;
+                }
+
+            .navbar .dropdown ul {
+                display: block;
+                position: absolute;
+                left: 5px;
+                top: calc(100% + 30px);
+                margin: 5px 0 0 0;
+                padding: 10px 0;
+                z-index: 99;
+                opacity: 0;
+                visibility: hidden;
+                background: #fff;
+                box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+                transition: 0.3s;
+                border-radius: 15px;
+            }
+
+                .navbar .dropdown ul li {
+                    min-width: 200px;
+                }
+
+                .navbar .dropdown ul a {
+                    padding: 10px 20px;
+                    color: #2a2c39;
+                    margin: 0 5px;
+                    font-size: 14px;
+                }
+
+                    .navbar .dropdown ul a i {
+                        font-size: 12px;
+                    }
+
+                    .navbar .dropdown ul a:hover,
+                    .navbar .dropdown ul .active:hover,
+                    .navbar .dropdown ul li:hover > a {
+                        color: #fff;
+                    }
+
+            .navbar .dropdown:hover > ul {
+                opacity: 1;
+                top: 100%;
+                visibility: visible;
+            }
+
+            .navbar .dropdown .dropdown ul {
+                top: 0;
+                left: calc(100% - 30px);
+                visibility: hidden;
+            }
+
+            .navbar .dropdown .dropdown:hover > ul {
+                opacity: 1;
+                top: 0;
+                left: 100%;
+                visibility: visible;
+            }
+
+        @@media (max-width: 1366px) {
+            .navbar .dropdown .dropdown ul {
+                left: -90%;
+            }
+
+            .navbar .dropdown .dropdown:hover > ul {
+                left: -100%;
+            }
+        }
+
+        /**
+                        * Mobile Navigation
+                        */
+        .mobile-nav-toggle {
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            display: none;
+            line-height: 0;
+            transition: 0.5s;
+        }
+
+        @@media (max-width: 991px) {
+            .mobile-nav-toggle {
+                display: block;
+            }
+
+            .navbar ul {
+                display: none;
+            }
+        }
+
+        .navbar-mobile {
+            position: fixed;
+            overflow: hidden;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            background: rgba(20, 21, 28, 0.9);
+            transition: 0.3s;
+            z-index: 999;
+        }
+
+            .navbar-mobile .mobile-nav-toggle {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+            }
+
+            .navbar-mobile ul {
+                display: block;
+                position: absolute;
+                top: 55px;
+                right: 15px;
+                bottom: 15px;
+                left: 15px;
+                padding: 10px 0;
+                border-radius: 10px;
+                background-color: #fff;
+                overflow-y: auto;
+                transition: 0.3s;
+            }
+
+            .navbar-mobile a,
+            .navbar-mobile a:focus {
+                padding: 10px 20px;
+                margin: 5px;
+                font-size: 15px;
+                color: #2a2c39;
+            }
+
+                .navbar-mobile a:hover,
+                .navbar-mobile .active,
+                .navbar-mobile li:hover > a {
+                    color: #fff;
+                }
+
+            .navbar-mobile .getstarted,
+            .navbar-mobile .getstarted:focus {
+                margin: 15px;
+            }
+
+            .navbar-mobile .dropdown ul {
+                position: static;
+                display: none;
+                margin: 10px 20px;
+                padding: 10px 0;
+                z-index: 99;
+                opacity: 1;
+                visibility: visible;
+                background: #fff;
+                box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+            }
+
+                .navbar-mobile .dropdown ul li {
+                    min-width: 200px;
+                }
+
+                .navbar-mobile .dropdown ul a {
+                    padding: 10px 20px;
+                }
+
+                    .navbar-mobile .dropdown ul a i {
+                        font-size: 12px;
+                    }
+
+                    .navbar-mobile .dropdown ul a:hover,
+                    .navbar-mobile .dropdown ul .active:hover,
+                    .navbar-mobile .dropdown ul li:hover > a {
+                        color: #fff;
+                    }
+
+            .navbar-mobile .dropdown > .dropdown-active {
+                display: block;
+            }
+
+        /*--------------------------------------------------------------
+                        # Hero Section
+                        --------------------------------------------------------------*/
+    </style>
+
+</head>
+@{
+    var username = User.Identity.Name;
+    string customClaimType = "GuidValue";
+    Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
+    Guid? guidValue = null;
+
+    if (guidClaim != null && Guid.TryParse(guidClaim.Value, out Guid parsedGuid))
+    {
+        guidValue = parsedGuid;
+    }
+}
+
+<body>
+    <header class="fixed-top d-flex align-items-center" style="background-color: #101130">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <div>
+                <h1><a href="index.html" style="color:white;">SPARK</a></h1>
+                <!-- Uncomment below if you prefer to use an image logo -->
+                <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto active" asp-controller="Event" asp-action="Index">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#"><span>Category</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="#">Festival</a></li>
+                            <li><a href="#">Cosplay Anime</a></li>
+                            <li><a href="#">Competition</a></li>
+                            <li><a href="#">Seminar</a></li>
+                        </ul>
+                    </li>
+
+                    @if (User.IsInRole("User"))
+                    {
+                        <li><a class="nav-link scrollto" href="/Event/JoinedEvent?guid=@guidValue">Joined Event</a></li>
+                    }
+
+                    @if (User.IsInRole("EventMaker"))
+                    {
+                        <li><a class="nav-link scrollto" href="/Event/MyEvent?guid=@guidValue">My Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/Create">Create Event</a></li>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a class="nav-link scrollto" href="/Event/IndexAdmin">Validation Event</a></li>
+                    }
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a class="nav-link scrollto" style="display:none;" href="/Account/Logins">Login</a></li>
+                    }
+                    else
+                    {
+                        <li><a class="nav-link scrollto" href="/Account/Logins">Login</a></li>
+                    }
+                    @*<li class="dropdown">
+                    <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                    <li><a href="#">Drop Down 1</a></li>
+                    <li class="dropdown">
+                    <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+                    <ul>
+                    <li><a href="#">Deep Drop Down 1</a></li>
+                    <li><a href="#">Deep Drop Down 2</a></li>
+                    <li><a href="#">Deep Drop Down 3</a></li>
+                    <li><a href="#">Deep Drop Down 4</a></li>
+                    <li><a href="#">Deep Drop Down 5</a></li>
+                    </ul>
+                    </li>
+                    <li><a href="#">Drop Down 2</a></li>
+                    <li><a href="#">Drop Down 3</a></li>
+                    <li><a href="#">Drop Down 4</a></li>
+                    </ul>
+                    </li>*@
+                </ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="dropdown">
+                        <a href="#"><span>Setting</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="/Logout">Logout</a></li>
+                        </ul>
+                    </div>
+                }
+            </nav><!-- .navbar -->
+
+        </div>
+    </header><!-- End Header -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+            
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - WebApplication1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/js/wow.min.js" asp-append-version="true"></script>
+    <script src="~/js/tiny-slider.js" asp-append-version="true"></script>
+    <script src="~/js/glightbox.min.js" asp-append-version="true"></script>
+    <script src="~/js/count-up.min.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

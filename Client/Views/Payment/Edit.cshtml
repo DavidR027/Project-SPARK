@@ -4,11 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Payment</h4>
-<hr />
-<div class="row">
+<hr class="mt-100">
+<div class="row d-flex justify-content-center">
     <div class="col-md-4">
         <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -32,20 +29,25 @@
                 <input asp-for="Invoice" class="form-control" />
                 <span asp-validation-for="Invoice" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsValid" /> @Html.DisplayNameFor(model => model.IsValid)
-                </label>
+            <div class="d-flex justify-content-center">
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsValid" /> @Html.DisplayNameFor(model => model.IsValid)
+                    </label>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="d-flex justify-content-center">
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
             </div>
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="d-flex justify-content-center mt-10">
+    <a href="javascript:history.back();" class="btn btn-primary">Back</a>
 </div>
 
 @section Scripts {

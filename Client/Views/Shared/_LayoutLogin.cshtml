@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @*<link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.svg" />*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/animate.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/glightbox.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tiny-slider.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/LineIcons.3.0.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css" asp-append-version="true" />*@
+
+    <link rel="icon" type="image/png" href="~Login/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    @*<link rel="stylesheet" type="text/css" href="~/Login/vendor/bootstrap/css/bootstrap.min.css">*@
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/Login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/Login/css/main.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+   @* <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - WebApplication1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>*@
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/js/wow.min.js" asp-append-version="true"></script>
+    <script src="~/js/tiny-slider.js" asp-append-version="true"></script>
+    <script src="~/js/glightbox.min.js" asp-append-version="true"></script>
+    <script src="~/js/count-up.min.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>*@
+
+    <script src="~/Login/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/Login/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/Login/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/Login/js/main.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

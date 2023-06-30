@@ -1,17 +1,153 @@
-﻿@model IEnumerable<Client.Models.Event>
+﻿@model IEnumerable<Event>
 
 @{
     ViewData["Title"] = "MyEvent";
+    Layout = "_Layout";
 }
-
+@*
 <h1>MyEvent</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+</p>*@
+
+<head>
+    <style>
+        img {
+            width: 500px;
+        }
+
+        
+        
+    </style>
+</head>
+
+<section class="vh-100" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-12 col-xl-12">
+
+                <div class="card">
+                    <div class="card-header p-3">
+                        <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Task List</h5>
+                    </div>
+                    <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 100%; width:100%; overflow-x:scroll">
+
+                        <table class="table table-striped table-bordered mb-0 " style="width:100px">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="">Guid</th>
+                                    <th scope="col" class="">Event Name</th>
+                                    <th scope="col" class="">Description</th>
+                                    <th scope="col" class="">Poster</th>
+                                    <th scope="col" class="">Status</th>
+                                    <th scope="col" class="">Quota</th>
+                                    <th scope="col" class="">IsPaid</th>
+                                    <th scope="col" class="">Price</th>
+                                    <th scope="col" class="">Location</th>
+                                    <th scope="col" class="">Start Date</th>
+                                    <th scope="col" class="">End Date</th>
+                                    <th scope="col" class="">Organizer</th>
+                                    <th scope="col" class="">Is Valid</th>
+                                    <th scope="col" class="">Created By</th>
+                                    <th scope="col" class="">Actions</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="fw-normal">
+                                        <td class="align-middle">
+                                            <span style="width:150px">@Html.DisplayFor(modelItem => item.Guid)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:150px">@Html.DisplayFor(modelItem => item.Name)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:200px">@Html.DisplayFor(modelItem => item.Description)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <img class="" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:50px">@Html.DisplayFor(modelItem => item.Status)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:50px">@Html.DisplayFor(modelItem => item.Quota)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:50px">@Html.DisplayFor(modelItem => item.IsPaid)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:50px">@Html.DisplayFor(modelItem => item.Price)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:150px">@Html.DisplayFor(modelItem => item.Location)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:200px">@Html.DisplayFor(modelItem => item.StartDate)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:200px">@Html.DisplayFor(modelItem => item.EndDate)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:100px">@Html.DisplayFor(modelItem => item.Organizer)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:50px">@Html.DisplayFor(modelItem => item.IsValid)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:100px">@Html.DisplayFor(modelItem => item.CreatedBy)</span>
+                                        </td>
+
+                                        <td class="align-middle" style="text-align:center;">
+                                            <div>
+                                                <i class="fas fa-list-alt text-primary" title="Show Waiting List">
+                                                    @Html.ActionLink("Show Waiting List", "WaitingList", new { guid = item.Guid }, new { })
+                                                </i>
+                                            </div>
+                                            <div>
+                                                <i class="fas fa-users text-info text-primary" title="Show Participant">
+                                                    @Html.ActionLink("Show Participant", "ListParticipant", new { guid = item.Guid }, new { })
+                                                </i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="card-footer text-end p-3">
+                        <a class="btn btn-primary" href="/Event/Index">Back</a>
+                        <a class="btn btn-primary" href="/Event/Create">Add Event</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@*<table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Guid)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -26,6 +162,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quota)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPaid)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
@@ -45,6 +184,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsValid)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -52,6 +194,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guid)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -66,6 +211,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quota)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsPaid)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
@@ -86,6 +234,9 @@
                     @Html.DisplayFor(modelItem => item.IsValid)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
                     @Html.ActionLink("Show Participant", "ListParticipant", new { item.Guid }) |
 
                     @Html.ActionLink("Show Waiting List", "WaitingList", new { item.Guid })
@@ -93,4 +244,4 @@
             </tr>
         }
     </tbody>
-</table>
+</table>*@

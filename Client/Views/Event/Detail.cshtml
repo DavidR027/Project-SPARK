@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims;
+@using System.Globalization;
 @model Client.Models.Event
 
 @{
@@ -11,96 +12,115 @@
     {
         guidValue = parsedGuid;
     }
+
+    CultureInfo cultureId = new CultureInfo("id-ID");
+    string startDate = Model.StartDate.ToString("dddd, d MMMM yyyy", cultureId);
+    string endDate = Model.EndDate.ToString("dddd, d MMMM yyyy", cultureId);
+    string startTime = Model.StartDate.ToString("t");
+    string endTime = Model.EndDate.ToString("t");
+
+    string formattedDate;
+    if (Model.StartDate.Date == Model.EndDate.Date)
+    {
+        formattedDate = $"{startDate} | {startTime} - {endTime}";
+    }
+    else
+    {
+        formattedDate = $"{startDate} - {endDate} | {startTime} - {endTime}";
+    }
 }
 
-<h1>Detail</h1>
 
-<div>
-    <h4>Event</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Poster)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Poster)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quota)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quota)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Organizer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Organizer)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
-<div>
-    @if (User.IsInRole("User"))
-    {
-        <a href="/Payment/Create?eventGuid=@Model.Guid">Join Event</a>
-    }
-    @*<a href="/Event/ListParticipant/@Model.Guid">Show Participants</a>*@
-    @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
-    {
-        @Html.ActionLink("Show Participant", "ListParticipant", new { @Model.Guid })
-        <a> | </a>
-        @Html.ActionLink("Show Waiting List", "WaitingList", new { @Model.Guid })
-    }
-    @if (User.IsInRole("Admin"))
-    {
-        @Html.ActionLink("Show Participant", "ListParticipant", new { @Model.Guid })
-    }
-    
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 offset-lg-2 col-md-12 col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">Detail</h1>
+                    <ul class="breadcrumb-nav">
+                        <li><a href="index.html">Home</a></li>
+                        <li>Detail Event</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<div class="wow fadeInUp" data-wow-delay=".2s">
+    <div class="single-featuer">
+        <img class="shape" src="~/images/features/shape.svg" alt="#">
+        <img class="shape2" src="~/images/features/shape2.svg" alt="#">
+        <div class="contact-us section" id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="contact-us-content">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div id="map">
+                                        <img class="d-block img-fluid mb-3" style="height:300px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Poster)" alt="Poster"
+                                             width="100%" height="670px" frameborder="0" style="border:0; border-radius: 23px;"
+                                             allowfullscreen=""></image>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <span class="serial"><i class="fas fa-globe"> @Html.DisplayFor(modelItem => Model.Status)</i></span>
+
+                                    <div class="">
+                                        <h3>@Html.DisplayFor(modelItem => Model.Name)</h3>
+                                        <p>
+                                            @Html.DisplayFor(modelItem => Model.Description)
+                                        </p>
+                                        <div>
+                                            <h8>
+                                                <i class="fas fa-map-marker-alt"></i> @Html.DisplayFor(modelItem => Model.Location)
+                                            </h8>
+                                        </div>
+
+                                        <div>
+                                            <h8>
+                                                <i class="fas fa-users"></i> @Html.DisplayFor(modelItem => Model.Quota)
+                                            </h8>
+                                        </div>
+
+                                        <div>
+                                            <h8>
+                                                <i class="fas fa-comment-dollar"></i> @Html.DisplayFor(modelItem => Model.Price)
+                                            </h8>
+                                        </div>
+
+                                        <div>
+                                            <h8>
+                                                <i class="fas fa-clock"></i> @formattedDate
+                                            </h8>
+                                        </div>
+
+                                        <div>
+
+                                            <a href="/Payment/Create?eventGuid=@Model.Guid" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+
+                                            @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
+                                            {
+                                                <a href="@Url.Action("ListParticipant", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
+                                                <a href="@Url.Action("WaitingList", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-clock"></i> Show Waiting List</a>
+                                            }
+
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <a href="@Url.Action("ListParticipant", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
+                                            }
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

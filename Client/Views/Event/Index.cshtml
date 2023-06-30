@@ -1,54 +1,268 @@
 ﻿@using System.Globalization;
 @model IEnumerable<Client.Models.Event>
-
 @{
     ViewData["Title"] = "Index";
+    Layout = "_Layout";
     CultureInfo cultureId = new CultureInfo("id-ID");
 }
 
-<h1>Index</h1>
-
 <head>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Client.styles.css" asp-append-version="true" />
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+
+        ul {
+            grid-template-columns: repeat(2, 1fr); /* Mengatur dua kolom dengan lebar yang sama */
+            grid-auto-rows: minmax(auto, max-content); /* Mengatur tinggi baris secara otomatis */
+            grid-gap: 25px; /* Jarak antara elemen */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+        }
+
+        li {
+            grid-column: span 1; /* Menentukan lebar elemen menjadi 1 kolom */
+        }
+
+        .modal {
+            display: none; /* Sembunyikan secara default */
+            position: fixed; /* Tetapkan posisi */
+            z-index: 1; /* Menempatkan modal di atas konten lain */
+            left: 0;
+            top: 0;
+            width: 100%; /* Lebar penuh */
+            height: 100%; /* Tinggi penuh */
+            overflow: auto; /* Tambahkan scroll jika diperlukan */
+            background-color: rgba(0, 0, 0, 0.5); /* Efek latar belakang semi-transparan */
+            padding-top: 50px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        /* CSS untuk checkbox hack */
+        #modal-toggle {
+            display: none;
+        }
+
+            #modal-toggle:checked + .modal {
+                display: block;
+            }
+
+        .hero-waves {
+            display: block;
+            width: 100%;
+            height: 100px;
+            position: relative;
+        }
+
+        .wave1 use {
+            animation: move-forever1 10s linear infinite;
+            animation-delay: -2s;
+        }
+
+        .wave2 use {
+            animation: move-forever2 8s linear infinite;
+            animation-delay: -2s;
+        }
+
+        .wave3 use {
+            animation: move-forever3 6s linear infinite;
+            animation-delay: -2s;
+        }
+
+        @@keyframes move-forever1 {
+            0% {
+                transform: translate(85px, 0%);
+            }
+
+            100% {
+                transform: translate(-90px, 0%);
+            }
+        }
+
+        @@keyframes move-forever2 {
+            0% {
+                transform: translate(-90px, 0%);
+            }
+
+            100% {
+                transform: translate(85px, 0%);
+            }
+        }
+
+        @@keyframes move-forever3 {
+            0% {
+                transform: translate(-90px, 0%);
+            }
+
+            100% {
+                transform: translate(85px, 0%);
+            }
+        }
+    </style>
 </head>
-<div id="main-content" class="blog-page">
+
+<section class="hero-area">
+
+    <div class="main__circle"></div>
+    <div class="main__circle2"></div>
+    <div class="main__circle3"></div>
+    <div class="main__circle4"></div>
     <div class="container">
-        <div class="row clearfix">
-            <div class="col-lg-8 col-md-12 left-box">
-                @foreach (var item in Model)
-                {
-                    @if (item.IsValid)
+        <div class="row align-items-center">
+            <div class="col-lg-6 offset-lg-3 col-md-12 col-12">
+                <div class="hero-content">
+                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Let's Join Events'</h2>
+                    <p class="wow fadeInUp" data-wow-delay=".6s">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. deleniti voluptatum! Natus
+                        beatae laborum veniam distinctio.
+                    </p>
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        string startDate = item.StartDate.ToString("dddd, d MMMM yyyy", cultureId);
-                        string endDate = item.EndDate.ToString("dddd, d MMMM yyyy", cultureId);
-                        string startTime = item.StartDate.ToString("t");
-                        string endTime = item.EndDate.ToString("t");
+                        <div class="button wow fadeInUp" data-wow-delay=".8s">
+                            <label for="modal-toggle" style="display:none;" class="btn">Join Event Now!</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="button wow fadeInUp" data-wow-delay=".8s">
+                            <label for="modal-toggle" class="btn">Join Event Now!</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="checkbox" id="modal-toggle">
+    <div class="modal">
+        <div class="modal-content">
+            <label for="modal-toggle" class="close">&times;</label>
+            <p>You must be login before joined the event!</p>
+            <a href="/Account/Logins" class="btn btn-outline-primary d-flex justify-content-center">Login</a>
+        </div>
+    </div>
+    <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
+        <defs>
+            <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+        </defs>
+        <g class="wave1">
+            <use xlink:href="#wave-path" x="50" y="3" fill="rgba(255,255,255, .1)"></use>
+        </g>
+        <g class="wave2">
+            <use xlink:href="#wave-path" x="50" y="0" fill="rgba(255,255,255, .2)"></use>
+        </g>
+        <g class="wave3">
+            <use xlink:href="#wave-path" x="50" y="9" fill="#fff"></use>
+        </g>
+    </svg>
+</section>
 
-                        string formattedDate;
-                        if (item.StartDate.Date == item.EndDate.Date)
+<!-- End Hero Area -->
+<!-- Start Count Down Area -->
+<!-- End Count Down Area -->
+<!-- Start Features Area -->
+<section class="features section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h3 class="wow zoomIn" data-wow-delay=".2s">Why join eventGrids?</h3>
+                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Why you should Join Event</h2>
+                    <p class="wow fadeInUp" data-wow-delay=".6s">
+                        There are many variations of passages of Lorem
+                        Ipsum available, but the majority have suffered alteration in some form.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" col-md-12 wow fadeInUp mb-5" style="margin-left:10px;" data-wow-delay=".2s">
+                <div class="row row-cols-3 row-cols-md-5 g-4 mb-5">
+                    @foreach (var item in Model)
+                    {
+                        @if (item.IsValid)
                         {
-                            formattedDate = $"{startDate} | {startTime} - {endTime}";
-                        }
-                        else
-                        {
-                            formattedDate = $"{startDate} - {endDate} | {startTime} - {endTime}";
-                        }
+                            string startDate = item.StartDate.ToString("dddd, d MMMM yyyy", cultureId);
+                            string endDate = item.EndDate.ToString("dddd, d MMMM yyyy", cultureId);
+                            string startTime = item.StartDate.ToString("t");
+                            string endTime = item.EndDate.ToString("t");
 
-                        <div class="card single_post">
-                            <div class="body">
-                                <div class="img-post">
-                                    @if (item.Poster != null)
-                                    {
-                                        <img class="d-block img-fluid" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
-                                    }
+                            string formattedDate;
+                            if (item.StartDate.Date == item.EndDate.Date)
+                            {
+                                formattedDate = $"{startDate} | {startTime} - {endTime}";
+                            }
+                            else
+                            {
+                                formattedDate = $"{startDate} - {endDate} | {startTime} - {endTime}";
+                            }
+
+                            <div class="col">
+                                <div class="card h-100" style="height:100%;">
+                                    <img class="d-block img-fluid" style="height:300px;" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="blog-details.html">@Html.DisplayFor(modelItem => item.Name)</a></h5>
+                                        <p class="card-text">@Html.Raw(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</p>
+                                        <p><i class="fas fa-clock"></i> @formattedDate</p>
+                                    </div>
+                                    <div>
+                                        <ul>
+                                            <li><i class="fas fa-map-marker-alt"></i> @Html.DisplayFor(modelItem => item.Location)</li>
+                                            <li><i class="fas fas fa-globe"></i> @Html.DisplayFor(modelItem => item.Status)</li>
+                                            <li><i class="fas fa-comment-dollar"></i> @Html.DisplayFor(modelItem => item.Price)</li>
+                                            <li><i class="fas fa-users"></i> @Html.DisplayFor(modelItem => item.Quota)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a asp-controller="Event" asp-action="Detail" asp-route-id="@item.Guid" class="btn btn-outline-primary">Continue Reading</a>
+                                    </div>
                                 </div>
-                                <h3><a href="blog-details.html">@Html.DisplayFor(modelItem => item.Name)</a></h3>
-                                <p>@Html.DisplayFor(modelItem => item.Location)</p>
-                                <p>@formattedDate</p>
                             </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@*<div class="single-featuer">
+                            <div class="body">
+                            <img class="shape" src="~/images/features/shape.svg" alt="#">
+                            <img class="shape2" src="~/images/features/shape2.svg" alt="#">
+                            <div class="img-post">
+                                @if (item.Poster != null)
+                                {
+                                    <img class="d-block img-fluid" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                                }
+                            </div>
+                            <h3><a href="blog-details.html">@Html.DisplayFor(modelItem => item.Name)</a></h3>
+                            <p>@Html.DisplayFor(modelItem => item.Location)</p>
+                            <p>@formattedDate</p>
+                            </div>
+
                             <div class="footer">
                                 <div class="actions">
                                     <a asp-controller="Event" asp-action="Detail" asp-route-id="@item.Guid" class="btn btn-outline-secondary">Continue Reading</a>
@@ -59,108 +273,4 @@
                                     <li><a href="javascript:void(0);">Quota(@Html.DisplayFor(modelItem => item.Quota))</a></li>
                                 </ul>
                             </div>
-                        </div>
-                    }
-                }
-
-                <ul class="pagination pagination-primary">
-                    <li class="page-item"><a class="page-link" href="javascript:void(0);">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                    <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                    <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                    <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
-                </ul>
-            </div>
-
-            <div class="col-lg-4 col-md-12 right-box">
-                <div class="card">
-                    <div class="body search">
-                        <div class="input-group m-b-0">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-search"></i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Search...">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="header">
-                        <h2>Categories Clouds</h2>
-                    </div>
-                    <div class="body widget">
-                        <ul class="list-unstyled categories-clouds m-b-0">
-                            <li><a href="javascript:void(0);">eCommerce</a></li>
-                            <li><a href="javascript:void(0);">Microsoft Technologies</a></li>
-                            <li><a href="javascript:void(0);">Creative UX</a></li>
-                            <li><a href="javascript:void(0);">Wordpress</a></li>
-                            <li><a href="javascript:void(0);">Angular JS</a></li>
-                            <li><a href="javascript:void(0);">Enterprise Mobility</a></li>
-                            <li><a href="javascript:void(0);">Website Design</a></li>
-                            <li><a href="javascript:void(0);">HTML5</a></li>
-                            <li><a href="javascript:void(0);">Infographics</a></li>
-                            <li><a href="javascript:void(0);">Wordpress Development</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>Popular Posts</h2>
-                    </div>
-                    <div class="body widget popular-post">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="single_post">
-                                    <p class="m-b-0">Apple Introduces Search Ads Basic</p>
-                                    <span>jun 22, 2018</span>
-                                    <div class="img-post">
-                                        <img src="https://www.bootdey.com/image/280x280/FFB6C1/000000" alt="Awesome Image">
-                                    </div>
-                                </div>
-                                <div class="single_post">
-                                    <p class="m-b-0">new rules, more cars, more races</p>
-                                    <span>jun 8, 2018</span>
-                                    <div class="img-post">
-                                        <img src="https://www.bootdey.com/image/280x280/FFB6C1/000000" alt="Awesome Image">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>Instagram Post</h2>
-                    </div>
-                    <div class="body widget">
-                        <ul class="list-unstyled instagram-plugin m-b-0">
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                            <li><a href="javascript:void(0);"><img src="https://www.bootdey.com/image/80x80/FFB6C1/000000" alt="image description"></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>Email Newsletter <small>Get our products/news earlier than others, let’s get in touch.</small></h2>
-                    </div>
-                    <div class="body widget newsletter">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Enter Email">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="icon-paper-plane"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
+                        </div>*@

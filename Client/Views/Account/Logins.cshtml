@@ -1,166 +1,85 @@
 ﻿@model Client.ViewModels.LoginVM
 
 @{
-    ViewData["Title"] = "Logins";
+    ViewData["Title"] = "Login";
+    Layout = "_LayoutLogin";
 }
 
-<head>
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('/Login/images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <form asp-action="Logins" class="login100-form validate-form">
+                <span class="login100-form-title p-b-49">
+                    Login
+                </span>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Client</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Client.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-***" crossorigin="anonymous" />
+                <div class="wrap-input100 validate-input m-b-23 text-danger">
+                    <label class="label-input100">Username</label>
+                    <input asp-for="Username" id="form3Example3" class="input100"
+                           placeholder="Enter Username or Email" />
+                    <span asp-validation-for="Username" class="focus-input100" data-symbol="&#xf206;"></span>
+                </div>
 
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+                <div class="wrap-input100 validate-input text-danger">
+                    <label class="label-input100">Password</label>
+                    <input asp-for="Password" id="form3Example4" class="input100"
+                           placeholder="Enter Password" />
+                    <span asp-validation-for="Password" class="focus-input100" data-symbol="&#xf190;"></span>
+                </div>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+                <div class="text-right p-t-8 p-b-31">
+                    <a href="#">
+                        Forgot password?
+                    </a>
+                </div>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Sono:wght@200;300;400;500;700&display=swap"
-          rel="stylesheet">
-    @*<link rel="stylesheet" href="~/css/templatemo-pod-talk.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/bootstrap-icons.css" asp-append-version="true" />*@
-
-    <style>
-        .divider:after,
-        .divider:before {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #eee;
-        }
-
-        .h-custom {
-            height: calc(100% - 73px);
-        }
-
-        @@media (max-width: 450px) {
-            .h-custom {
-                height: 100%;
-            }
-        }
-    </style>
-</head>
-<section class="vh-100">
-    <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-md-9 col-lg-6 col-xl-5">
-                <img src="https://www.baldivissc.wa.edu.au/wp-content/uploads/2015/04/Celebration-Icon.jpeg"
-                     class="img-fluid" alt="Sample image">
-            </div>
-            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <form asp-action="Logins">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div>
-                        <p class="text-center fw-bold mx-3 mb-3" style="font-size: 30px;">SPARK</p>
-                    </div>
-                    <div class="divider d-flex align-items-center my-4">
-                        <p class="text-center fw-bold mx-3 mb-3" style="font-size: 20px;">LOGIN</p>
-                    </div>
-
-                    <!-- Email input -->
-                    <div class="form-outline mb-4">
-                        <label class="form-label" for="form3Example3">Username</label>
-                        <input asp-for="Username" id="form3Example3" class="form-control form-control-lg"
-                               placeholder="Enter Username or Email" />
-                        <span asp-validation-for="Username" class="text-danger"></span>
-                    </div>
-
-                    <!-- Password input -->
-                    <div class="form-outline mb-3">
-                        <label class="form-label" for="form3Example4">Password</label>
-                        <input asp-for="Password" id="form3Example4" class="form-control form-control-lg"
-                               placeholder="Enter password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center">
-                        <!-- Checkbox -->
-                        <div class="form-check mb-0">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-                            <label class="form-check-label" for="form2Example3">
-                                Remember me
-                            </label>
-                        </div>
-                        <a href="#!" class="text-body">Forgot password?</a>
-                    </div>
-
-                    <div class="text-center text-lg-start mt-4 pt-2">
-                        <button type="submit" value="Create" class="btn btn-primary btn-lg"
-                                style="padding-left: 2.5rem; padding-right: 2.5rem; ">
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" value="Create" type="submit">
                             Login
                         </button>
-                        <p class="small fw-bold mt-2 pt-1 mb-0">
-                            Don't have an account? <a class="link-danger" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModal">Register</a>
-                        </p>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Register</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>You want to register as: </p>
-                                    </div>
-                                    <div class="modal-footer justify-content-center d-flex">
-                                        <a type="submit" asp-action="Registers">User</a>
-                                        <p>Or</p>
-                                        <a type="submit" asp-action="RegisterEM">Event Maker</a>
-                                    </div>
+                    </div>
+                </div>
+
+                <div class="flex-col-c p-t-155">
+                    <span class="txt1 p-b-17">
+                        Don't have an account?
+                    </span>
+
+                    <a class="link-danger" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Register
+                    </a>
+
+                    <div class="d-flex justify-content-center mx-4 mb-1">
+                        <a asp-controller="Event" asp-action="Index"><span>&#8592;</span> Back to home</a>
+                    </div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Register</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>You want to register as: </p>
+                                </div>
+                                <div class="modal-footer justify-content-center d-flex">
+                                    <a type="submit" asp-action="Registers">User</a>
+                                    <p>Or</p>
+                                    <a type="submit" asp-action="RegisterEM">Event Maker</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
-</section>
+</div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 
-@*Form login yang lama*@
-
-@*<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Logins">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Registers">Register as User</a>
-</div>
-<div>
-    <a asp-action="RegisterEM">Register as Event Maker</a>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
