@@ -81,7 +81,7 @@
 
                                         <div>
                                             <h8>
-                                                <i class="fas fa-users"></i> <h8 class="quotaRemaining"></h8>
+                                                <i class="fas fa-users"></i> <h8 class="quotaRemaining"></h8>/@Html.DisplayFor(modelItem => Model.Quota)
                                             </h8>
                                         </div>
 
@@ -157,8 +157,15 @@
             }
 
             const quota = @Model.Quota;
-
             const remainingQuota = quota - count;
+            if(remainingQuota == 0)
+            {
+                joinEventButton.textContent = 'Quota is Full';
+                joinEventButton.removeAttribute('href'); // Remove the href attribute to prevent navigation
+                joinEventButton.onclick = function (event) {
+                    event.preventDefault(); // Prevent the default click behavior
+                };
+            }
             const quotaElement = document.querySelector('.quotaRemaining');
             quotaElement.textContent = remainingQuota.toString();
         },

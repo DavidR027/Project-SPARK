@@ -187,6 +187,30 @@
             }
         });
     });
+
+    //validasi tanggal input
+    var startDateInput = document.querySelector('#StartDate');
+    var endDateInput = document.querySelector('#EndDate');
+
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    startDateInput.addEventListener('change', validateDate);
+    endDateInput.addEventListener('change', validateDate);
+
+    function validateDate() {
+        var startDate = new Date(startDateInput.value);
+        var endDate = new Date(endDateInput.value);
+
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(0, 0, 0, 0);
+
+        if (startDate < today || endDate < today) {
+            alert("Invalid date, unable to choose yesterday's date !");
+            startDateInput.valueAsDate = today;
+            endDateInput.valueAsDate = today;
+        }
+    }
 </script>
 
 <div>
