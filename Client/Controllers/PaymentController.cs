@@ -73,9 +73,16 @@ namespace Client.Controllers
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> Edit(Payment payment, Guid guid)
         {
+            var user = await userRepository.Get(payment.UserGuid);
+            var acara = await eventRepository.Get(payment.EventGuid);
+            var email = user.Data.Email;
             var result = await repository.Put(payment);
             if (result.Code == 200)
             {
+                emailService.SetEmail(email)
+                     .SetSubject($"SPARK: '{acara.Data.Name}' Payment Status")
+                     .SetHtmlMessage($"Hello {user.Data.Username}! We would like to inform you that your payment for event '{acara.Data.Name}' has been approved by Organizer {acara.Data.Organizer}.")
+                     .SendEmailAsync();
                 return RedirectToAction("WaitingList", "Event", new { Guid = payment.EventGuid});
             }
             else if (result.Code == 409)
