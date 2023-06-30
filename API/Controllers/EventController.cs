@@ -22,13 +22,13 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetListParticipantByGuid")]
-        public IActionResult GetListParticipantByGuid(Guid guid)
+        [HttpGet("GetParticipantListByGuid")]
+        public IActionResult GetParticipantListByGuid(Guid guid)
         {
-            var listParticipant = _eventRepository.GetListParticipantByGuid(guid);
+            var listParticipant = _eventRepository.GetParticipantListByGuid(guid);
             if (listParticipant is null)
             {
-                return NotFound(new ResponseVM<ListParticipantVM>
+                return NotFound(new ResponseVM<ParticipantListVM>
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
@@ -37,7 +37,7 @@ namespace API.Controllers
                 });
             }
 
-            return Ok(new ResponseVM<IEnumerable<ListParticipantVM>>
+            return Ok(new ResponseVM<IEnumerable<ParticipantListVM>>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),

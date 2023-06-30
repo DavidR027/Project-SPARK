@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Client.ViewModels.ListParticipant>
+﻿@model IEnumerable<Client.ViewModels.ParticipantList>
 
 @{
     ViewData["Title"] = "ListParticipant";
@@ -60,6 +60,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.UserGuid)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
             <th>
@@ -75,6 +78,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserGuid)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FullName)
                 </td>

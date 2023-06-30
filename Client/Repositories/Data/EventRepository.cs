@@ -18,13 +18,13 @@ namespace Client.Repositories.Data
             this.request = request;
         }
 
-        public async Task<ResponseListVM<ListParticipant>> GetListParticipantByGuid(Guid guid)
+        public async Task<ResponseListVM<ParticipantList>> GetParticipantListByGuid(Guid guid)
         {
-            ResponseListVM<ListParticipant> entityVM = null;
-            using (var response = httpClient.GetAsync(request + "GetListParticipantByGuid?guid=" + guid).Result)
+            ResponseListVM<ParticipantList> entityVM = null;
+            using (var response = httpClient.GetAsync(request + "GetParticipantListByGuid?guid=" + guid).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<ResponseListVM<ListParticipant>>(apiResponse);
+                entityVM = JsonConvert.DeserializeObject<ResponseListVM<ParticipantList>>(apiResponse);
             }
             return entityVM;
         }

@@ -52,13 +52,14 @@ namespace Client.Controllers
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> ListParticipant(Guid guid)
         {
-            var result = await repository.GetListParticipantByGuid(guid);
-            var events = new List<ListParticipant>();
+            var result = await repository.GetParticipantListByGuid(guid);
+            var events = new List<ParticipantList>();
 
             if (result.Data != null)
             {
-                events = result.Data.Select(e => new ListParticipant
+                events = result.Data.Select(e => new ParticipantList
                 {
+                    UserGuid = e.UserGuid,
                     FullName = e.FullName,
                     Email = e.Email,
                     PhoneNumber = e.PhoneNumber
@@ -78,6 +79,7 @@ namespace Client.Controllers
             {
                 waitingList = result.Data.Select(e => new WaitingList
                 {
+                    UserGuid = e.UserGuid,
                     FullName = e.FullName,
                     Email = e.Email,
                     PhoneNumber = e.PhoneNumber,

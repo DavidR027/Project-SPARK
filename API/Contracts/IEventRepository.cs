@@ -5,7 +5,7 @@ namespace API.Contracts
 {
     public interface IEventRepository : IGeneralRepository<Event>
     {
-        IEnumerable<ListParticipantVM>? GetListParticipantByGuid (Guid guid);
+        IEnumerable<ParticipantListVM>? GetParticipantListByGuid (Guid guid);
 
         IEnumerable<WaitingListVM>? GetWaitingListByGuid(Guid guid);
         IEnumerable<EventVM>? GetMyEvent(Guid guid);

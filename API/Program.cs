@@ -33,6 +33,16 @@ builder.Services.AddTransient<IEmailService, EmailService>(_ => new EmailService
                 smtpPort: int.Parse(builder.Configuration["Email:SmtpPort"]),
                 fromEmailAddress: builder.Configuration["Email:FromEmailAddress"]));
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin();
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+    });
+});
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        .AddJwtBearer(options => {
@@ -61,6 +71,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 
