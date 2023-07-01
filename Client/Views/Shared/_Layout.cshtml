@@ -291,7 +291,6 @@
                             <li><a href="#">Seminar</a></li>
                         </ul>
                     </li>
-
                     @if (User.IsInRole("User"))
                     {
                         <li><a class="nav-link scrollto" href="/Event/JoinedEvent?guid=@guidValue">Joined Event</a></li>
@@ -306,6 +305,7 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <li><a class="nav-link scrollto" href="/Event/IndexAdmin">Validation Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/ChartEvent">Chart Event</a></li>
                     }
 
                     @if (User.Identity.IsAuthenticated)

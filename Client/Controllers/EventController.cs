@@ -4,6 +4,8 @@ using Client.Repositories.Interface;
 using Client.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Globalization;
 using System.IO;
 
 namespace Client.Controllers
@@ -329,6 +331,39 @@ namespace Client.Controllers
                      .SendEmailAsync();
                 return RedirectToAction(nameof(IndexAdmin));
             }
+            return View();
+        }
+
+        public async Task<IActionResult> ChartEvent()
+        {
+            var result = await repository.Get();
+            var events = result.Data?.Select(e => new Event
+            {
+                Guid = e.Guid,
+                Name = e.Name,
+                Description = e.Description,
+                Poster = e.Poster,
+                Status = e.Status,
+                Quota = e.Quota,
+                IsPaid = e.IsPaid,
+                Price = e.Price,
+                Location = e.Location,
+                StartDate = e.StartDate,
+                EndDate = e.EndDate,
+                Organizer = e.Organizer,
+                IsValid = e.IsValid,
+                CreatedBy = e.CreatedBy,
+            }).ToList();
+
+            // Prepare data for chart
+            var chartData = events.GroupBy(e => e.StartDate.ToString("MMMM"))
+                                  .Select(g => new { Month = g.Key, Count = g.Count() })
+                                  .OrderByDescending(g => g.Month)
+                                  .ToList();
+
+            // Pass the chart data to the view as a JSON string
+            ViewBag.ChartData = JsonConvert.SerializeObject(chartData);
+
             return View();
         }
 
