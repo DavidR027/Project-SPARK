@@ -31,99 +31,291 @@
 }
 
 <head>
+    <style>
+        .event-head {
+            padding: 20px;
+        }
 
+        .wdiv {
+            background: #fff;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 3px;
+        }
+
+        .event-detail .event-head .span3 {
+            min-height: 217px;
+            background: #efefef;
+            max-height: 220px;
+            overflow: hidden;
+        }
+
+        .event-thumb-parent {
+            margin-left: 0;
+            width: 100px !important;
+            height: 100px !important;
+            min-height: auto !important;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        .event-thumb {
+            width: auto !important;
+            height: auto !important;
+            min-height: auto !important;
+        }
+
+        .head-details {
+            display: inline-block;
+            vertical-align: top;
+            width: 59%;
+            box-sizing: border-box;
+            padding: 0 0 0 20px;
+        }
+
+        .event-head .overlay-h1 {
+            height: 60px;
+            margin-left: 0;
+            width: 100%;
+            padding: 0;
+            font-weight: 800;
+            color: #2e363f;
+        }
+
+        .toh {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .overlay-h1 {
+            text-transform: none;
+            font-size: 26px;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            margin-left: 20px;
+            display: table-cell;
+            height: 60px;
+            vertical-align: middle;
+            line-height: 30px;
+            max-width: 700px;
+            overflow: hidden;
+        }
+
+
+        .transition-wrap {
+            width: 940px;
+            margin: auto;
+        }
+
+
+
+        .event-detail {
+            color: #565c68;
+            padding-bottom: 30px;
+            margin-top: 30px;
+        }
+
+        .container {
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .direct #event-detail-fade {
+            opacity: 1;
+        }
+
+
+        .event-description {
+            line-height: 26px;
+        }
+
+        .mb0 {
+            margin-bottom: 0;
+        }
+
+        .event-detail .event-banner-image {
+            width: 100%;
+            height: auto;
+        }
+
+        .event-description img {
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            vertical-align: middle;
+            border: 0;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        .event-description {
+            line-height: 26px;
+        }
+
+        p {
+            margin: 0 0 10px;
+        }
+
+        .span4 {
+            width: 300px;
+        }
+
+
+        .wdiv-label {
+            line-height: 20px;
+            color: #2e363f;
+            text-rendering: optimizelegibility;
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            display: block;
+            text-transform: none;
+        }
+
+
+        .event-detail {
+            color: #565c68;
+            padding-bottom: 30px;
+            margin-top: 30px;
+        }
+    </style>
 </head>
+
 
 <div class="breadcrumbs">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8 offset-lg-2 col-md-12 col-12">
                 <div class="breadcrumbs-content">
-                    <h1 class="page-title">Detail</h1>
-                    <ul class="breadcrumb-nav">
-                        <li><a href="index.html">Home</a></li>
-                        <li>Detail Event</li>
-                    </ul>
+                    <h1 class="page-title">Detail Event</h1>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <div class="wow fadeInUp" data-wow-delay=".2s">
-    <div class="single-featuer">
-        <img class="shape" src="~/images/features/shape.svg" alt="#">
-        <img class="shape2" src="~/images/features/shape2.svg" alt="#">
-        <div class="contact-us section" id="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="contact-us-content">
-                            <div class="row">
-                                <div class="col-lg-3">
-                                    <div id="map">
-                                        <img class="d-block img-fluid mb-3" style="height:300px;" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Poster)" alt="Poster"
-                                             width="100%" height="670px" frameborder="0" style="border:0; border-radius: 23px;"
-                                             allowfullscreen=""></image>
+    <div class="transition-wrap">
+        <div id="event-container" class="container event-detail ">
+            <div>
+                <div class="event-head wdiv padding-10" style="box-shadow: 0 1px 5px #aaa;">
+                    <div>
+                        <div class="span3 event-thumb-parent event-mb-banner" style="margin:0;">
+                            <img class="event-thumb-parent" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Poster)" alt="Poster" />
+                        </div>
+
+                        <div style="display:inline;">
+                            <div class="padding-10 head-details">
+                                <h1 class="overlay-h1 toh" style="margin-bottom:10px;">
+                                    @Html.DisplayFor(modelItem => Model.Name)
+                                </h1>
+                                <span> @formattedDate </span>
+                            </div>
+
+
+                            <div style="display:flex; justify-content:flex-end">
+                                @if (guidValue != null)
+                                {
+                                    <a style="color:white; margin:10px" href="/Payment/Create?eventGuid=@Model.Guid" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                }
+                                else
+                                {
+                                    <a style="color:white; margin:10px" href="/Account/Logins" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                }
+
+                                @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
+                                {
+                                    <a style="color:white; margin:10px" href="@Url.Action("ListParticipant", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
+                                    <a style="color:white; margin:10px" href="@Url.Action("WaitingList", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-clock"></i> Show Waiting List</a>
+                                }
+
+                                @*@if (User.IsInRole("Admin"))
+                                {
+                                <a href="@Url.Action("ListParticipant", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
+                                }
+
+                                *@
+                                @*<span class="btn btn-primary" style="float: right;"><a href="/Account/Logins"></a> Join Event </span>*@
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="event-head wdiv padding-10" style="box-shadow: 0 1px 5px #aaa;">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <img property="schema:image" class="event-banner-image hidden-phone lazy" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Poster)" alt="Poster" height="100" width="100" />
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="span4">
+                                <div class="wdiv location-box hidden-phone">
+
+                                    <div class="head">
+                                        <h3 class="wdiv-label"> Date and Time </h3>
                                     </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <span class="serial"><i class="fas fa-globe"> @Html.DisplayFor(modelItem => Model.Status)</i></span>
+                                    <div class="center">
+                                        <span style="max-width: 84%; display: inline-block; vertical-align: middle; margin: 0; padding-top: 5px;">
+                                            <span style="padding: 0; width: 1000px;">
+                                                <i class='fas fa-calendar-alt' style="margin-right: 5px"></i> @startDate - @endDate <br />
+                                                <small> <i class='far fa-clock' style="margin-right: 5px"></i> @startTime - @endTime </small>
+                                            </span>
+                                        </span>
+                                    </div>
 
-                                    <div class="">
-                                        <h3>@Html.DisplayFor(modelItem => Model.Name)</h3>
-                                        <p>
-                                            @Html.DisplayFor(modelItem => Model.Description)
-                                        </p>
-                                        <div>
-                                            <h8>
-                                                <i class="fas fa-map-marker-alt"></i> @Html.DisplayFor(modelItem => Model.Location)
-                                            </h8>
-                                        </div>
+                                    <div class="head" style="margin-top: 20px">
+                                        <h3 class="wdiv-label">Location</h3>
+                                    </div>
+                                    <div class="center">
+                                        <span>
+                                            <i class="fas fa-map-marker-alt" style="margin-right: 5px"></i> @Html.DisplayFor(modelItem => Model.Location)
+                                        </span>
+                                    </div>
 
-                                        <div>
-                                            <h8>
-                                                <i class="fas fa-users"></i> <h8 class="quotaRemaining"></h8>/@Html.DisplayFor(modelItem => Model.Quota)
-                                            </h8>
-                                        </div>
+                                    <div class="head" style="margin-top: 20px">
+                                        <h3 class="wdiv-label">Quota</h3>
+                                    </div>
+                                    <div class="center">
+                                        <span>
+                                            <i class="fas fa-users" style="margin-right: 5px"></i> @Html.DisplayFor(modelItem => Model.Quota)
+                                        </span>
+                                    </div>
 
-                                        <div>
-                                            <h8>
-                                                <i class="fas fa-comment-dollar"></i> @Html.DisplayFor(modelItem => Model.Price)
-                                            </h8>
-                                        </div>
-
-                                        <div>
-                                            <h8>
-                                                <i class="fas fa-clock"></i> @formattedDate
-                                            </h8>
-                                        </div>
-
-                                        <div>
-                                            @if (guidValue != null)
+                                    <div class="head" style="margin-top: 20px">
+                                        <h3 class="wdiv-label">Status</h3>
+                                    </div>
+                                    <div class="center">
+                                        <span>
+                                            @if (Model.Status.ToString() == "Online")
                                             {
-                                                <a href="/Payment/Create?eventGuid=@Model.Guid" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                                <span style="padding-left:5px;"><i class="fas fa-globe"></i> @Html.DisplayFor(modelItem => Model.Status)</span>
                                             }
                                             else
                                             {
-                                                <a href="/Account/Logins" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                                <span style="padding-left:5px;"><i class="fas fas fa-building"></i> @Html.DisplayFor(modelItem => Model.Status)</span>
                                             }
-
-                                            @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
-                                            {
-                                                <a href="@Url.Action("ListParticipant", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
-                                                <a href="@Url.Action("WaitingList", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-clock"></i> Show Waiting List</a>
-                                            }
-
-                                            @if (User.IsInRole("Admin"))
-                                            {
-                                                <a href="@Url.Action("ListParticipant", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
-                                            }
-
-
-                                        </div>
+                                        </span>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="event-description wdiv padding-10 mb0 ">
+                            <span style="font-size: 18px; line-height: 26px; text-transform: none; font-weight: 600; font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif; color: #2F353E; margin-bottom: 10px; margin-top:15px; display: block;">
+                                Description about Event:
+                            </span>
+                            <div property="schema:description" id="event_description" class="event-description-html">
+                                <p>  @Html.DisplayFor(modelItem => Model.Description) </p>
                             </div>
                         </div>
                     </div>
@@ -132,21 +324,16 @@
         </div>
     </div>
 </div>
-<a hidden id="userGuid" data-value=@guidValue name="userGuid"></a>
-<a hidden id="eventGuid" data-value=@Model.Guid name="eventGuid"></a>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-@*<script src="~/js/event-detail.js"></script>*@
+<a hidden id="userGuid" data-value=@guidValue name="userGuid"></a>
 <script>
-    const guidEvents = document.getElementById('eventGuid');
-    const eventGuid = guidEvents.getAttribute('data-value');
+    const eventGuid = '@Model.Guid';
     const apiUrl = 'https://localhost:7042/api/Event/GetParticipantListByGuid?guid=' + eventGuid;
     const apiUrl2 = 'https://localhost:7042/api/Event/GetWaitingListByGuid?guid=' + eventGuid;
     const guidElement = document.getElementById('userGuid');
     const userGuid = guidElement.getAttribute('data-value');
-
-    console.log(eventGuid);
 
     $.ajax({
         url: apiUrl,

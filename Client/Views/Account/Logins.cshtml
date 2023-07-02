@@ -20,12 +20,18 @@
                     <span asp-validation-for="Username" class="focus-input100" data-symbol="&#xf206;"></span>
                 </div>
 
-                <div class="wrap-input100 validate-input text-danger">
+                <div class="wrap-input100 validate-input">
                     <label class="label-input100">Password</label>
-                    <input asp-for="Password" id="form3Example4" class="input100"
-                           placeholder="Enter Password" />
-                    <span asp-validation-for="Password" class="focus-input100" data-symbol="&#xf190;"></span>
+                    <div class="password-input-container">
+                        <input asp-for="Password" id="form3Example4" class="input100" placeholder="Enter Password" type="password" />
+                        <span asp-validation-for="Password" class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
                 </div>
+                <div class="password-toggle-container">
+                    <input type="checkbox" id="showPasswordToggle" class="password-toggle" onclick="togglePasswordVisibility()">
+                    <label for="showPasswordToggle" class="password-toggle-label">Show Password</label>
+                </div>
+
 
                 <div class="text-right p-t-8 p-b-31">
                     <a href="#">
@@ -82,4 +88,18 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("form3Example4");
+        var showPasswordToggle = document.getElementById("showPasswordToggle");
+
+        if (showPasswordToggle.checked) {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+</script>
 

@@ -16,20 +16,21 @@
     <link rel="stylesheet" href="~/css/tiny-slider.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/LineIcons.3.0.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 
     <style>
 
         /*--------------------------------------------------------------
-                # Navigation Menu
-                --------------------------------------------------------------*/
+                        # Navigation Menu
+                        --------------------------------------------------------------*/
         /**
-                * Desktop Navigation
-                */
+                        * Desktop Navigation
+                        */
         .justify-content-between {
             margin: 0 40px;
         }
-                 
+
         .navbar {
             padding: 0;
             margin: 5px;
@@ -143,8 +144,8 @@
         }
 
         /**
-                * Mobile Navigation
-                */
+                        * Mobile Navigation
+                        */
         .mobile-nav-toggle {
             color: #fff;
             font-size: 28px;
@@ -250,8 +251,9 @@
             }
 
         /*--------------------------------------------------------------
-                # Hero Section
-                --------------------------------------------------------------*/
+                        # Hero Section
+                        --------------------------------------------------------------*/
+
 
 
     </style>
@@ -274,46 +276,38 @@
         <div class="container d-flex align-items-center justify-content-between">
 
             <div>
-                <h1><a href="" style="color:white;"> <img src="~/images/SPARK_Logo_2.png" style="width:70px; height:70px; margin:5px; border-radius:50px;" alt=""> SPARK</a></h1>
+                <h1><a href="" style="color:white;"> <img src="~/images/SPARK_Logo_2.png" style="width:70px; height:60px; margin:5px; border-radius:50px;" alt=""></a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
             </div>
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto" asp-controller="Event" asp-action="Index">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#"><span>Category</span> <i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="#">Festival</a></li>
-                            <li><a href="#">Cosplay Anime</a></li>
-                            <li><a href="#">Competition</a></li>
-                            <li><a href="#">Seminar</a></li>
-                        </ul>
-                    </li>
+                    <li><a class="nav-link scrollto" asp-controller="Event" asp-action="Index"> <i class="fas fa-house-user" style="margin-right:7px;"> </i> Home</a></li>
+
                     @if (User.IsInRole("User"))
                     {
-                        <li><a class="nav-link scrollto" href="/Event/JoinedEvent?guid=@guidValue">Joined Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/JoinedEvent?guid=@guidValue"> <i class="fas fa-file-alt" style="margin-right:7px;"> </i> Joined Event</a></li>
                     }
 
                     @if (User.IsInRole("EventMaker"))
                     {
-                        <li><a class="nav-link scrollto" href="/Event/MyEvent?guid=@guidValue">My Event</a></li>
-                        <li><a class="nav-link scrollto" href="/Event/Create">Create Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/MyEvent?guid=@guidValue"> <i class="fas fa-file-alt" style="margin-right:7px;"> </i> My Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/Create"> <i class="fas fas fa-edit" style="margin-right:7px;"> </i> Create Event</a></li>
                     }
 
                     @if (User.IsInRole("Admin"))
                     {
-                        <li><a class="nav-link scrollto" href="/Event/IndexAdmin">Validation Event</a></li>
-                        <li><a class="nav-link scrollto" href="/Event/ChartEvent">Chart Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/IndexAdmin"> <i class="fas fa-check-circle" style="margin-right:7px;"> </i> Validation Event </a> </li>
+                        <li><a class="nav-link scrollto" href="/Event/ChartEvent"> <i class="fas fa-chart-line" style="margin-right:7px;"> </i> Event</a></li>
                     }
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a class="nav-link scrollto" style="display:none;" href="/Account/Logins">Login</a></li>
+                        <li><a class="nav-link scrollto" style="display:none;" href="/Account/Logins"> Login</a></li>
 
                         <li class="dropdown">
-                            <a href="#"><span>@username</span></a>
+                            <a href="#"><span> <i class="fas fa-user-circle" style="margin-right:7px;"> </i>@username</span></a>
                             <ul>
                                 <li><a href="/User/Detail/@guidValue">Detail Account</a></li>
                                 <li><a href="/Logout">Logout</a></li>
@@ -322,29 +316,10 @@
                     }
                     else
                     {
-                        <li><a class="nav-link scrollto" href="/Account/Logins">Login</a></li>
+                        <li><a class="nav-link scrollto" href="/Account/Logins"> <i class="fas fa-sign-in-alt" style="margin-right:7px;"> </i> Login</a></li>
                     }
-                    @*<li class="dropdown">
-                    <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                    <li><a href="#">Drop Down 1</a></li>
-                    <li class="dropdown">
-                    <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                    <ul>
-                    <li><a href="#">Deep Drop Down 1</a></li>
-                    <li><a href="#">Deep Drop Down 2</a></li>
-                    <li><a href="#">Deep Drop Down 3</a></li>
-                    <li><a href="#">Deep Drop Down 4</a></li>
-                    <li><a href="#">Deep Drop Down 5</a></li>
-                    </ul>
-                    </li>
-                    <li><a href="#">Drop Down 2</a></li>
-                    <li><a href="#">Drop Down 3</a></li>
-                    <li><a href="#">Drop Down 4</a></li>
-                    </ul>
-                    </li>*@
                 </ul>
-                
+
             </nav><!-- .navbar -->
 
         </div>
@@ -355,12 +330,8 @@
         </main>
     </div>
 
-   
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - SPARK - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -284,6 +284,56 @@ namespace Client.Controllers
             return View(acara);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> EditEM(Event acara, Guid guid)
+        {
+            var result = await repository.Put(acara);
+            var user = await userRepository.Get(acara.CreatedBy);
+            if (result.Code == 200)
+            {
+                return Redirect($"/Event/Detail/{guid}");
+            }
+            else if (result.Code == 409)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> EditEM(Guid guid)
+        {
+            var result = await repository.Get(guid);
+            var acara = new Event();
+            if (result.Data?.Guid is null)
+            {
+                return View(acara);
+            }
+            else
+            {
+                acara.Guid = result.Data.Guid;
+                acara.Name = result.Data.Name;
+                acara.Description = result.Data.Description;
+                acara.Poster = result.Data.Poster;
+                acara.Status = result.Data.Status;
+                acara.Quota = result.Data.Quota;
+                acara.IsPaid = result.Data.IsPaid;
+                acara.Price = result.Data.Price;
+                acara.Location = result.Data.Location;
+                acara.StartDate = result.Data.StartDate;
+                acara.EndDate = result.Data.EndDate;
+                acara.Organizer = result.Data.Organizer;
+                acara.IsValid = result.Data.IsValid;
+                acara.CreatedBy = result.Data.CreatedBy;
+            }
+
+            return View(acara);
+        }
+
         [Authorize(Roles = "Admin, EventMaker")]
         public async Task<IActionResult> Delete(Guid guid)
         {

@@ -2,7 +2,101 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "_Layout";
 }
+
+<head>
+    <style>
+        .align-items-center {
+            background-color: #101130;
+        }
+
+        .card {
+            box-sizing: border-box;
+            background: rgba(217, 217, 217, 0.58);
+            border: 1px solid white;
+            box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.22);
+            backdrop-filter: blur(6px);
+            border-radius: 17px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            font-weight: bolder;
+            color: black;
+        }
+
+            .card:hover {
+                border: 2px solid #5D3FD3;
+                transform: scale(1.05);
+            }
+
+            .card:active {
+                transform: scale(0.95) rotateZ(1.7deg);
+            }
+    </style>
+</head>
+
+
+<div class="mt-100" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-0">
+            <div class="card modal-body p-4 px-5">
+
+                <div class="main-content text-center">
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <label for="">Validate payment from user</label>
+                        <p class="mb-4">Are you sure you want to continue validating the payment?</p>
+                        <div class="form-group mb-4">
+                            <div class="form-group" hidden>
+                                <label asp-for="Guid" class="control-label"></label>
+                                <input asp-for="Guid" class="form-control" />
+                                <span asp-validation-for="Guid" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" hidden>
+                                <label asp-for="UserGuid" class="control-label"></label>
+                                <input asp-for="UserGuid" class="form-control" />
+                                <span asp-validation-for="UserGuid" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" hidden>
+                                <label asp-for="EventGuid" class="control-label"></label>
+                                <input asp-for="EventGuid" class="form-control" />
+                                <span asp-validation-for="EventGuid" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" hidden>
+                                <label asp-for="Invoice" class="control-label"></label>
+                                <input asp-for="Invoice" class="form-control" />
+                                <span asp-validation-for="Invoice" class="text-danger"></span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" asp-for="IsValid" /> @Html.DisplayNameFor(model => model.IsValid)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="mx-auto">
+                                <a href="javascript:history.back();" class="btn btn-primary">Back</a>
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*
 
 <hr class="mt-100">
 <div class="row d-flex justify-content-center">
@@ -49,7 +143,7 @@
 <div class="d-flex justify-content-center mt-10">
     <a href="javascript:history.back();" class="btn btn-primary">Back</a>
 </div>
-
+*@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

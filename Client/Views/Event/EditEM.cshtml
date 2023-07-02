@@ -1,9 +1,8 @@
 ﻿@using System.Security.Claims;
-
 @model Client.Models.Event
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "EditEM";
     Layout = "_LayoutNavbar";
 
     string customClaimType = "GuidValue";
@@ -14,16 +13,14 @@
     {
         guidValue = parsedGuid;
     }
-
 }
-
 
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet">
 
-    
+
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -49,13 +46,18 @@
                         <div class="col-lg-3">
                             <div id="map">
                                 <image src="https://i.pinimg.com/736x/b0/a5/11/b0a511db97423cae060e667746da77de.jpg"
-                                        width="100%" height="670px" frameborder="0" style="border:0; border-radius: 23px;"
-                                        allowfullscreen=""></image>
+                                       width="100%" height="670px" frameborder="0" style="border:0; border-radius: 23px;"
+                                       allowfullscreen=""></image>
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <form asp-action="Create">
+                            <form asp-action="EditEM" method="post">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="Guid" class="control-label"></label>
+                                    <input asp-for="Guid" class="form-control" />
+                                    <span asp-validation-for="Guid" class="text-danger"></span>
+                                </div>
                                 <div class="form-group">
                                     <label asp-for="Name" class="control-label"></label>
                                     <input asp-for="Name" class="form-control" />
@@ -63,10 +65,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Description" class="control-label"></label>
-                                    <textarea asp-for="Description" class="form-control"></textarea>
+                                    <input asp-for="Description" class="form-control" />
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
-
                                 <div class="form-group">
                                     <label asp-for="Poster" class="control-label"></label>
                                     <input type="hidden" asp-for="Poster" class="form-control" />
@@ -76,14 +77,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Status" class="control-label"></label>
-                                    <div class="form-check">
-                                        <input type="radio" id="onlineRadio" name="Status" value="Online" class="form-check-input" />
-                                        <label for="onlineRadio" class="form-check-label">Online</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="radio" id="offlineRadio" name="Status" value="Offline" class="form-check-input" />
-                                        <label for="offlineRadio" class="form-check-label">Offline</label>
-                                    </div>
+                                    <input asp-for="Status" class="form-control" />
                                     <span asp-validation-for="Status" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
@@ -93,15 +87,12 @@
                                 </div>
                                 <div class="form-group form-check">
                                     <label class="form-check-label">
-                                        <input id="isPaidCheckbox" class="form-check-input" type="checkbox" asp-for="IsPaid" value="true" />
-                                        @Html.DisplayNameFor(model => model.IsPaid)
+                                        <input class="form-check-input" asp-for="IsPaid" /> @Html.DisplayNameFor(model => model.IsPaid)
                                     </label>
-                                    <input type="hidden" name="IsPaid" value="false" />
                                 </div>
-
-                                <div class="form-group" id="priceContainer">
+                                <div class="form-group">
                                     <label asp-for="Price" class="control-label"></label>
-                                    <input asp-for="Price" value="Free" class="form-control" />
+                                    <input asp-for="Price" class="form-control" />
                                     <span asp-validation-for="Price" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
@@ -124,19 +115,19 @@
                                     <input asp-for="Organizer" class="form-control" />
                                     <span asp-validation-for="Organizer" class="text-danger"></span>
                                 </div>
-                                <div class="form-group form-check" hidden>
+                                <div class="form-group form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" asp-for="IsValid" value="false" />
-                                        @Html.DisplayNameFor(model => model.IsValid)
+                                        <input class="form-check-input" asp-for="IsValid" /> @Html.DisplayNameFor(model => model.IsValid)
                                     </label>
                                 </div>
                                 <div class="form-group" hidden>
                                     <label asp-for="CreatedBy" class="control-label"></label>
-                                    <input asp-for="CreatedBy" value=@guidValue class="form-control" />
+                                    <input asp-for="CreatedBy" class="form-control" />
                                     <span asp-validation-for="CreatedBy" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                    <a href="javascript:history.back();" class="btn btn-primary">Cancel</a>
+                                    <input type="submit" value="Save" class="btn btn-primary" />
                                 </div>
                             </form>
                         </div>
@@ -227,6 +218,98 @@
 <script src="~/CreateE/assets/js/tabs.js"></script>
 <script src="~/CreateE/assets/js/popup.js"></script>
 <script src="~/CreateE/assets/js/custom.js"></script>
+
+
+
+
+@*<h1>EditEM</h1>
+
+<h4>Event</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditEM">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Guid" class="control-label"></label>
+                <input asp-for="Guid" class="form-control" />
+                <span asp-validation-for="Guid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Poster" class="control-label"></label>
+                <input asp-for="Poster" class="form-control" />
+                <span asp-validation-for="Poster" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quota" class="control-label"></label>
+                <input asp-for="Quota" class="form-control" />
+                <span asp-validation-for="Quota" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsPaid" /> @Html.DisplayNameFor(model => model.IsPaid)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Organizer" class="control-label"></label>
+                <input asp-for="Organizer" class="form-control" />
+                <span asp-validation-for="Organizer" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsValid" /> @Html.DisplayNameFor(model => model.IsValid)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
 
 @section Scripts {
     @{

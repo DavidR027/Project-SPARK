@@ -263,81 +263,53 @@
 }
 
 <body>
-    <header class="fixed-top d-flex align-items-center" style="background-color: #101130">
+    <header class="navbar-area fixed-top d-flex align-items-center" style="background-color: #101130;">
         <div class="container d-flex align-items-center justify-content-between">
 
             <div>
-                <h1><a href="index.html" style="color:white;">SPARK</a></h1>
+                <h1><a href="" style="color:white;"> <img src="~/images/SPARK_Logo_2.png" style="width:70px; height:60px; margin:5px; border-radius:50px;" alt=""></a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
             </div>
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto active" asp-controller="Event" asp-action="Index">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#"><span>Category</span> <i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="#">Festival</a></li>
-                            <li><a href="#">Cosplay Anime</a></li>
-                            <li><a href="#">Competition</a></li>
-                            <li><a href="#">Seminar</a></li>
-                        </ul>
-                    </li>
+                    <li><a class="nav-link scrollto" asp-controller="Event" asp-action="Index"> <i class="fas fa-house-user" style="margin-right:7px;"> </i> Home</a></li>
 
                     @if (User.IsInRole("User"))
                     {
-                        <li><a class="nav-link scrollto" href="/Event/JoinedEvent?guid=@guidValue">Joined Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/JoinedEvent?guid=@guidValue"> <i class="fas fa-file-alt" style="margin-right:7px;"> </i> Joined Event</a></li>
                     }
 
                     @if (User.IsInRole("EventMaker"))
                     {
-                        <li><a class="nav-link scrollto" href="/Event/MyEvent?guid=@guidValue">My Event</a></li>
-                        <li><a class="nav-link scrollto" href="/Event/Create">Create Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/MyEvent?guid=@guidValue"> <i class="fas fa-file-alt" style="margin-right:7px;"> </i> My Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/Create"> <i class="fas fas fa-edit" style="margin-right:7px;"> </i> Create Event</a></li>
                     }
 
                     @if (User.IsInRole("Admin"))
                     {
-                        <li><a class="nav-link scrollto" href="/Event/IndexAdmin">Validation Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/IndexAdmin"> <i class="fas fa-check" style="margin-right:7px;"> Validation Event </i> </a></li>
                     }
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a class="nav-link scrollto" style="display:none;" href="/Account/Logins">Login</a></li>
+                        <li><a class="nav-link scrollto" style="display:none;" href="/Account/Logins"> Login</a></li>
+
+                        <li class="dropdown">
+                            <a href="#"><span> <i class="fas fa-user-circle" style="margin-right:7px;"> </i>@username</span></a>
+                            <ul>
+                                <li><a href="/User/Detail/@guidValue">Detail Account</a></li>
+                                <li><a href="/Logout">Logout</a></li>
+                            </ul>
+                        </li>
                     }
                     else
                     {
-                        <li><a class="nav-link scrollto" href="/Account/Logins">Login</a></li>
+                        <li><a class="nav-link scrollto" href="/Account/Logins"> <i class="fas fa-sign-in-alt" style="margin-right:7px;"> </i> Login</a></li>
                     }
-                    @*<li class="dropdown">
-                    <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                    <li><a href="#">Drop Down 1</a></li>
-                    <li class="dropdown">
-                    <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                    <ul>
-                    <li><a href="#">Deep Drop Down 1</a></li>
-                    <li><a href="#">Deep Drop Down 2</a></li>
-                    <li><a href="#">Deep Drop Down 3</a></li>
-                    <li><a href="#">Deep Drop Down 4</a></li>
-                    <li><a href="#">Deep Drop Down 5</a></li>
-                    </ul>
-                    </li>
-                    <li><a href="#">Drop Down 2</a></li>
-                    <li><a href="#">Drop Down 3</a></li>
-                    <li><a href="#">Drop Down 4</a></li>
-                    </ul>
-                    </li>*@
                 </ul>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div class="dropdown">
-                        <a href="#"><span>Setting</span> <i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="/Logout">Logout</a></li>
-                        </ul>
-                    </div>
-                }
+
             </nav><!-- .navbar -->
 
         </div>

@@ -119,6 +119,126 @@
                 transform: translate(85px, 0%);
             }
         }
+
+        .card1 {
+            border: 3px solid white;
+            -webkit-transition: 0.5s ease-out;
+            transition: 0.5s ease-out;
+            overflow: visible;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        .card-button1 {
+            text-decoration: none;
+            text-align: center;
+            -webkit-transform: translate(-50%, 125%);
+            -ms-transform: translate(-50%, 125%);
+            transform: translate(-50%, 125%);
+            width: 70%;
+            border-radius: 1rem;
+            border: none;
+            background-color: #101130;
+            color: #fff;
+            font-size: 1rem;
+            padding: .5rem 1rem;
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            opacity: 0;
+            -webkit-transition: 0.3s ease-out;
+            transition: 0.3s ease-out;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+
+        /*Hover*/
+        .card1:hover {
+            border-color: #101130;
+            -webkit-box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
+            box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
+        }
+
+            .card1:hover .card-button1 {
+                -webkit-transform: translate(-50%, 50%);
+                -ms-transform: translate(-50%, 50%);
+                transform: translate(-50%, 50%);
+                opacity: 1;
+                color: white;
+                background-color: #101130;
+            }
+
+        .meta {
+            padding: 20px 10px 10px;
+            line-height: 20px;
+            float: left;
+            background: #fff;
+            width: 100%;
+            box-sizing: border-box;
+            border-top: 1px inset rgba(0,0,0,0.1);
+            overflow: hidden;
+            bottom: 0;
+            width: 100%;
+            border: none;
+            text-align: left;
+            height:180px;
+        }
+
+        .meta-left {
+            float: left;
+            width: 20%;
+            box-sizing: border-box;
+            line-height: 1.5;
+        }
+
+        .up-month {
+            color: #FD3B08;
+            text-transform: uppercase;
+            display: block;
+            font-family: Arial;
+            font-size: 16px;
+            text-align: center;
+            margin-left: 15px;
+        }
+
+        .up-day {
+            color: #555;
+            /* display: block; */
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+            margin-left:10px;
+            display: block;
+        }
+
+        .meta-right {
+            width: 55%;
+            padding-left: 30px;
+            float: left;
+            width: 80%;
+            box-sizing: border-box;
+            line-height: 1.5;
+        }
+
+        .venue {
+            width: 100%;
+            float: left;
+            font-size: 14px;
+            color: #999;
+            line-height: 1.5;
+            margin: 2px 0;
+            padding-top: 10px;
+        }
+
+        .toh {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -196,55 +316,105 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
-            <div class=" col-md-12 wow fadeInUp mb-5" style="margin-left:10px;" data-wow-delay=".2s">
-                <div class="row row-cols-3 row-cols-md-5 g-4 mb-5">
+            <div class=" col-md-12 wow fadeInUp mb-5" data-wow-delay=".2s">
+                <div class="row row-cols-md-3 g-5 mb-5" style="margin: 0 30px 0 30px; display:wrap;">
                     @foreach (var item in Model)
                     {
                         @if (item.IsValid)
                         {
-                            string startDate = item.StartDate.ToString("dddd, d MMMM yyyy", cultureId);
-                            string endDate = item.EndDate.ToString("dddd, d MMMM yyyy", cultureId);
-                            string startTime = item.StartDate.ToString("t");
-                            string endTime = item.EndDate.ToString("t");
+                            string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
+                            string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
+                            string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
+                            string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
+                            string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
+                            string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
 
-                            string formattedDate;
-                            if (item.StartDate.Date == item.EndDate.Date)
+
+
+
+                            string formatmonth;
+                            if (item.StartDate.Month == item.EndDate.Month)
                             {
-                                formattedDate = $"{startDate} | {startTime} - {endTime}";
+                                formatmonth = startMonth;
                             }
                             else
                             {
-                                formattedDate = $"{startDate} - {endDate} | {startTime} - {endTime}";
+                                formatmonth = $"{startMonth} - {endMonth}";
                             }
 
+                            string formatday;
+                            if (item.StartDate.Day == item.EndDate.Day)
+                            {
+                                formatday = startDay;
+                            }
+                            else
+                            {
+                                formatday = $"{startDay} - {endDay}";
+                            }
+                                // Use the formattedDate variable as needed
+
+
+
+
                             <div class="col">
-                                <div class="card h-100" style="height:100%;">
-                                    <img class="d-block img-fluid" style="height:300px;" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
-                                    <div class="card-body">
-                                        <h5 class="card-title"><a href="blog-details.html">@Html.DisplayFor(modelItem => item.Name)</a></h5>
-                                        <p class="card-text">@Html.Raw(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</p>
-                                        <p><i class="fas fa-clock"></i> @formattedDate</p>
-                                    </div>
-                                    <div>
-                                        <ul>
-                                            <li><i class="fas fa-map-marker-alt"></i> @Html.DisplayFor(modelItem => item.Location)</li>
-                                            <li><i class="fas fas fa-globe"></i> @Html.DisplayFor(modelItem => item.Status)</li>
-                                            <li><i class="fas fa-comment-dollar"></i> @Html.DisplayFor(modelItem => item.Price)</li>
-                                            <li><i class="fas fa-users"></i> @Html.DisplayFor(modelItem => item.Quota)</li>
-                                        </ul>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a asp-controller="Event" asp-action="Detail" asp-route-id="@item.Guid" class="btn btn-outline-primary">Continue Reading</a>
+                                <div class="card card1">
+                                    <img class="" style="height:200px;" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+
+                                    @*<h5 class="card-title"><a href="blog-details.html">@Html.DisplayFor(modelItem => item.Name)</a></h5>*@
+                                    @*<p class="card-text">@Html.Raw(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</p>*@
+                                    <div class="meta h-200">
+                                        <div style="display:block;">
+                                            <div class="meta-left">
+                                                <span class="up-month">@formatmonth</span>
+                                                <span class="up-day">@formatday</span>
+                                            </div>
+
+                                            <div class="meta-right">
+                                                <h5>@Html.DisplayFor(modelItem => item.Name)</h5>
+                                                <span class="venue toh"><i class="fas fa-map-marker-alt"> </i> @Html.DisplayFor(modelItem => item.Location)</span>
+
+                                                <div style="float: left; width: 30%; box-sizing: border-box; line-height: 1.5;">
+                                                    @if (item.Status.ToString() == "Online")
+                                                    {
+                                                        <span class="venue toh"><i class="fas fa-globe"></i> @Html.DisplayFor(modelItem => item.Status)</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="venue toh"><i class="fas fas fa-building"></i> @Html.DisplayFor(modelItem => item.Status)</span>
+                                                    }
+                                                </div>
+
+                                                <div style="padding-left:10px; float: left; width:30%; box-sizing: border-box; line-height: 1.5;">
+                                                    <span class="venue toh"><i class="fas fa-comment-dollar"> </i> @Html.DisplayFor(modelItem => item.Price)</span>
+                                                </div>
+                                                
+                                                <div style="padding-left:10px; float: left; width:30%; box-sizing: border-box; line-height: 1.5;">
+                                                    <span class="venue toh"><i class="fas fa-users"> </i> @Html.DisplayFor(modelItem => item.Quota)</span>
+                                                </div>
+
+                                                <span class="venue toh">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    @formatday, @formatmonth @startYear <a>at</a> @startTime
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+
+                                        <a asp-controller="Event" asp-action="Detail" asp-route-id="@item.Guid" class="card-button1">Read More</a>
                                     </div>
                                 </div>
+
                             </div>
+
                         }
                     }
                 </div>
             </div>
         </div>
     </div>
+
 </section>
 
 

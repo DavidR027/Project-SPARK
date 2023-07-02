@@ -2084,7 +2084,7 @@ ol {
 .hero-area {
   position: relative;
   background-color: #101130;
-  padding: 250px 0 0 0;
+  padding: 200px 0 0 0;
   /*padding-bottom: 240px;*/
   background-image: url("../images/hero/hero-bg.jpg");
   background-size: cover;
@@ -2208,7 +2208,7 @@ ol {
 
 .hero-area .hero-content .button {
   margin-top: 40px;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -2430,7 +2430,7 @@ ol {
     Features CSS
 ========================================*/
 .features {
-  background-color: #F4F7FA;
+  background-color: white;
 }
 
 .features .section-title {
