@@ -91,9 +91,7 @@
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
-                    <button onclick="location.href='@Url.Action("Edit", new { /* id=item.PrimaryKey */ })'" class="btn btn-link"><i class="fas fa-edit"></i> Edit</button>
-                    <button onclick="location.href='@Url.Action("Details", new { /* id=item.PrimaryKey */ })'" class="btn btn-link"><i class="fas fa-info-circle"></i> Details</button>
-                    <button onclick="location.href='@Url.Action("Delete", new { /* id=item.PrimaryKey */ })'" class="btn btn-link"><i class="fas fa-trash-alt"></i> Delete</button>
+                    <button onclick="location.href='@Url.Action("Delete", new {item.UserGuid})'" class="btn btn-link"><i class="fas fa-trash-alt"></i> Delete</button>
                 </td>
             </tr>
         }

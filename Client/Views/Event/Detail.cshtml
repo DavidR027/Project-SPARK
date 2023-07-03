@@ -226,7 +226,14 @@
                             <div style="display:flex; justify-content:flex-end">
                                 @if (guidValue != null)
                                 {
-                                    <a style="color:white; margin:10px" href="/Payment/Create?eventGuid=@Model.Guid" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                    @if(Model.IsPaid == true)
+                                    {
+                                        <a style="color:white; margin:10px" href="/Payment/Create?eventGuid=@Model.Guid" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                    }
+                                    else
+                                    {
+                                        <a style="color:white; margin:10px" onclick="createPayment()" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                    }
                                 }
                                 else
                                 {
@@ -235,8 +242,8 @@
 
                                 @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
                                 {
-                                    <a style="color:white; margin:10px" href="@Url.Action("ListParticipant", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
-                                    <a style="color:white; margin:10px" href="@Url.Action("WaitingList", new { id = Model.Guid })" class="btn btn-secondary"><i class="fas fa-clock"></i> Show Waiting List</a>
+                                    <a style="color:white; margin:10px" href="@Url.Action("ListParticipant", new { Model.Guid })" class="btn btn-secondary"><i class="fas fa-users"></i> Show Participants</a>
+                                    <a style="color:white; margin:10px" href="@Url.Action("WaitingList", new { Model.Guid })" class="btn btn-secondary"><i class="fas fa-clock"></i> Show Waiting List</a>
                                 }
 
                                 @*@if (User.IsInRole("Admin"))
@@ -399,4 +406,27 @@
             console.error('Error retrieving participant list:', error);
         }
     });
+
+    function createPayment() {
+        var paymentData = {
+            userGuid: userGuid,
+            eventGuid: eventGuid,
+            invoice: null,
+            isValid: true
+        };
+
+        $.ajax({
+            url: 'https://localhost:7042/api/Payment',
+            type: 'POST',
+            data: JSON.stringify(paymentData),
+            contentType: 'application/json',
+            success: function (response) {
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                console.log(error);
+            }
+        });
+        location.reload();
+    }
 </script>
