@@ -2,7 +2,9 @@
 using Client.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System;
+using Newtonsoft.Json;
 
 namespace Client.Controllers
 {
@@ -155,6 +157,34 @@ namespace Client.Controllers
                      .SendEmailAsync();
                 return RedirectToAction("Index", "Event");
             }
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChartPayment(Guid eventGuid)
+        {
+            var result = await repository.Get();
+            var events = await eventRepository.Get(eventGuid);
+            var eventname = events.Data.Name;
+            var payments = result.Data?.Select(e => new Payment
+            {
+                Guid = e.Guid,
+                UserGuid = e.UserGuid,
+                EventGuid = e.EventGuid,
+                Invoice = e.Invoice,
+                IsValid = e.IsValid,
+            }).ToList();
+
+            var paymentCounts = payments
+                .Where(e => e.EventGuid == eventGuid)
+                .GroupBy(e => e.EventGuid)
+                .Select(g => new { EventGuid = g.Key, Count = g.Count() })
+                .ToDictionary(p => p.EventGuid.ToString(), p => p.Count);
+
+            ViewBag.EventName = eventname.ToString();
+            ViewBag.ChartData = JsonConvert.SerializeObject(paymentCounts);
+            ViewBag.EventGuid = eventGuid.ToString();
+
             return View();
         }
 

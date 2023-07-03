@@ -2,21 +2,25 @@
     
 }
 
+h1 {
+    text-align: center;
+}
+
 .top-section {
     background-color: #101130;
-    padding: 40px;
+    padding: 35px;
 }
 
 .chart-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 75vh;
 }
 
 .chart-wrapper {
     width: 800px;
-    height: 500px;
+    height: 400px;
 }
 
 canvas {

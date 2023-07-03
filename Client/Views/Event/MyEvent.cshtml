@@ -144,6 +144,9 @@
                                                 <div style="width:200px; margin-bottom:10px;">
                                                     <i class="fas fa-users text-info text-primary" title="Show Participant"> </i> @Html.ActionLink("Show Participant", "ListParticipant", new { guid = item.Guid }, new { })
                                                 </div>
+                                                <div style="width:200px; margin-bottom:10px;">
+                                                    <i class="fas fa-chart-bar text-success" title="Show Chart"></i> @Html.ActionLink("Show Chart", "ChartPayment", "Payment", new { eventGuid = item.Guid }, new { })
+                                                </div>
                                             </td>
                                         </tr>
                                     }
