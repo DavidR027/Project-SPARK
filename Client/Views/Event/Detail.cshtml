@@ -3,7 +3,7 @@
 @model Client.Models.Event
 
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = Model.Name;
     Layout = "_Layout";
     string customClaimType = "GuidValue";
     Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
