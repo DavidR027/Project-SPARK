@@ -30,7 +30,12 @@ namespace Client.Controllers
             {
                 return RedirectToAction("Error", "Home");
             }
-            else if (result.Code == 409)
+            else if (result.Code == 400)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+            else if (result.Code == 404)
             {
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View();
@@ -113,5 +118,64 @@ namespace Client.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(AccountResetPasswordVM resetpasswordVM, string email)
+        {
+            TempData["Email"] = resetpasswordVM.Email;
+            var result = await repository.ForgotPassword(resetpasswordVM, email);
+            if (result is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            else if (result.Code == 409)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
+                return View();
+            }
+            else if (result.Code == 200)
+            {
+                TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
+                return RedirectToAction("ChangePassword", "Account");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM changepasswordVM)
+        {
+
+            var result = await repository.ChangePassword(changepasswordVM);
+            if (result is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            else if (result.Code == 409)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
+                return View();
+            }
+            else if (result.Code == 200)
+            {
+                TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
+                return RedirectToAction("Logins", "Account");
+            }
+            return View();
+        }
     }
 }

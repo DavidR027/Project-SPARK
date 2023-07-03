@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "Detail";
+    Layout = "_Layout";
     string customClaimType = "GuidValue";
     Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
     Guid? guidValue = null;
@@ -287,7 +288,7 @@
                                     </div>
                                     <div class="center">
                                         <span>
-                                            <i class="fas fa-users" style="margin-right: 5px"></i> @Html.DisplayFor(modelItem => Model.Quota)
+                                            <i class="fas fa-users" style="margin-right: 5px"></i> <h8 class="quotaRemaining"></h8>/@Html.DisplayFor(modelItem => Model.Quota)
                                         </span>
                                     </div>
 
@@ -324,6 +325,14 @@
         </div>
     </div>
 </div>
+ <input type="checkbox" id="modal-toggle">
+    <div class="modal" id="modal">>
+        <div class="modal-content">
+            <label for="modal-toggle" class="close">&times;</label>
+            <p>You must be login before joined the event!</p>
+            <a href="/Account/Logins" class="btn btn-outline-primary d-flex justify-content-center">Login</a>
+        </div>
+    </div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

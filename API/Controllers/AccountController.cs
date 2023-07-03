@@ -45,7 +45,7 @@ namespace API.Controllers
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
-                    Message = "Account not found",
+                    Message = "Invalid username or password",
                     Data = null
                 });
             }

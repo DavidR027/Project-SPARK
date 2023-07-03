@@ -9,5 +9,10 @@ namespace Client.Repositories.Interface
         public Task<ResponseMessageVM> Registers(RegisterVM entity);
 
         public Task<ResponseMessageVM> RegisterEM(RegisterVM entity);
+
+        public Task<ResponseMessageVM> ForgotPassword(AccountResetPasswordVM entity, string email);
+        public Task<ResponseMessageVM> ChangePassword(ChangePasswordVM entity);
+
+
     }
 }

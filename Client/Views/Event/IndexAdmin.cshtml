@@ -9,13 +9,12 @@
 <head>
     <style>
         img {
-            width:300px;
+            width: 300px;
         }
 
         .align-items-center {
             align-items: center !important;
             background: #101130;
-
         }
 
         .table-hover tbody tr:hover {
@@ -50,96 +49,94 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    @if (item.IsValid)
+                                    string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
+                                    string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
+                                    string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
+                                    string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
+                                    string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
+                                    string endYear = item.EndDate.ToString("yyyy", cultureId); // Get the year from StartDate
+                                    string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+                                    string endTime = item.EndDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+
+                                    string startDayName = item.StartDate.ToString("ddd", cultureId); // Get the day name from StartDate
+                                    string endDayName = item.EndDate.ToString("ddd", cultureId); // Get the day name from EndDate
+
+                                    string formatmonth;
+                                    if (item.StartDate.Month == item.EndDate.Month)
                                     {
-                                        string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
-                                        string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
-                                        string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
-                                        string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
-                                        string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
-                                        string endYear = item.EndDate.ToString("yyyy", cultureId); // Get the year from StartDate
-                                        string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
-                                        string endTime = item.EndDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
-
-                                        string startDayName = item.StartDate.ToString("ddd", cultureId); // Get the day name from StartDate
-                                        string endDayName = item.EndDate.ToString("ddd", cultureId); // Get the day name from EndDate
-
-                                        string formatmonth;
-                                        if (item.StartDate.Month == item.EndDate.Month)
-                                        {
-                                            formatmonth = startMonth;
-                                        }
-                                        else
-                                        {
-                                            formatmonth = $"{startMonth} - {endMonth}";
-                                        }
-
-                                        string formatday;
-                                        if (item.StartDate.Day == item.EndDate.Day)
-                                        {
-                                            formatday = startDay;
-                                        }
-                                        else
-                                        {
-                                            formatday = $"{startDay} - {endDay}";
-                                        }
-
-                                        string formatDayName;
-                                        if (item.StartDate.Day == item.EndDate.Day)
-                                        {
-                                            formatDayName = startDayName;
-                                        }
-                                        else
-                                        {
-                                            formatDayName = $"{startDayName} - {endDayName}";
-                                        }
-
-                                        string startformat = $"{startDayName}, {startDay} {startMonth} {startYear} at {startTime}";
-                                        string endformat = $"{endDayName}, {endDay} {endMonth} {endYear} at {endTime}";
-
-
-                                        <tr class="fw-normal">
-                                            <td class="align-middle">
-                                                <span style="width:150px">@Html.DisplayFor(modelItem => item.Guid)</span>
-                                            </td>
-
-                                            <td class="align-middle">
-                                                <span style="width:150px">@Html.DisplayFor(modelItem => item.Name)</span>
-                                            </td>
-
-                                            <td class="align-middle">
-                                                <span style="width:600px;">@Html.DisplayFor(modelItem => item.Description)</span>
-                                            </td>
-
-                                            <td class="align-middle">
-                                                <img class="" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
-                                            </td>
-
-                                            <td class="align-middle">
-                                                <div style="width:320px;">
-                                                    <p>Status : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Status) </span> </p>
-                                                    <p>Quota : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Quota) </span> </p>
-                                                    <p>Price : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Price) </span> </p>
-                                                    <p>Location : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Location) </span> </p>
-                                                    <p>Start Date : <span style="font-weight:bold;"> @startformat </span> </p>
-                                                    <p>End Date : <span style="font-weight:bold;"> @endformat </span> </p>
-                                                    <p>Created by : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.CreatedBy) </span> </p>
-                                                    <p>Organizer by : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Organizer) </span> </p>
-                                                    <p>Validation Admin : @Html.DisplayFor(modelItem => item.IsValid) </p>
-                                                </div>
-                                            </td>
-
-                                            <td class="align-middle" style="text-align:center">
-                                                <div style="width:200px; margin-bottom:10px;">
-                                                    <i class="fas fa-check-circle text-primary" title="Validate Event"> </i> @Html.ActionLink("Validate", "Edit", new { guid = item.Guid }, new { })
-                                                </div>
-                                                <div>
-                                                    <i class="fas fa-trash-alt text-info text-primary" title="Delete"> </i> @Html.ActionLink("Delete", "Delete", new { guid = item.Guid }, new { })
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        formatmonth = startMonth;
                                     }
+                                    else
+                                    {
+                                        formatmonth = $"{startMonth} - {endMonth}";
+                                    }
+
+                                    string formatday;
+                                    if (item.StartDate.Day == item.EndDate.Day)
+                                    {
+                                        formatday = startDay;
+                                    }
+                                    else
+                                    {
+                                        formatday = $"{startDay} - {endDay}";
+                                    }
+
+                                    string formatDayName;
+                                    if (item.StartDate.Day == item.EndDate.Day)
+                                    {
+                                        formatDayName = startDayName;
+                                    }
+                                    else
+                                    {
+                                        formatDayName = $"{startDayName} - {endDayName}";
+                                    }
+
+                                    string startformat = $"{startDayName}, {startDay} {startMonth} {startYear} at {startTime}";
+                                    string endformat = $"{endDayName}, {endDay} {endMonth} {endYear} at {endTime}";
+
+
+                                    <tr class="fw-normal">
+                                        <td class="align-middle">
+                                            <span style="width:150px">@Html.DisplayFor(modelItem => item.Guid)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:150px">@Html.DisplayFor(modelItem => item.Name)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <span style="width:600px;">@Html.DisplayFor(modelItem => item.Description)</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <img class="" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <div style="width:320px;">
+                                                <p>Status : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Status) </span> </p>
+                                                <p>Quota : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Quota) </span> </p>
+                                                <p>Price : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Price) </span> </p>
+                                                <p>Location : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Location) </span> </p>
+                                                <p>Start Date : <span style="font-weight:bold;"> @startformat </span> </p>
+                                                <p>End Date : <span style="font-weight:bold;"> @endformat </span> </p>
+                                                <p>Created by : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.CreatedBy) </span> </p>
+                                                <p>Organizer by : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Organizer) </span> </p>
+                                                <p>Validation Admin : @Html.DisplayFor(modelItem => item.IsValid) </p>
+                                            </div>
+                                        </td>
+
+                                        <td class="align-middle" style="text-align:center">
+                                            <div style="width:200px; margin-bottom:10px;">
+                                                <i class="fas fa-check-circle text-primary" title="Validate Event"> </i> @Html.ActionLink("Validate", "Edit", new { guid = item.Guid }, new { })
+                                            </div>
+                                            <div>
+                                                <i class="fas fa-trash-alt text-info text-primary" title="Delete"> </i> @Html.ActionLink("Delete", "Delete", new { guid = item.Guid }, new { })
+                                            </div>
+                                        </td>
+                                    </tr>
                                 }
+
                             </tbody>
                         </table>
 
