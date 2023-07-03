@@ -2,12 +2,14 @@
 using API.Models;
 using API.Utility;
 using API.ViewModels.AccountRole;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AccountRoleController : GeneralController<AccountRole, AccountRoleVM>
     {
         private readonly IAccountRoleRepository _accountRoleRepository;

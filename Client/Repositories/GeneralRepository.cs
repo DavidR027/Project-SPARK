@@ -51,6 +51,7 @@ namespace Client.Repositories
         {
             ResponseMessageVM entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+
             using (var response = httpClient.PostAsync(request, content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();

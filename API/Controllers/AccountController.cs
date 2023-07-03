@@ -13,6 +13,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AccountController : GeneralController<Account, AccountVM>
     {
         private readonly IAccountRepository _accountRepository;

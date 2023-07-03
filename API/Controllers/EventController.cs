@@ -4,6 +4,7 @@ using API.Repositories;
 using API.ViewModels.AccountRole;
 using API.ViewModels.Event;
 using API.ViewModels.Others;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
@@ -12,6 +13,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class EventController : GeneralController<Event, EventVM>
     {
         private readonly IEventRepository _eventRepository;
@@ -21,6 +23,7 @@ namespace API.Controllers
             _eventRepository = eventRepository;
             _mapper = mapper;
         }
+
 
         [HttpGet("GetParticipantListByGuid")]
         public IActionResult GetParticipantListByGuid(Guid guid)

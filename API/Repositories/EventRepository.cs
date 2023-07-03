@@ -14,6 +14,7 @@ namespace API.Repositories
         private readonly IPaymentRepository _paymentRepository;
         private readonly IUserRepository _userRepository;
 
+
         public EventRepository(SparkDbContext context, IPaymentRepository paymentRepository, IUserRepository userRepository) : base(context)
         {
             _paymentRepository = paymentRepository;
