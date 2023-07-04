@@ -21,7 +21,7 @@ namespace Client.Repositories.Data
         public async Task<ResponseListVM<ParticipantList>> GetParticipantListByGuid(Guid guid)
         {
             ResponseListVM<ParticipantList> entityVM = null;
-            using (var response = httpClient.GetAsync(request + "GetParticipantListByGuid?guid=" + guid).Result)
+            using (var response = httpClient.GetAsync(request + "GetParticipantListByGuid/" + guid).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseListVM<ParticipantList>>(apiResponse);
@@ -32,7 +32,7 @@ namespace Client.Repositories.Data
         public async Task<ResponseListVM<WaitingList>> GetWaitingListByGuid(Guid guid)
         {
             ResponseListVM<WaitingList> entityVM = null;
-            using (var response = httpClient.GetAsync(request + "GetWaitingListByGuid?guid=" + guid).Result)
+            using (var response = httpClient.GetAsync(request + "GetWaitingListByGuid/" + guid).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseListVM<WaitingList>>(apiResponse);
@@ -43,7 +43,7 @@ namespace Client.Repositories.Data
         public async Task<ResponseListVM<Event>> GetMyEvent(Guid guid)
         {
             ResponseListVM<Event> entityVM = null;
-            using (var response = httpClient.GetAsync(request + "GetMyEvent?guid=" + guid).Result)
+            using (var response = httpClient.GetAsync(request + "GetMyEvent/" + guid).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseListVM<Event>>(apiResponse);
@@ -54,7 +54,7 @@ namespace Client.Repositories.Data
         public async Task<ResponseListVM<Event>> GetMyEventUser(Guid guid)
         {
             ResponseListVM<Event> entityVM = null;
-            using (var response = httpClient.GetAsync(request + "GetMyEventUser?guid=" + guid).Result)
+            using (var response = httpClient.GetAsync(request + "GetMyEventUser/" + guid).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseListVM<Event>>(apiResponse);

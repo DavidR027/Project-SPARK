@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("GetParticipantListByGuid")]
+        [HttpGet("GetParticipantListByGuid/{guid}")]
         public IActionResult GetParticipantListByGuid(Guid guid)
         {
             var listParticipant = _eventRepository.GetParticipantListByGuid(guid);
@@ -49,7 +49,7 @@ namespace API.Controllers
             });
         }
 
-        [HttpGet("GetWaitingListByGuid")]
+        [HttpGet("GetWaitingListByGuid/{guid}")]
         public IActionResult GetWaitingListByGuid(Guid guid)
         {
             var listParticipant = _eventRepository.GetWaitingListByGuid(guid);
@@ -73,7 +73,7 @@ namespace API.Controllers
             });
         }
 
-        [HttpGet("GetMyEvent")]
+        [HttpGet("GetMyEvent/{guid}")]
         public IActionResult GetMyEvent(Guid guid)
         {
             var listEvent = _eventRepository.GetMyEvent(guid);
@@ -97,7 +97,7 @@ namespace API.Controllers
             });
         }
 
-        [HttpGet("GetMyEventUser")]
+        [HttpGet("GetMyEventUser/{guid}")]
         public IActionResult GetMyEventUser(Guid guid)
         {
             var listEvent = _eventRepository.GetMyEventUser(guid);

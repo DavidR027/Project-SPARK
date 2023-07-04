@@ -278,12 +278,12 @@
 
                     @if (User.IsInRole("User"))
                     {
-                        <li><a class="nav-link scrollto" href="/Event/JoinedEvent?guid=@guidValue"> <i class="fas fa-file-alt" style="margin-right:7px;"> </i> Joined Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/JoinedEvent/@guidValue"> <i class="fas fa-file-alt" style="margin-right:7px;"> </i> Joined Event</a></li>
                     }
 
                     @if (User.IsInRole("EventMaker"))
                     {
-                        <li><a class="nav-link scrollto" href="/Event/MyEvent?guid=@guidValue"> <i class="fas fa-file-alt" style="margin-right:7px;"> </i> My Event</a></li>
+                        <li><a class="nav-link scrollto" href="/Event/MyEvent/@guidValue"> <i class="fas fa-file-alt" style="margin-right:7px;"> </i> My Event</a></li>
                         <li><a class="nav-link scrollto" href="/Event/Create"> <i class="fas fas fa-edit" style="margin-right:7px;"> </i> Create Event</a></li>
                     }
 

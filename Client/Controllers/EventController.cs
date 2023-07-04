@@ -51,6 +51,7 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [HttpGet("Event/ListParticipant/{guid}")]
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> ListParticipant(Guid guid)
         {
@@ -71,6 +72,7 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [HttpGet("Event/WaitingList/{guid}")]
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> WaitingList(Guid guid)
         {
@@ -138,6 +140,7 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [HttpGet("Event/MyEvent/{guid}")]
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> MyEvent(Guid guid)
         {
@@ -168,6 +171,7 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [HttpGet("Event/JoinedEvent/{guid}")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> JoinedEvent(Guid guid)
         {
@@ -384,6 +388,7 @@ namespace Client.Controllers
             return View();
         }
 
+        [HttpGet("Event/ChartEvent")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChartEvent()
         {

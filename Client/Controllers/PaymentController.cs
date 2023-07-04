@@ -160,8 +160,9 @@ namespace Client.Controllers
             return View();
         }
 
+
         [Authorize(Roles = "EventMaker")]
-        [HttpGet]
+        [HttpGet("Payment/ChartPayment/{eventGuid}")]
         public async Task<IActionResult> ChartPayment(Guid eventGuid)
         {
             var result = await repository.Get();
