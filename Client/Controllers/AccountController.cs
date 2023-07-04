@@ -158,13 +158,13 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordVM changepasswordVM)
         {
-
+            TempData["Email"] = changepasswordVM.Email;
             var result = await repository.ChangePassword(changepasswordVM);
             if (result is null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            else if (result.Code == 409)
+            else if (result.Code == 400)
             {
                 ModelState.AddModelError(string.Empty, result.Message);
                 TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
