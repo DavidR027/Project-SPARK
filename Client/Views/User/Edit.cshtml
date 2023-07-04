@@ -28,6 +28,11 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row row-space">
                         <div class="col-2">
+                            <div class="input-group" hidden>
+                                <label asp-for="Guid" class="label"></label>
+                                <input asp-for="Guid" value="@Model.Guid"class="input--style-4" type="text" />
+                                <span asp-validation-for="Guid" class="text-danger"></span>
+                            </div>
                             <div class="input-group">
                                 <label asp-for="FirstName" class="label"></label>
                                 <input asp-for="FirstName" class="input--style-4" type="text" />

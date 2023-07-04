@@ -18,6 +18,10 @@ namespace Client.Controllers
         [HttpGet]
         public IActionResult Logins()
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Event");
+            }
             return View();
         }
 

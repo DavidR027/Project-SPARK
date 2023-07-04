@@ -160,6 +160,7 @@ namespace Client.Controllers
             return View();
         }
 
+        [Authorize(Roles = "EventMaker")]
         [HttpGet]
         public async Task<IActionResult> ChartPayment(Guid eventGuid)
         {

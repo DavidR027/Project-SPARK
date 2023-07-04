@@ -13,7 +13,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    /*[Authorize]*/
     public class EventController : GeneralController<Event, EventVM>
     {
         private readonly IEventRepository _eventRepository;

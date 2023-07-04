@@ -384,6 +384,7 @@ namespace Client.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChartEvent()
         {
             var result = await repository.Get();
