@@ -4,243 +4,10 @@
     ViewData["Title"] = "Home";
     Layout = "_Layout";
     CultureInfo cultureId = new CultureInfo("id-ID");
-    var category = "";
 }
 
 <head>
-    <style>
-
-        ul {
-            grid-template-columns: repeat(2, 1fr); /* Mengatur dua kolom dengan lebar yang sama */
-            grid-auto-rows: minmax(auto, max-content); /* Mengatur tinggi baris secara otomatis */
-            grid-gap: 25px; /* Jarak antara elemen */
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            text-align: center;
-        }
-
-        li {
-            grid-column: span 1; /* Menentukan lebar elemen menjadi 1 kolom */
-        }
-
-        .modal {
-            display: none; /* Sembunyikan secara default */
-            position: fixed; /* Tetapkan posisi */
-            z-index: 1; /* Menempatkan modal di atas konten lain */
-            left: 0;
-            top: 0;
-            width: 100%; /* Lebar penuh */
-            height: 100%; /* Tinggi penuh */
-            overflow: auto; /* Tambahkan scroll jika diperlukan */
-            background-color: rgba(0, 0, 0, 0.5); /* Efek latar belakang semi-transparan */
-            padding-top: 50px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-            .close:hover,
-            .close:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
-            }
-
-        /* CSS untuk checkbox hack */
-        #modal-toggle {
-            display: none;
-        }
-
-            #modal-toggle:checked + .modal {
-                display: block;
-            }
-
-        .hero-waves {
-            display: block;
-            width: 100%;
-            height: 100px;
-            position: relative;
-        }
-
-        .wave1 use {
-            animation: move-forever1 10s linear infinite;
-            animation-delay: -2s;
-        }
-
-        .wave2 use {
-            animation: move-forever2 8s linear infinite;
-            animation-delay: -2s;
-        }
-
-        .wave3 use {
-            animation: move-forever3 6s linear infinite;
-            animation-delay: -2s;
-        }
-
-        @@keyframes move-forever1 {
-            0% {
-                transform: translate(85px, 0%);
-            }
-
-            100% {
-                transform: translate(-90px, 0%);
-            }
-        }
-
-        @@keyframes move-forever2 {
-            0% {
-                transform: translate(-90px, 0%);
-            }
-
-            100% {
-                transform: translate(85px, 0%);
-            }
-        }
-
-        @@keyframes move-forever3 {
-            0% {
-                transform: translate(-90px, 0%);
-            }
-
-            100% {
-                transform: translate(85px, 0%);
-            }
-        }
-
-        .card1 {
-            border: 3px solid white;
-            -webkit-transition: 0.5s ease-out;
-            transition: 0.5s ease-out;
-            overflow: visible;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-
-
-        .card-button1 {
-            text-decoration: none;
-            text-align: center;
-            -webkit-transform: translate(-50%, 125%);
-            -ms-transform: translate(-50%, 125%);
-            transform: translate(-50%, 125%);
-            width: 70%;
-            border-radius: 1rem;
-            border: none;
-            background-color: #101130;
-            color: #fff;
-            font-size: 1rem;
-            padding: .5rem 1rem;
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            opacity: 0;
-            -webkit-transition: 0.3s ease-out;
-            transition: 0.3s ease-out;
-            cursor: pointer;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-
-        /*Hover*/
-        .card1:hover {
-            border-color: #101130;
-            -webkit-box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
-            box-shadow: 10px 5px 18px 0 rgba(255, 255, 255, 0.877);
-        }
-
-            .card1:hover .card-button1 {
-                -webkit-transform: translate(-50%, 50%);
-                -ms-transform: translate(-50%, 50%);
-                transform: translate(-50%, 50%);
-                opacity: 1;
-                color: white;
-                background-color: #101130;
-            }
-
-        .meta {
-            padding: 20px 10px 10px;
-            line-height: 20px;
-            float: left;
-            background: #fff;
-            width: 100%;
-            box-sizing: border-box;
-            border-top: 1px inset rgba(0,0,0,0.1);
-            overflow: hidden;
-            bottom: 0;
-            width: 100%;
-            border: none;
-            text-align: left;
-            height: 180px;
-        }
-
-        .meta-left {
-            float: left;
-            width: 20%;
-            box-sizing: border-box;
-            line-height: 1.5;
-        }
-
-        .up-month {
-            color: #FD3B08;
-            text-transform: uppercase;
-            display: block;
-            font-family: Arial;
-            font-size: 16px;
-            text-align: center;
-            margin-left: 15px;
-        }
-
-        .up-day {
-            color: #555;
-            /* display: block; */
-            font-weight: 600;
-            font-size: 16px;
-            text-align: center;
-            margin-left: 10px;
-            display: block;
-        }
-
-        .meta-right {
-            width: 55%;
-            padding-left: 30px;
-            float: left;
-            width: 80%;
-            box-sizing: border-box;
-            line-height: 1.5;
-        }
-
-        .venue {
-            width: 100%;
-            float: left;
-            font-size: 14px;
-            color: #999;
-            line-height: 1.5;
-            margin: 2px 0;
-            padding-top: 10px;
-        }
-
-        .toh {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: inline-block;
-            vertical-align: middle;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/IndexCss.css" asp-append-version="true" />
 </head>
 
 <section class="hero-area">
@@ -249,15 +16,17 @@
     <div class="main__circle2"></div>
     <div class="main__circle3"></div>
     <div class="main__circle4"></div>
+
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 offset-lg-3 col-md-12 col-12">
+
                 <div class="hero-content">
-                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Let's Join Events'</h2>
+                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Let's Join Events</h2>
                     <p class="wow fadeInUp" data-wow-delay=".6s">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. deleniti voluptatum! Natus
-                        beatae laborum veniam distinctio.
+                        Join this event and have an amazing experience! 
+                        Meet fellow enthusiasts, learn something new, and enhance your professional network. 
+                        Don't miss this opportunity to immerse yourself in an energetic atmosphere and be part of an unforgettable event!
                     </p>
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -272,9 +41,11 @@
                         </div>
                     }
                 </div>
+
             </div>
         </div>
     </div>
+
     <input type="checkbox" id="modal-toggle">
     <div class="modal">
         <div class="modal-content">
@@ -283,6 +54,7 @@
             <a href="/Account/Logins" class="btn btn-outline-primary d-flex justify-content-center">Login</a>
         </div>
     </div>
+
     <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
         <defs>
             <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
@@ -297,36 +69,28 @@
             <use xlink:href="#wave-path" x="50" y="9" fill="#fff"></use>
         </g>
     </svg>
+
 </section>
 
-<!-- End Hero Area -->
-<!-- Start Count Down Area -->
-<!-- End Count Down Area -->
-<!-- Start Features Area -->
 <section class="features section">
     <div class="container">
+
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h3 class="wow zoomIn" data-wow-delay=".2s">Why join eventGrids?</h3>
+                    <h3 class="wow zoomIn" data-wow-delay=".2s">Why join SPARK?</h3>
                     <h2 class="wow fadeInUp" data-wow-delay=".4s">Why you should Join Event</h2>
                     <p class="wow fadeInUp" data-wow-delay=".6s">
-                        There are many variations of passages of Lorem
-                        Ipsum available, but the majority have suffered alteration in some form.
+                        Attending events is crucial as it offers opportunities to network, learn, gain inspiration, and personal and professional development.
                     </p>
                 </div>
             </div>
         </div>
 
-        <select id="categoryDropdown">
-            <option value="">All</option>
-            <option value="Online">Online</option>
-            <option value="Offline">Offline</option>
-        </select>
-
         <div class="row">
             <div class=" col-md-12 wow fadeInUp mb-5" data-wow-delay=".2s">
                 <div class="row row-cols-md-3 g-5 mb-5" style="margin: 0 30px 0 30px; display:wrap;">
+
                     @foreach (var item in Model)
                     {
                         @if (item.IsValid)
@@ -337,9 +101,7 @@
                             string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
                             string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
                             string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
-
-
-
+                            string startday = item.StartDate.ToString("dddd", cultureId); // Get the start time from StartDate
 
                             string formatmonth;
                             if (item.StartDate.Month == item.EndDate.Month)
@@ -360,50 +122,47 @@
                             {
                                 formatday = $"{startDay} - {endDay}";
                             }
-                                // Use the formattedDate variable as needed
 
-
-
-
+                            string dateevent = $"{startday}, {startDay} {startMonth} {startYear}";
+                            
                             <div class="col">
                                 <div class="card card1">
                                     <img class="" style="height:200px;" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
 
-                                    @*<h5 class="card-title"><a href="blog-details.html">@Html.DisplayFor(modelItem => item.Name)</a></h5>*@
-                                    @*<p class="card-text">@Html.Raw(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</p>*@
-                                    <div class="meta h-200">
+                                    <div class="meta">
                                         <div style="display:block;">
+
                                             <div class="meta-left">
                                                 <span class="up-month">@formatmonth</span>
                                                 <span class="up-day">@formatday</span>
                                             </div>
 
                                             <div class="meta-right">
-                                                <h5>@Html.DisplayFor(modelItem => item.Name)</h5>
-                                                <span class="venue toh"><i class="fas fa-map-marker-alt"> </i> @Html.DisplayFor(modelItem => item.Location)</span>
+                                                <h5 style="font-size:22px; font-weight:800;">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                                <span class="venue"><i class="fas fa-map-marker-alt"> </i> @Html.DisplayFor(modelItem => item.Location)</span>
 
-                                                <div style="float: left; width: 30%; box-sizing: border-box; line-height: 1.5;">
+                                                <div style="float: left; width: 35%; box-sizing: border-box; line-height: 1.5;">
                                                     @if (item.Status.ToString() == "Online")
                                                     {
-                                                        <span class="venue toh"><i class="fas fa-globe"></i> @Html.DisplayFor(modelItem => item.Status)</span>
+                                                        <span class="venue"><i class="fas fa-globe"></i> @Html.DisplayFor(modelItem => item.Status)</span>
                                                     }
                                                     else
                                                     {
-                                                        <span class="venue toh"><i class="fas fas fa-building"></i> @Html.DisplayFor(modelItem => item.Status)</span>
+                                                        <span class="venue"><i class="fas fas fa-building"></i> @Html.DisplayFor(modelItem => item.Status)</span>
                                                     }
                                                 </div>
 
-                                                <div style="padding-left:10px; float: left; width:30%; box-sizing: border-box; line-height: 1.5;">
-                                                    <span class="venue toh"><i class="fas fa-comment-dollar"> </i> @Html.DisplayFor(modelItem => item.Price)</span>
+                                                <div style="float: left; width:35%; box-sizing: border-box; line-height: 1.5;">
+                                                    <span class="venue"><i class="fas fa-comment-dollar"> </i> @Html.DisplayFor(modelItem => item.Price)</span>
                                                 </div>
 
-                                                <div style="padding-left:10px; float: left; width:30%; box-sizing: border-box; line-height: 1.5;">
+                                                <div style="float: left; width:25%; box-sizing: border-box; line-height: 1.5;">
                                                     <span class="venue toh"><i class="fas fa-users"> </i> @Html.DisplayFor(modelItem => item.Quota)</span>
                                                 </div>
 
                                                 <span class="venue toh">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    @formatday, @formatmonth @startYear <a>at</a> @startTime
+                                                    @dateevent <a>at</a> @startTime
                                                 </span>
 
                                             </div>
@@ -416,18 +175,12 @@
                             </div>
                         }
                     }
+
                 </div>
             </div>
         </div>
     </div>
 
 </section>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    var dropdown = document.getElementById("categoryDropdown");
-    dropdown.addEventListener("change", function () {
 
-        var selectedValue = dropdown.value;
-        var category = selectedValue;
-    });
-</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
