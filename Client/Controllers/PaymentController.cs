@@ -101,6 +101,7 @@ namespace Client.Controllers
         {
             var result = await repository.Get(guid);
             var payment = new Payment();
+
             if (result.Data?.Guid is null)
             {
                 return View(payment);
