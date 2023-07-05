@@ -364,8 +364,8 @@
 <a hidden id="userGuid" data-value=@guidValue name="userGuid"></a>
 <script>
     const eventGuid = '@Model.Guid';
-    const apiUrl = 'https://localhost:7042/api/Event/GetParticipantListByGuid?guid=' + eventGuid;
-    const apiUrl2 = 'https://localhost:7042/api/Event/GetWaitingListByGuid?guid=' + eventGuid;
+    const apiUrl = 'https://localhost:7042/api/Event/GetParticipantListByGuid/' + eventGuid;
+    const apiUrl2 = 'https://localhost:7042/api/Event/GetWaitingListByGuid/' + eventGuid;
     const guidElement = document.getElementById('userGuid');
     const userGuid = guidElement.getAttribute('data-value');
 
