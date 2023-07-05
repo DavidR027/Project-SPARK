@@ -231,11 +231,11 @@
                                 {
                                     @if(Model.IsPaid == true)
                                     {
-                                        <a style="color:white; margin:10px" href="/Payment/Create?eventGuid=@Model.Guid" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                        <a style="color:white; margin:10px" href="/Payment/Create?eventGuid=@Model.Guid" id="joinBtn" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
                                     }
                                     else
                                     {
-                                        <a style="color:white; margin:10px" onclick="createPayment()" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                        <a style="color:white; margin:10px" onclick="createPayment()" id="joinBtn" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
                                     }
                                 }
                                 else
@@ -246,7 +246,7 @@
                                     }
                                     else
                                     {
-                                        <a style="color:white; margin:10px" href="/Account/Logins" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                        <a style="color:white; margin:10px" href="/Account/Logins" id="joinBtn" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
                                     }
                                 }
 
@@ -390,10 +390,12 @@
             const participantList = response.data;
             const count = participantList.length;
             const userGuidExists = participantList.some(participant => participant.userGuid === userGuid);
-            const joinEventButton = document.querySelector('.btn.btn-primary');
+            const joinEventButton = document.querySelector('#joinBtn');
             if (userGuidExists) {
                 joinEventButton.textContent = 'You Have Already Joined';
-                joinEventButton.removeAttribute('href'); // Remove the href attribute to prevent navigation
+                joinEventButton.removeAttribute('href');
+                joinEventButton.classList.remove('btn-primary'); // Remove the 'btn-primary' class
+                joinEventButton.classList.add('btn-secondary'); // Remove the href attribute to prevent navigation
                 joinEventButton.onclick = function (event) {
                     event.preventDefault(); // Prevent the default click behavior
                 };
@@ -403,7 +405,9 @@
             const remainingQuota = quota - count;
             if (remainingQuota == 0) {
                 joinEventButton.textContent = 'Quota is Full';
-                joinEventButton.removeAttribute('href'); // Remove the href attribute to prevent navigation
+                joinEventButton.removeAttribute('href');
+                joinEventButton.classList.remove('btn-secondary'); // Remove the 'btn-primary' class
+                joinEventButton.classList.add('btn-danger');// Remove the href attribute to prevent navigation
                 joinEventButton.onclick = function (event) {
                     event.preventDefault(); // Prevent the default click behavior
                 };
@@ -424,7 +428,7 @@
             const count = participantList.length;
             const userGuidExists = participantList.some(participant => participant.userGuid === userGuid);
 
-            const joinEventButton = document.querySelector('.btn.btn-primary');
+            const joinEventButton = document.querySelector('#joinBtn');
             if (userGuidExists) {
                 joinEventButton.textContent = 'Waiting For Payment Validation';
                 joinEventButton.removeAttribute('href'); // Remove the href attribute to prevent navigation

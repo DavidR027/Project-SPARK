@@ -5,6 +5,7 @@
     ViewData["Title"] = "ValidationEvent";
     Layout = "_Layout";
     CultureInfo cultureId = new CultureInfo("id-ID");
+    int rowNumber = 1;
 }
 <head>
     <style>
@@ -96,8 +97,11 @@
 
 
                                     <tr class="fw-normal">
-                                        <td class="align-middle">
+                                        <td class="align-middle" hidden>
                                             <span style="width:150px">@Html.DisplayFor(modelItem => item.Guid)</span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            @rowNumber
                                         </td>
 
                                         <td class="align-middle">
@@ -105,9 +109,8 @@
                                         </td>
 
                                         <td class="align-middle">
-                                            <span style="width:600px;">@Html.DisplayFor(modelItem => item.Description)</span>
+                                            <span style="width:400px;">@Html.Raw(item.Description.Length > 200 ? item.Description.Substring(0, 200) + "..." : item.Description)</span>
                                         </td>
-
                                         <td class="align-middle">
                                             <img class="" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
                                         </td>
@@ -135,6 +138,7 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    rowNumber++;
                                 }
 
                             </tbody>

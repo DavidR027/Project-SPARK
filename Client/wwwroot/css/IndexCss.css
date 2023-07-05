@@ -218,3 +218,18 @@ li {
     margin: 2px 0;
     padding-top: 7px;
 }
+
+.fit-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: 80%;
+}
+
+.fixed-size {
+    width: auto; /* Specify the desired width */
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Specify the desired height */
+}
