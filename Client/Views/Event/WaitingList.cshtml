@@ -7,6 +7,7 @@
 }
 
 <head>
+    <link rel="stylesheet" href="~/css/indexadmin.css" asp-append-version="true" />
     <style>
         img {
             width: 100px;
@@ -108,7 +109,12 @@
                 <td>
                     @if (item.Invoice != null)
                     {
-                        <img class="" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Invoice)" alt="Poster" />
+                        <img class="myImg" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Invoice)" alt="Poster" />
+                        <div id="myModal" class="modal">
+                            <span class="close">&times;</span>
+                            <img class="modal-content" id="img01">
+                            <div id="caption"></div>
+                        </div>
                     }
                 </td>
                 <td>
@@ -139,7 +145,28 @@
     <a class="btn btn-primary m-2" href="/Event/Create">Add Event</a>
 </div>
 
+<script>
+    var modal = document.getElementById("myModal");
+    var images = document.getElementsByClassName("myImg");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
 
+    // Loop through all the images
+    for (var i = 0; i < images.length; i++) {
+        var img = images[i];
+        img.onclick = function () {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        }
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+</script>
 
 @* *@
 
