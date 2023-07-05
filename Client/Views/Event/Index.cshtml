@@ -91,7 +91,7 @@
             <div class=" col-md-12 wow fadeInUp mb-5" data-wow-delay=".2s">
                 <div class="row row-cols-md-3 g-5 mb-5" style="margin: 0 30px 0 30px; display:wrap;">
 
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.OrderByDescending(item => item.StartDate))
                     {
                         @if (item.IsValid && item.StartDate > DateTime.Now)
                         {
@@ -142,7 +142,7 @@
                                                 <h5 style="font-size:22px; font-weight:800;">@Html.DisplayFor(modelItem => item.Name)</h5>
                                                 <span class="venue"><i class="fas fa-map-marker-alt"> </i> @Html.DisplayFor(modelItem => item.Location)</span>
 
-                                                <div style="float: left; width: 23%; box-sizing: border-box; line-height: 1.5;">
+                                                <div style="float: left; width: auto; box-sizing: border-box; line-height: 1.5;">
                                                     @if (item.Status.ToString() == "Online")
                                                     {
                                                         <span class="venue"><i class="fas fa-globe"></i> @Html.DisplayFor(modelItem => item.Status)</span>
@@ -153,11 +153,11 @@
                                                     }
                                                 </div>
 
-                                                <div style="float: left; width:40%; box-sizing: border-box; line-height: 1.5;">
+                                                <div style="float: left; width:auto; box-sizing: border-box; line-height: 1.5; margin-left:15px;">
                                                     <span class="venue"><i class="fas fa-comment-dollar"> </i> @Html.DisplayFor(modelItem => item.Price)</span>
                                                 </div>
 
-                                                <div style="float: left; width:23%; box-sizing: border-box; line-height: 1.5;">
+                                                <div style="float: left; width:auto; box-sizing: border-box; line-height: 1.5; margin-left:15px;">
                                                     <span class="venue toh"><i class="fas fa-users"> </i> @Html.DisplayFor(modelItem => item.Quota)</span>
                                                 </div>
 
