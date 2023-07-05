@@ -326,7 +326,6 @@
         number++;
     }
 }
-
 <script>
     var modal = document.getElementById("myModal");
     var images = document.getElementsByClassName("myImg");
@@ -404,6 +403,7 @@
                         success: function (response) {
                             // Successful validation operation
                             alert("Item validated successfully!");
+                            location.reload();
                         },
                         error: function (xhr, status, error) {
                             // Error occurred during validation operation
