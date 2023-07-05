@@ -174,8 +174,9 @@
                                                 <i class="fas fa-chart-bar text-success" title="Show Chart"></i> @Html.ActionLink("Show Chart", "ChartPayment", "Payment", new { eventGuid = item.Guid }, new { })
                                             </div>
                                             <div style="width:200px; margin-bottom:10px;">
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AnnouceModal" data-guid="@item.Guid">Send Announcement</button>
+                                                <a type="submit" data-bs-toggle="modal" data-bs-target="#AnnouceModal" data-guid="@item.Guid" class="text-primary"><i class="fas fa-paper-plane text-success" title="Send Announcement"></i> Send Announcement</a>
                                             </div>
+
                                         
                                         </td>
                                     </tr>
