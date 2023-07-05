@@ -5,6 +5,8 @@
     ViewData["Title"] = "MyEvent";
     Layout = "_Layout";
     CultureInfo cultureId = new CultureInfo("id-ID");
+    int rowNumber = 1;
+}
 }
 @*
 <h1>MyEvent</h1>
@@ -14,6 +16,7 @@
 </p>*@
 
 <head>
+    <link rel="stylesheet" href="~/css/indexadmin.css" asp-append-version="true" />
     <style>
         img {
             width: 200px;
@@ -45,6 +48,7 @@
                             <thead class="text-center">
                                 <tr>
                                     <th scope="col" class="" hidden>Guid</th>
+                                    <th scope="col" class="">No</th>
                                     <th scope="col" class="">Event Name</th>
                                     <th scope="col" class="">Description</th>
                                     <th scope="col" class="">Poster</th>
@@ -108,16 +112,25 @@
                                             <span style="width:150px">@Html.DisplayFor(modelItem => item.Guid)</span>
                                         </td>
 
+                                        <td class="align-middle text-center">
+                                            <span>@rowNumber</span>
+                                        </td>
+
                                         <td class="align-middle">
                                             <span style="width:150px">@Html.DisplayFor(modelItem => item.Name)</span>
                                         </td>
 
                                         <td class="align-middle">
-                                            <span style="width:500px;">@Html.DisplayFor(modelItem => item.Description)</span>
+                                            <span style="width:400px;">@Html.Raw(item.Description.Length > 200 ? item.Description.Substring(0, 200) + "..." : item.Description)</span>
                                         </td>
 
                                         <td class="align-middle" style="text-align:center">
-                                            <img class="" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                                            <img class="myImg" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                                            <div id="myModal" class="modal">
+                                                <span class="close">&times;</span>
+                                                <img class="modal-content" id="img01">
+                                                <div id="caption"></div>
+                                            </div>
                                         </td>
 
                                         <td class="align-middle">
@@ -162,8 +175,9 @@
                                             </div>
                                         </td>
                                     </tr>
-
                                 }
+                                
+
                             </tbody>
                         </table>
 
@@ -178,106 +192,29 @@
         </div>
     </div>
 </section>
-@*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Guid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Poster)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quota)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsPaid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Organizer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsValid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Guid)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    <img class="d-block img-fluid" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quota)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsPaid)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Organizer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsValid)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedBy)
-                </td>
-                <td>
-                    @Html.ActionLink("Show Participant", "ListParticipant", new { item.Guid }) |
 
-                    @Html.ActionLink("Show Waiting List", "WaitingList", new { item.Guid })
-                </td>
-            </tr>
+
+
+<script>
+    var modal = document.getElementById("myModal");
+    var images = document.getElementsByClassName("myImg");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+
+    // Loop through all the images
+    for (var i = 0; i < images.length; i++) {
+        var img = images[i];
+        img.onclick = function () {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
         }
-    </tbody>
-</table>*@
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+</script>
+
