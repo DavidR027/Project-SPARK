@@ -118,21 +118,14 @@
                     }
                 </td>
                 <td>
-                    @*<button onclick="location.href='@Url.Action("Edit", new { /* id=item.PrimaryKey */ })'" class="btn btn-link"><i class="fas fa-edit"></i> Edit</button>
-                    <button onclick="location.href='@Url.Action("Details", new { /* id=item.PrimaryKey */ })'" class="btn btn-link"><i class="fas fa-info-circle"></i> Details</button>
-                    <button onclick="location.href='@Url.Action("Delete", new { /* id=item.PrimaryKey */ })'" class="btn btn-link"><i class="fas fa-trash-alt"></i> Delete</button>*@
 
-                   
-                        <button onclick="location.href='@Url.Action("Edit", "Payment", new { Guid = item.PaymentGuid })'" class="btn btn-validate">
-                            <i class="fas fa-check-circle"></i> Validate
-                        </button>
-                    
+                    <button onclick="validatePayment('@item.PaymentGuid')" class="btn btn-validate">
+                        <i class="fas fa-check-circle"></i> Validate
+                    </button>
 
-                    
-                        <button onclick="location.href='@Url.Action("Delete", "Payment", new { Guid = item.PaymentGuid })'" class="btn btn-delete">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
-                    
+                    <button onclick="deletePayment('@item.PaymentGuid')" class="btn btn-delete">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
 
                 </td>
             </tr>
@@ -145,6 +138,7 @@
     <a class="btn btn-primary m-2" href="/Event/Create">Add Event</a>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var modal = document.getElementById("myModal");
     var images = document.getElementsByClassName("myImg");
@@ -165,6 +159,76 @@
     span.onclick = function () {
         modal.style.display = "none";
     }
+
+    function deletePayment(paymentGuid) {
+        if (confirm("Are you sure you want to delete this item?")) {
+            // AJAX request
+            $.ajax({
+                url: "https://localhost:7042/api/Payment/" + paymentGuid,
+                type: "DELETE",
+                success: function (response) {
+                    // Successful delete operation
+                    alert("Item deleted successfully!");
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Error occurred during delete operation
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    alert("An error occurred while deleting the item.");
+                }
+            });
+        }
+    }
+
+    function validatePayment(paymentGuid) {
+        if (confirm("Are you sure you want to validate this item?")) {
+            // AJAX request to get payment data
+            $.ajax({
+                url: "https://localhost:7042/api/Payment/" + paymentGuid,
+                type: "GET",
+                success: function (payment) {
+                    var updatedData = {
+                        guid: payment.data.guid,
+                        userGuid: payment.data.userGuid,
+                        eventGuid: payment.data.eventGuid,
+                        invoice: payment.data.invoice,
+                        isValid: true
+                    };
+                    // Update payment with PUT request
+                    $.ajax({
+                        url: "https://localhost:7042/api/Payment/",
+                        type: "PUT",
+                        data: JSON.stringify(updatedData),
+                        contentType: "application/json",
+                        success: function (response) {
+                            // Successful validation operation
+                            console.log(data);
+                            alert("Item validated successfully!");
+                        },
+                        error: function (xhr, status, error) {
+                            // Error occurred during validation operation
+                            console.log(xhr);
+                            console.log(status);
+                            console.log(error);
+                            alert("An error occurred while validating the item.");
+                        }
+                    });
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Error occurred while retrieving payment data
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    alert("An error occurred while retrieving payment data.");
+                }
+            });
+        }
+    }
+
+    
 
 </script>
 

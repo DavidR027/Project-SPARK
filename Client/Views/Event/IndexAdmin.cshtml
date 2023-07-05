@@ -159,16 +159,16 @@
                                     *@
                                             <td class="align-middle" style="text-align:left; line-height:35px; width:10%;">
                                                 <div type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-@rowNumber">
-                                                    <a class="text-primary"> <i class="fas fa-file-alt text-primary" title="Detail" style="margin-right:10px;"></i> Detail </a>
+                                                    <span class="text-primary"> <i class="fas fa-file-alt text-primary" title="Detail" style="margin-right:10px;"></i> Detail </span>
                                                 </div>
 
+                                                <button onclick="validateEvent('@item.Guid')" class="btn btn-validate">
+                                                    <span class="text-primary"><i class="fas fa-check-circle text-success" title="Validate Event" style="margin-right:10px;"></i>Validate</span>
+                                                </button>
 
-                                                <div>
-                                                    <i class="fas fa-check-circle text-success" title="Validate Event" style="margin-right:10px;"> </i> @Html.ActionLink("Validate", "Edit", new { guid = item.Guid }, new { })
-                                                </div>
-                                                <div>
-                                                    <i class="fas fa-trash-alt text-info text-danger" title="Delete" style="margin-right:10px;"> </i> @Html.ActionLink("Delete", "Delete", new { guid = item.Guid }, new { })
-                                                </div>
+                                                <button onclick="deleteEvent('@item.Guid')" class="btn btn-delete">
+                                                    <span class="text-primary"><i class="fas fa-trash-alt text-info text-danger" title="Delete" style="margin-right:10px;"></i> Delete</span>
+                                                </button>
                                             </td>
                                         </tr>
                                         rowNumber++;
@@ -327,7 +327,6 @@
     }
 }
 
-
 <script>
     var modal = document.getElementById("myModal");
     var images = document.getElementsByClassName("myImg");
@@ -347,6 +346,84 @@
     var span = document.getElementsByClassName("close")[0];
     span.onclick = function () {
         modal.style.display = "none";
+    }
+
+
+    function deleteEvent(eventGuid) {
+        if (confirm("Are you sure you want to delete this item?")) {
+            // AJAX request
+            $.ajax({
+                url: "https://localhost:7042/api/Event/" + eventGuid,
+                type: "DELETE",
+                success: function (response) {
+                    // Successful delete operation
+                    alert("Item deleted successfully!");
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Error occurred during delete operation
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    alert("An error occurred while deleting the item.");
+                }
+            });
+        }
+    }
+
+    function validateEvent(eventGuid) {
+        if (confirm("Are you sure you want to validate this item?")) {
+            // AJAX request to get payment data
+            $.ajax({
+                url: "https://localhost:7042/api/Event/" + eventGuid,
+                type: "GET",
+                success: function (event) {
+                    console.log(event.data);
+                    var updatedData = {
+                        guid: event.data.guid,
+                        name: event.data.name,
+                        description: event.data.description,
+                        poster: event.data.poster,
+                        status: event.data.status,
+                        quota: event.data.quota,
+                        isPaid: event.data.isPaid,
+                        price: event.data.price,
+                        location: event.data.location,
+                        startDate: event.data.startDate,
+                        endDate: event.data.endDate,
+                        organizer: event.data.organizer,
+                        isValid: true,
+                        createdBy: event.data.createdBy
+                    };
+                    // Update payment with PUT request
+                    $.ajax({
+                        url: "https://localhost:7042/api/Event/",
+                        type: "PUT",
+                        data: JSON.stringify(updatedData),
+                        contentType: "application/json",
+                        success: function (response) {
+                            // Successful validation operation
+                            alert("Item validated successfully!");
+                        },
+                        error: function (xhr, status, error) {
+                            // Error occurred during validation operation
+                            console.log(xhr);
+                            console.log(status);
+                            console.log(error);
+                            alert("An error occurred while validating the item.");
+                        }
+                    });
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Error occurred while retrieving payment data
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    alert("An error occurred while retrieving payment data.");
+                }
+            });
+        }
     }
 
 </script>

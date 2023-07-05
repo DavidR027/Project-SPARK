@@ -450,18 +450,22 @@
             isValid: true
         };
 
-        $.ajax({
-            url: 'https://localhost:7042/api/Payment',
-            type: 'POST',
-            data: JSON.stringify(paymentData),
-            contentType: 'application/json',
-            success: function (response) {
-            },
-            error: function (xhr, status, error) {
-                // Handle error
-                console.log(error);
-            }
-        });
-        location.reload();
+        if (confirm('Are you sure want to join this event?')) {
+            $.ajax({
+                url: 'https://localhost:7042/api/Payment',
+                type: 'POST',
+                data: JSON.stringify(paymentData),
+                contentType: 'application/json',
+                success: function (response) {
+                    // Successful payment creation
+                    alert('Joined event successfully!');
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.log(error);
+                }
+            });
+        }
     }
 </script>
