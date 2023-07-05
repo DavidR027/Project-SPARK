@@ -84,7 +84,7 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    @if (item.IsValid == false)
+                                    @if (item.IsValid == true)
                                     {
                                         string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
                                         string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
@@ -156,6 +156,27 @@
                                                 </div>
                                             </td>
                                             @*
+                                    <td class="align-middle">
+                                    <div style="width:320px;">
+                                    <p>Status : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Status) </span> </p>
+                                    <p>Quota : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Quota) </span> </p>
+                                    <p>Price : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Price) </span> </p>
+                                    <p>Location : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Location) </span> </p>
+                                    <p>Start Date : <span style="font-weight:bold;"> @startformat </span> </p>
+                                    <p>End Date : <span style="font-weight:bold;"> @endformat </span> </p>
+                                    <p>Organizer by : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Organizer) </span> </p>
+                                    Validation Admin : <span class="checkbox-format">
+                                    @if (item.IsValid)
+                                    {
+                                    <i class="checkbox-icon fas fa-check-circle" style="color: green"></i>
+                                    }
+                                    else
+                                    {
+                                    <i class="checkbox-icon fas fa-hourglass-half" style="color:darkorange"> </i> <span> Waiting for validation</span>
+                                    }
+                                    </span>
+                                    </div>
+                                    </td>
                                     *@
                                             <td class="align-middle" style="text-align:left; line-height:35px; width:10%;">
                                                 <div type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-@rowNumber">
@@ -174,6 +195,7 @@
                                         rowNumber++;
                                     }
                                 }
+
                             </tbody>
                         </table>
 
@@ -286,28 +308,6 @@
                                             <i class="checkbox-icon fas fa-hourglass-half" style="color:darkorange"> </i> <span> Waiting for validation</span>
                                         }
                                     </span>
-
-                                    @*<div class="d-flex text-center social w-50 mx-auto">
-                            <div class="d-inline-block d-flex  mx-auto message">
-                            @if (item.Status.ToString() == "Online")
-                            {
-                            <span style="padding-left:15px;"><i class="fas fa-globe"></i> @Html.DisplayFor(modelItem => item.Status)</span>
-                            }
-                            else
-                            {
-                            <span style="padding-left:15px;"><i class="fas fas fa-building"></i> @Html.DisplayFor(modelItem => item.Status)</span>
-                            }
-                            </div>
-
-                            <div class="d-inline-block d-flex  mx-auto message">
-                            <span style="padding-left:15px;"><i class="fas fa-comment-dollar"> </i> @Html.DisplayFor(modelItem => item.Price)</span>
-                            </div>
-
-                            <div class="d-inline-block d-flex  mx-auto message">
-                            <span style="padding-left:15px;"><i class="fas fa-users"> </i> @Html.DisplayFor(modelItem => item.Quota)</span>
-                            </div>
-
-                            </div>*@
 
 
                                 </div>

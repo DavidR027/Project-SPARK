@@ -84,7 +84,7 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    @if (item.IsValid == false)
+                                    @if (item.IsValid == true)
                                     {
                                         string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
                                         string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
@@ -155,16 +155,10 @@
                                                     <div id="caption"></div>
                                                 </div>
                                             </td>
-                                            @*
-                                    *@
+                                            
                                             <td class="align-middle" style="text-align:left; line-height:35px; width:10%;">
                                                 <div type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-@rowNumber">
                                                     <a class="text-primary"> <i class="fas fa-file-alt text-primary" title="Detail" style="margin-right:10px;"></i> Detail </a>
-                                                </div>
-
-
-                                                <div>
-                                                    <i class="fas fa-check-circle text-success" title="Validate Event" style="margin-right:10px;"> </i> @Html.ActionLink("Validate", "Edit", new { guid = item.Guid }, new { })
                                                 </div>
                                                 <div>
                                                     <i class="fas fa-trash-alt text-info text-danger" title="Delete" style="margin-right:10px;"> </i> @Html.ActionLink("Delete", "Delete", new { guid = item.Guid }, new { })
@@ -174,6 +168,7 @@
                                         rowNumber++;
                                     }
                                 }
+
                             </tbody>
                         </table>
 
@@ -201,7 +196,7 @@
 }
 @foreach (var item in Model)
 {
-    @if (item.IsValid == false)
+    @if (item.IsValid == true)
     {
         string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
         string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
