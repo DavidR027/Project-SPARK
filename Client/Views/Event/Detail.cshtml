@@ -21,13 +21,16 @@
     string endTime = Model.EndDate.ToString("t");
 
     string formattedDate;
+    string onlydate;
     if (Model.StartDate.Date == Model.EndDate.Date)
     {
         formattedDate = $"{startDate} | {startTime} - {endTime}";
+        onlydate = $"{startDate}";
     }
     else
     {
         formattedDate = $"{startDate} - {endDate} | {startTime} - {endTime}";
+        onlydate = $"{startDate} - {endDate}";
     }
 }
 
@@ -237,8 +240,17 @@
                                 }
                                 else
                                 {
-                                    <a style="color:white; margin:10px" href="/Account/Logins" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                    @if (Model.StartDate < DateTime.Now)
+                                    {
+                                        <a style="color:white; margin:10px" class="btn btn-danger">Event Expired</a>
+                                    }
+                                    else
+                                    {
+                                        <a style="color:white; margin:10px" href="/Account/Logins" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
+                                    }
                                 }
+
+                                
 
                                 @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
                                 {
@@ -275,7 +287,7 @@
                                     <div class="center">
                                         <span style="max-width: 84%; display: inline-block; vertical-align: middle; margin: 0; padding-top: 5px;">
                                             <span style="padding: 0; width: 1000px;">
-                                                <i class='fas fa-calendar-alt' style="margin-right: 5px"></i> @startDate - @endDate <br />
+                                                <i class='fas fa-calendar-alt' style="margin-right: 5px"></i> @onlydate <br />
                                                 <small> <i class='far fa-clock' style="margin-right: 5px"></i> @startTime - @endTime </small>
                                             </span>
                                         </span>
@@ -361,7 +373,9 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@*<script src="~/js/eventdetail.js" asp-append-version="true"></script>*@
 <a hidden id="userGuid" data-value=@guidValue name="userGuid"></a>
+<a hidden id="startDate" data-value=@Model.StartDate name="startDate"></a>
 <script>
     const eventGuid = '@Model.Guid';
     const apiUrl = 'https://localhost:7042/api/Event/GetParticipantListByGuid/' + eventGuid;
@@ -376,7 +390,6 @@
             const participantList = response.data;
             const count = participantList.length;
             const userGuidExists = participantList.some(participant => participant.userGuid === userGuid);
-
             const joinEventButton = document.querySelector('.btn.btn-primary');
             if (userGuidExists) {
                 joinEventButton.textContent = 'You Have Already Joined';

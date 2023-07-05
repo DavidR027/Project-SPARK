@@ -93,7 +93,7 @@
 
                     @foreach (var item in Model)
                     {
-                        @if (item.IsValid)
+                        @if (item.IsValid && item.StartDate > DateTime.Now)
                         {
                             string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
                             string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
