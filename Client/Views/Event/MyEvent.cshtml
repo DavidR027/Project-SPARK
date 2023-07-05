@@ -173,10 +173,13 @@
                                             <div style="width:200px; margin-bottom:10px;">
                                                 <i class="fas fa-chart-bar text-success" title="Show Chart"></i> @Html.ActionLink("Show Chart", "ChartPayment", "Payment", new { eventGuid = item.Guid }, new { })
                                             </div>
+                                            <div style="width:200px; margin-bottom:10px;">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AnnouceModal" data-guid="@item.Guid">Send Announcement</button>
+                                            </div>
+                                        
                                         </td>
                                     </tr>
                                 }
-                                
 
                             </tbody>
                         </table>
@@ -193,7 +196,39 @@
     </div>
 </section>
 
+<div class="modal fade" id="AnnouceModal" tabindex="-1" role="dialog" aria-labelledby="annouceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title text-white" id="annouceModalTitle">Send Announcement</h5>
+            </div>
+            <div class="modal-body" id="annouceModalBody">
+                <div class="container-fluid">
+                    <div class="row">
+                        <form id="annouceForm" action="@Url.Action("AnnouceParticipant", "Event")" method="post">
 
+                            <input hidden type="text" class="form-control" id="guid" name="guid" />
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" name="title" />
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Message</label>
+                                <textarea class="form-control" id="message" name="message"></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <button class="btn btn-primary" id="submit" type="submit">Submit form</button>
+                                <p>Please wait a few seconds after Submit</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     var modal = document.getElementById("myModal");
@@ -215,6 +250,16 @@
     span.onclick = function () {
         modal.style.display = "none";
     }
+
+    var announceButtons = document.querySelectorAll('[data-bs-target="#AnnouceModal"]');
+    var guidInput = document.getElementById("guid");
+
+    announceButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var guid = this.getAttribute("data-guid");
+            guidInput.value = guid;
+        });
+    });
 
 </script>
 

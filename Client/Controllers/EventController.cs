@@ -72,6 +72,36 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> AnnouceParticipant(Guid guid, string title, string message)
+        {
+            var result = await repository.GetParticipantListByGuid(guid);
+            var participantList = new List<ParticipantList>();
+
+
+            if (result.Data != null)
+            {
+                participantList = result.Data.Select(e => new ParticipantList
+                {
+                    UserGuid = e.UserGuid,
+                    FullName = e.FullName,
+                    Email = e.Email,
+                    PhoneNumber = e.PhoneNumber
+                }).ToList();
+            }
+
+            foreach (var participant in participantList)
+            {
+                await emailService.SetEmail(participant.Email)
+                    .SetSubject(title)
+                    .SetHtmlMessage(message)
+                    .SendEmail();
+            }
+
+            return RedirectToAction("Index", "Event");
+        }
+
         [HttpGet("Event/WaitingList/{guid}")]
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> WaitingList(Guid guid)
