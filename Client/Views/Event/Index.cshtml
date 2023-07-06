@@ -139,7 +139,8 @@
                                             </div>
 
                                             <div class="meta-right">
-                                                <h5 style="font-size:22px; font-weight:800;">@Html.DisplayFor(modelItem => item.Name)</h5>
+                                                <h5 style="font-size:22px; font-weight:800;">@(item.Name.Length > 50 ? item.Name.Substring(0, 50) + "..." : item.Name)</h5>
+
                                                 <span class="venue"><i class="fas fa-map-marker-alt"> </i> @Html.DisplayFor(modelItem => item.Location)</span>
 
                                                 <div style="float: left; width: auto; box-sizing: border-box; line-height: 1.5;">

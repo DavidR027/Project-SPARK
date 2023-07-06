@@ -273,7 +273,7 @@ namespace API.Controllers
                     {
                         Code = StatusCodes.Status400BadRequest,
                         Status = HttpStatusCode.BadRequest.ToString(),
-                        Message = "Unable to Change Password",
+                        Message = "Password",
                         Data = null
                     });
                 case 1:

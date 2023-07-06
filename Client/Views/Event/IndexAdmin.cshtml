@@ -1,4 +1,5 @@
 ﻿@using System.Globalization;
+@using System.Security.Claims;
 @model IEnumerable<Event>
 
 @{
@@ -6,6 +7,15 @@
     Layout = "_Layout";
     CultureInfo cultureId = new CultureInfo("id-ID");
     int rowNumber = 1;
+
+    string customClaimType = "GuidValue";
+    Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
+    Guid? guidValue = null;
+
+    if (guidClaim != null && Guid.TryParse(guidClaim.Value, out Guid parsedGuid))
+    {
+        guidValue = parsedGuid;
+    }
 }
 <head>
     <link rel="stylesheet" href="~/css/indexadmin.css" asp-append-version="true" />
@@ -427,7 +437,7 @@
                         };
                         // Update event with PUT request
                         $.ajax({
-                            url: "https://localhost:7042/api/Event/",
+                            url: "https://localhost:7042/api/Event/ValidateEvent/",
                             type: "PUT",
                             data: JSON.stringify(updatedData),
                             contentType: "application/json",

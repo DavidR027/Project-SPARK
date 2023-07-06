@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "ListParticipant";
     Layout = "_Layout";
+    int rownumber = 1;
 }
 
 <head>
@@ -11,7 +12,7 @@
         /* TABLES */
         .table {
             border-collapse: separate;
-            width: 50%;
+            
         }
 
         .table-hover > tbody > tr:hover > td,
@@ -22,6 +23,7 @@
         .table thead > tr > th {
             border-bottom: 1px solid #C2C2C2;
             padding-bottom: 0;
+
         }
 
         .table tbody > tr > td {
@@ -29,13 +31,10 @@
             background: #f5f5f5;
             border-top: 10px solid #fff;
             vertical-align: middle;
-            padding: 12px 8px;
+           
         }
 
-            .table tbody > tr > td:first-child,
-            .table thead > tr > th:first-child {
-                padding-left: 20px;
-            }
+           
 
         .table thead > tr > th span {
             border-bottom: 2px solid #C2C2C2;
@@ -49,15 +48,20 @@
             align-items: center !important;
             background: #101130;
         }
+
+        
     </style>
 </head>
 
 
 <div class="d-flex justify-content-center mt-10">
 
-    <table class="table mt-100">
+    <table class="table mt-100 text-center" style="margin-left: 10px; margin-right: 10px;">
         <thead>
             <tr>
+                <th>
+                    No
+                </th>
                 <th hidden>
                     @Html.DisplayNameFor(model => model.UserGuid)
                 </th>
@@ -72,12 +76,15 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody">
             @foreach (var item in Model)
             {
                 <tr>
                     <td hidden>
                         @Html.DisplayFor(modelItem => item.UserGuid)
+                    </td>
+                    <td>
+                        @rownumber
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.FullName)
@@ -89,8 +96,10 @@
                         @Html.DisplayFor(modelItem => item.PhoneNumber)
                     </td>
                 </tr>
+                rownumber++;
             }
         </tbody>
+        
     </table>
 </div>
 

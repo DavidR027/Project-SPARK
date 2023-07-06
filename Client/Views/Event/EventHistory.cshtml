@@ -9,6 +9,11 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/indexadmin.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+
+
     <style>
         img {
             width: 150px;
@@ -68,109 +73,110 @@
                     <div class="card-header p-3">
                         <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>List Validation Event</h5>
                     </div>
-                    <div class="card-body" data-mdb-perfect-scrollbar="true" style="width:60%; margin:auto;">
+                    <div class="card-body" data-mdb-perfect-scrollbar="true" style="margin:auto;">
+                        
+                            <table id="eventTable" class="table table-striped table-bordered mb-0 table-hover">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th scope="col" class="">No</th>
+                                        <th scope="col" class="">Event Name</th>
+                                        <th scope="col" class="">Description</th>
+                                        <th scope="col" class="">Poster</th>
+                                        <th scope="col" class="">Actions</th>
 
-                        <table class="table table-striped table-bordered mb-0 table-hover">
-                            <thead class="text-center">
-                                <tr>
-                                    <th scope="col" class="">No</th>
-                                    <th scope="col" class="">Event Name</th>
-                                    <th scope="col" class="">Description</th>
-                                    <th scope="col" class="">Poster</th>
-                                    <th scope="col" class="">Actions</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    @if (item.IsValid == true)
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
                                     {
-                                        string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
-                                        string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
-                                        string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
-                                        string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
-                                        string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
-                                        string endYear = item.EndDate.ToString("yyyy", cultureId); // Get the year from StartDate
-                                        string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
-                                        string endTime = item.EndDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
-
-                                        string startDayName = item.StartDate.ToString("ddd", cultureId); // Get the day name from StartDate
-                                        string endDayName = item.EndDate.ToString("ddd", cultureId); // Get the day name from EndDate
-
-                                        string formatmonth;
-                                        if (item.StartDate.Month == item.EndDate.Month)
+                                        @if (item.IsValid == true)
                                         {
-                                            formatmonth = startMonth;
+                                            string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
+                                            string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
+                                            string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
+                                            string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
+                                            string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
+                                            string endYear = item.EndDate.ToString("yyyy", cultureId); // Get the year from StartDate
+                                            string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+                                            string endTime = item.EndDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+
+                                            string startDayName = item.StartDate.ToString("ddd", cultureId); // Get the day name from StartDate
+                                            string endDayName = item.EndDate.ToString("ddd", cultureId); // Get the day name from EndDate
+
+                                            string formatmonth;
+                                            if (item.StartDate.Month == item.EndDate.Month)
+                                            {
+                                                formatmonth = startMonth;
+                                            }
+                                            else
+                                            {
+                                                formatmonth = $"{startMonth} - {endMonth}";
+                                            }
+
+                                            string formatday;
+                                            if (item.StartDate.Day == item.EndDate.Day)
+                                            {
+                                                formatday = startDay;
+                                            }
+                                            else
+                                            {
+                                                formatday = $"{startDay} - {endDay}";
+                                            }
+
+                                            string formatDayName;
+                                            if (item.StartDate.Day == item.EndDate.Day)
+                                            {
+                                                formatDayName = startDayName;
+                                            }
+                                            else
+                                            {
+                                                formatDayName = $"{startDayName} - {endDayName}";
+                                            }
+
+                                            string startformat = $"{startDayName}, {startDay} {startMonth} {startYear} at {startTime}";
+                                            string endformat = $"{endDayName}, {endDay} {endMonth} {endYear} at {endTime}";
+
+
+                                            <tr class="fw-normal">
+                                                <td class="align-middle" hidden>
+                                                    <span style="width:150px">@Html.DisplayFor(modelItem => item.Guid)</span>
+                                                </td>
+                                                <td class="align-middle text-center" style="width:5%;">
+                                                    @rowNumber
+                                                </td>
+
+                                                <td class="align-middle text-center" style="width:10%;">
+                                                    <span>@Html.DisplayFor(modelItem => item.Name)</span>
+                                                </td>
+
+                                                <td class="align-middle" style="width:20%;">
+                                                    <span>@Html.Raw(item.Description.Length > 200 ? item.Description.Substring(0, 200) + "..." : item.Description)</span>
+                                                </td>
+                                                <td class="align-middle text-center" style="width:10%;">
+                                                    <img class="myImg" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                                                    <div id="myModal" class="modal">
+                                                        <span class="close">&times;</span>
+                                                        <img class="modal-content" id="img01">
+                                                        <div id="caption"></div>
+                                                    </div>
+                                                </td>
+
+                                                <td class="align-middle" style="text-align:left; line-height:35px; width:10%;">
+                                                    <div class="btn btn-primary" style="background-color:transparent; border-color:transparent;" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-@rowNumber">
+                                                        <span class="text-primary"> <i class="fas fa-file-alt text-primary" title="Detail" style="margin-right:10px;"></i> Detail </span>
+                                                    </div>
+                                                    <div onclick="deleteEvent('@item.Guid')" class="btn btn-delete">
+                                                        <span class="text-primary"> <i class="fas fa-trash-alt text-info text-danger" title="Delete" style="margin-right:10px;"> </i> Delete</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            rowNumber++;
                                         }
-                                        else
-                                        {
-                                            formatmonth = $"{startMonth} - {endMonth}";
-                                        }
-
-                                        string formatday;
-                                        if (item.StartDate.Day == item.EndDate.Day)
-                                        {
-                                            formatday = startDay;
-                                        }
-                                        else
-                                        {
-                                            formatday = $"{startDay} - {endDay}";
-                                        }
-
-                                        string formatDayName;
-                                        if (item.StartDate.Day == item.EndDate.Day)
-                                        {
-                                            formatDayName = startDayName;
-                                        }
-                                        else
-                                        {
-                                            formatDayName = $"{startDayName} - {endDayName}";
-                                        }
-
-                                        string startformat = $"{startDayName}, {startDay} {startMonth} {startYear} at {startTime}";
-                                        string endformat = $"{endDayName}, {endDay} {endMonth} {endYear} at {endTime}";
-
-
-                                        <tr class="fw-normal">
-                                            <td class="align-middle" hidden>
-                                                <span style="width:150px">@Html.DisplayFor(modelItem => item.Guid)</span>
-                                            </td>
-                                            <td class="align-middle text-center" style="width:5%;">
-                                                @rowNumber
-                                            </td>
-
-                                            <td class="align-middle text-center" style="width:10%;">
-                                                <span>@Html.DisplayFor(modelItem => item.Name)</span>
-                                            </td>
-
-                                            <td class="align-middle" style="width:20%;">
-                                                <span>@Html.Raw(item.Description.Length > 200 ? item.Description.Substring(0, 200) + "..." : item.Description)</span>
-                                            </td>
-                                            <td class="align-middle text-center" style="width:10%;">
-                                                <img class="myImg" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
-                                                <div id="myModal" class="modal">
-                                                    <span class="close">&times;</span>
-                                                    <img class="modal-content" id="img01">
-                                                    <div id="caption"></div>
-                                                </div>
-                                            </td>
-                                            
-                                            <td class="align-middle" style="text-align:left; line-height:35px; width:10%;">
-                                                <div class="btn btn-primary" style="background-color:transparent; border-color:transparent;" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-@rowNumber">
-                                                    <span class="text-primary"> <i class="fas fa-file-alt text-primary" title="Detail" style="margin-right:10px;"></i> Detail </span>
-                                                </div>
-                                                <div onclick="deleteEvent('@item.Guid')" class="btn btn-delete">
-                                                    <span class="text-primary"> <i class="fas fa-trash-alt text-info text-danger" title="Delete" style="margin-right:10px;"> </i> Delete</span>
-                                                </div>                                           
-                                            </td>
-                                        </tr>
-                                        rowNumber++;
                                     }
-                                }
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
 
 
                         <div id="myModal" class="modal">
@@ -323,6 +329,10 @@
 }
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+
 
 <script>
     var modal = document.getElementById("myModal");
@@ -385,5 +395,13 @@
             }
         });
     }
+
+
+
+   
+        $(document).ready(function () {
+            $('#eventTable').DataTable();
+        });
+
 
 </script>

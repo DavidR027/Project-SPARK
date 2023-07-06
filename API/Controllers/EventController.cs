@@ -18,10 +18,14 @@ namespace API.Controllers
     {
         private readonly IEventRepository _eventRepository;
         private readonly IMapper<Event, EventVM> _mapper;
-        public EventController(IEventRepository eventRepository, IMapper<Event, EventVM> mapper) : base(eventRepository, mapper)
+        private readonly IEmailService _emailService;
+        private readonly IUserRepository _userRepository;
+        public EventController(IEventRepository eventRepository, IMapper<Event, EventVM> mapper, IEmailService emailService, IUserRepository userRepository) : base(eventRepository, mapper)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
+            _emailService = emailService;
+            _userRepository = userRepository;
         }
 
 
@@ -120,5 +124,40 @@ namespace API.Controllers
                 Data = listEvent
             });
         }
+
+        [HttpPut("ValidateEvent")]
+        public IActionResult Validate(Event acara)
+        {
+            var result = _eventRepository.Update(acara);
+            var user = _userRepository.GetByGuid(acara.CreatedBy);
+            var email = user.Email;
+            if (acara.IsValid)
+            {
+                _emailService.SetEmail(email)
+                .SetSubject($"SPARK: '{acara.Name}' Event Status")
+                .SetHtmlMessage($"Hello {acara.Organizer}! We would like to inform you that your event '{acara.Name}' has been validated.")
+                .SendEmailAsync();
+            }
+            return Ok();
+        }
+
+        [HttpDelete("DeleteEvent/{guid}")]
+        public IActionResult DeleteEvent(Guid guid, Guid adminGuid)
+        {
+            var acara = _eventRepository.GetByGuid(guid);
+            var user = _userRepository.GetByGuid(acara.CreatedBy);
+            var admin = _userRepository.GetByGuid(adminGuid);
+            var email = user.Email;
+            var result = _eventRepository.Delete(guid);
+
+            _emailService.SetEmail(email)
+                .SetSubject($"SPARK: '{acara.Name}' Event Status")
+                .SetHtmlMessage($"Hello {acara.Organizer}! We regret to inform you that your event '{acara.Name}' has been invalidated by Admin {admin.Username}. Please contact {admin.Email} for further information.")
+                .SendEmailAsync();
+
+            return Ok();
+        }
+
     }
 }
+
