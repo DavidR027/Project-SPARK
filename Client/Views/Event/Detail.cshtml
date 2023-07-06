@@ -229,7 +229,7 @@
                             <div style="display:flex; justify-content:flex-end">
                                 @if (guidValue != null)
                                 {
-                                    @if(Model.IsPaid == true)
+                                    @if (Model.IsPaid == true)
                                     {
                                         <a style="color:white; margin:10px" href="/Payment/Create?eventGuid=@Model.Guid" id="joinBtn" class="btn btn-primary"><i class="fas fa-plus"></i> Join Event</a>
                                     }
@@ -250,7 +250,7 @@
                                     }
                                 }
 
-                                
+
 
                                 @if (User.IsInRole("EventMaker") && guidValue == Model.CreatedBy)
                                 {
@@ -340,7 +340,7 @@
                                             {
                                                 <i class="fas fa-comment-dollar" style="margin-right: 5px"> </i> <span> Rp. </span> @Html.DisplayFor(modelItem => Model.Price)
                                             }
-                                            
+
                                         </span>
                                     </div>
 
@@ -362,16 +362,17 @@
         </div>
     </div>
 </div>
- <input type="checkbox" id="modal-toggle">
-    <div class="modal" id="modal">>
-        <div class="modal-content">
-            <label for="modal-toggle" class="close">&times;</label>
-            <p>You must be login before joined the event!</p>
-            <a href="/Account/Logins" class="btn btn-outline-primary d-flex justify-content-center">Login</a>
-        </div>
+<input type="checkbox" id="modal-toggle">
+<div class="modal" id="modal">
+    >
+    <div class="modal-content">
+        <label for="modal-toggle" class="close">&times;</label>
+        <p>You must be login before joined the event!</p>
+        <a href="/Account/Logins" class="btn btn-outline-primary d-flex justify-content-center">Login</a>
     </div>
+</div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @*<script src="~/js/eventdetail.js" asp-append-version="true"></script>*@
 <a hidden id="userGuid" data-value=@guidValue name="userGuid"></a>
@@ -449,23 +450,39 @@
             invoice: null,
             isValid: true
         };
+        Swal.fire({
+            title: 'Joined event',
+            text: 'Are you sure want to join this event?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: 'Yes, join!',
+            cancelButtonText: 'No, cancel',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'https://localhost:7042/api/Payment',
+                    type: 'POST',
+                    data: JSON.stringify(paymentData),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        // Successful payment creation
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Joined event successfully!',
+                            icon: 'success'
+                        }).then(function () {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        console.log(error);
+                    }
+                });
+            }
+        });
 
-        if (confirm('Are you sure want to join this event?')) {
-            $.ajax({
-                url: 'https://localhost:7042/api/Payment',
-                type: 'POST',
-                data: JSON.stringify(paymentData),
-                contentType: 'application/json',
-                success: function (response) {
-                    // Successful payment creation
-                    alert('Joined event successfully!');
-                    location.reload();
-                },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    console.log(error);
-                }
-            });
-        }
     }
 </script>
