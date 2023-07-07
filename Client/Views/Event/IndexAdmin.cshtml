@@ -178,7 +178,7 @@
                                                     <span class="text-primary"><i class="fas fa-check-circle text-success" title="Validate Event" style="margin-right:10px;"></i>Validate</span>
                                                 </div>
 
-                                                <div onclick="deleteEvent('@item.Guid')" class="btn btn-delete">
+                                                <div onclick="deleteEvent('@item.Guid','@guidValue')" class="btn btn-delete">
                                                     <span class="text-primary"><i class="fas fa-trash-alt text-info text-danger" title="Delete" style="margin-right:10px;"></i> Delete</span>
                                                 </div>
                                             </td>
@@ -360,7 +360,7 @@
     }
 
 
-    function deleteEvent(eventGuid) {
+    function deleteEvent(eventGuid, adminGuid) {
         Swal.fire({
             title: "Are you sure?",
             text: "This action cannot be undone.",
@@ -374,7 +374,7 @@
             if (result.isConfirmed) {
                 // AJAX request
                 $.ajax({
-                    url: "https://localhost:7042/api/Event/" + eventGuid,
+                    url: "https://localhost:7042/api/Event/DeleteEvent/" + eventGuid +"/"+ adminGuid,
                     type: "DELETE",
                     success: function (response) {
                         // Successful delete operation

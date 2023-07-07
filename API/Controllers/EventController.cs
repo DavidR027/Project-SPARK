@@ -141,7 +141,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpDelete("DeleteEvent/{guid}")]
+        [HttpDelete("DeleteEvent/{guid}/{adminGuid}")]
         public IActionResult DeleteEvent(Guid guid, Guid adminGuid)
         {
             var acara = _eventRepository.GetByGuid(guid);
@@ -150,10 +150,15 @@ namespace API.Controllers
             var email = user.Email;
             var result = _eventRepository.Delete(guid);
 
+            if (!result)
+            {
+                return BadRequest();
+            }
+
             _emailService.SetEmail(email)
-                .SetSubject($"SPARK: '{acara.Name}' Event Status")
-                .SetHtmlMessage($"Hello {acara.Organizer}! We regret to inform you that your event '{acara.Name}' has been invalidated by Admin {admin.Username}. Please contact {admin.Email} for further information.")
-                .SendEmailAsync();
+                    .SetSubject($"SPARK: '{acara.Name}' Event Status")
+                    .SetHtmlMessage($"Hello {acara.Organizer}! We regret to inform you that your event '{acara.Name}' has been invalidated by Admin {admin.Username}. Please contact {admin.Email} for further information.")
+                    .SendEmailAsync();
 
             return Ok();
         }

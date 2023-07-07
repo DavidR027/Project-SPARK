@@ -1,9 +1,19 @@
-﻿@model IEnumerable<Client.ViewModels.WaitingList>
+﻿@using System.Security.Claims;
+@model IEnumerable<Client.ViewModels.WaitingList>
 
 
 @{
     ViewData["Title"] = "WaitingList";
     Layout = "_Layout";
+
+    string customClaimType = "GuidValue";
+    Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
+    Guid? guidValue = null;
+
+    if (guidClaim != null && Guid.TryParse(guidClaim.Value, out Guid parsedGuid))
+    {
+        guidValue = parsedGuid;
+    }
 }
 
 <head>
@@ -119,7 +129,7 @@
                         <i class="fas fa-check-circle"></i> Validate
                     </button>
 
-                    <button onclick="deletePayment('@item.PaymentGuid')" class="btn btn-delete">
+                    <button onclick="deletePayment('@item.PaymentGuid','@guidValue')" class="btn btn-delete">
                         <i class="fas fa-trash-alt"></i> Delete
                     </button>
 
@@ -137,6 +147,16 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function getValueFromURL() {
+        var url = window.location.href;
+        var splitUrl = url.split('/');
+        var value = splitUrl[splitUrl.length - 1];
+        return value;
+    }
+
+    // Get the value from the URL
+    var requestId = getValueFromURL();
+
     var modal = document.getElementById("myModal");
     var images = document.getElementsByClassName("myImg");
     var modalImg = document.getElementById("img01");
@@ -157,7 +177,8 @@
         modal.style.display = "none";
     }
 
-    function deletePayment(paymentGuid) {
+    function deletePayment(paymentGuid, userGuid) {
+        eventGuid = requestId;
         Swal.fire({
             title: "Are you sure?",
             text: "This action cannot be undone.",
@@ -171,7 +192,7 @@
             if (result.isConfirmed) {
                 // AJAX request
                 $.ajax({
-                    url: "https://localhost:7042/api/Payment/" + paymentGuid,
+                    url: "https://localhost:7042/api/Payment/DeletePayment/" + paymentGuid + "/" + userGuid + "/" + requestId,
                     type: "DELETE",
                     success: function (response) {
                         // Successful delete operation
@@ -224,7 +245,7 @@
                         };
                         // Update payment with PUT request
                         $.ajax({
-                            url: "https://localhost:7042/api/Payment/",
+                            url: "https://localhost:7042/api/Payment/ValidatePayment/",
                             type: "PUT",
                             data: JSON.stringify(updatedData),
                             contentType: "application/json",
