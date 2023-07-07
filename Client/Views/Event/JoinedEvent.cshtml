@@ -33,7 +33,7 @@
 
         .mask-custom {
             background: #101130;
-            border-radius: 2em;
+            border-radius: 10px;
             backdrop-filter: blur(25px);
             border: 2px solid rgba(255, 255, 255, 0.05);
             background-clip: padding-box;
@@ -111,13 +111,13 @@
 <section class="vh-100" style="background-color: #eee; margin-top:50px;">
     <section class="vh-100 ">
         <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center h-100">
-                <div class="col-md-12 col-xl-10">
+            <div class="row d-flex justify-content-center h-100" style="margin-left:5px; margin-right:5px;">
+                <div class="col-md-12 col-xl-12">
 
                     <div class="card mask-custom">
                         <div class="card-body p-4 text-white">
 
-                            <div class="text-center pt-3 pb-2">
+                            <div class="text-center pt-3 pb-2 mb-10">
                                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
                                      alt="Check" style="width:50px; height:50px;">
                                 <h2 class="my-4" style="color:white;">My Joined Event</h2>
@@ -279,8 +279,8 @@
         string endformat = $"{endDayName}, {endDay} {endMonth} {endYear} at {endTime}";
 
         <div class="modal fade" id="exampleModalCenter-@number" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content rounded-0">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                <div class="modal-content" style="width:100%; max-width:none; border-radius:5px;">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -340,6 +340,4 @@
 }
 
 <script src="~/ModalJoinedEvent/jquery-3.3.1.min.js"></script>
-<!-- <script src="js/popper.min.js"></script> -->
 <script src="~/ModalJoinedEvent/bootstrap.min.js"></script>
-<!-- <script src="js/main.js"></script> -->
