@@ -2,17 +2,25 @@
 using Client.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System;
+using Newtonsoft.Json;
 
 namespace Client.Controllers
 {
     public class PaymentController : Controller
     {
         private readonly IPaymentRepository repository;
+        private readonly IUserRepository userRepository;
+        private readonly IEventRepository eventRepository;
+        private readonly IEmailService emailService;
 
-        public PaymentController(IPaymentRepository repository)
+        public PaymentController(IPaymentRepository repository, IUserRepository userRepository, IEventRepository eventRepository, IEmailService emailService)
         {
             this.repository = repository;
+            this.userRepository = userRepository;
+            this.eventRepository = eventRepository;
+            this.emailService = emailService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -67,9 +75,16 @@ namespace Client.Controllers
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> Edit(Payment payment, Guid guid)
         {
+            var user = await userRepository.Get(payment.UserGuid);
+            var acara = await eventRepository.Get(payment.EventGuid);
+            var email = user.Data.Email;
             var result = await repository.Put(payment);
             if (result.Code == 200)
             {
+                emailService.SetEmail(email)
+                     .SetSubject($"SPARK: '{acara.Data.Name}' Payment Status")
+                     .SetHtmlMessage($"Hello {user.Data.Username}! We would like to inform you that your payment for event '{acara.Data.Name}' has been approved by Organizer {acara.Data.Organizer}.")
+                     .SendEmailAsync();
                 return RedirectToAction("WaitingList", "Event", new { Guid = payment.EventGuid});
             }
             else if (result.Code == 409)
@@ -86,6 +101,7 @@ namespace Client.Controllers
         {
             var result = await repository.Get(guid);
             var payment = new Payment();
+
             if (result.Data?.Guid is null)
             {
                 return View(payment);
@@ -126,14 +142,52 @@ namespace Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, User")]
-        public async Task<IActionResult> Remove(Guid guid)
+        [Authorize(Roles = "Admin, EventMaker")]
+        public async Task<IActionResult> Remove(Guid guid, Guid userGuid, Guid eventGuid)
         {
+            var user = await userRepository.Get(userGuid);
+            var acara = await eventRepository.Get(eventGuid);
+            var eventmaker = await userRepository.Get(acara.Data.CreatedBy);
             var result = await repository.Delete(guid);
+            var email = user.Data.Email;
             if (result.Code == 200)
             {
-                return RedirectToAction(nameof(Index));
+                emailService.SetEmail(email)
+                     .SetSubject($"SPARK: '{acara.Data.Name}' Payment Status")
+                     .SetHtmlMessage($"Hello {user.Data.Username}! We regret to inform you that your payment for event '{acara.Data.Name}' has been declined by Organizer {eventmaker.Data.Username}. Please contact {eventmaker.Data.Email} for further information.")
+                     .SendEmailAsync();
+                return RedirectToAction("Index", "Event");
             }
+            return View();
+        }
+
+
+        [Authorize(Roles = "EventMaker")]
+        [HttpGet("Payment/ChartPayment/{eventGuid}")]
+        public async Task<IActionResult> ChartPayment(Guid eventGuid)
+        {
+            var result = await repository.Get();
+            var events = await eventRepository.Get(eventGuid);
+            var eventname = events.Data.Name;
+            var payments = result.Data?.Select(e => new Payment
+            {
+                Guid = e.Guid,
+                UserGuid = e.UserGuid,
+                EventGuid = e.EventGuid,
+                Invoice = e.Invoice,
+                IsValid = e.IsValid,
+            }).ToList();
+
+            var paymentCounts = payments
+                .Where(e => e.EventGuid == eventGuid)
+                .GroupBy(e => e.EventGuid)
+                .Select(g => new { EventGuid = g.Key, Count = g.Count() })
+                .ToDictionary(p => p.EventGuid.ToString(), p => p.Count);
+
+            ViewBag.EventName = eventname.ToString();
+            ViewBag.ChartData = JsonConvert.SerializeObject(paymentCounts);
+            ViewBag.EventGuid = eventGuid.ToString();
+
             return View();
         }
 

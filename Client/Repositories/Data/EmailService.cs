@@ -55,5 +55,10 @@ namespace Client.Repositories.Data
             client.Dispose();
         }
 
+        public async Task SendEmail()
+        {
+            await Task.Run(() => SendEmailAsync());
+        }
+
     }
 }

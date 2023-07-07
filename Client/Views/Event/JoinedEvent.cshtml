@@ -1,114 +1,343 @@
-﻿@model IEnumerable<Client.Models.Event>
+﻿@using System.Globalization;
+@model IEnumerable<Event>
 
 @{
     ViewData["Title"] = "JoinedEvent";
     Layout = "_Layout";
+    CultureInfo cultureId = new CultureInfo("id-ID");
+    int rowNumber = 1;
 }
 
-<h1>JoinedEvent</h1>
+<head>
+    @*<link rel="stylesheet" href="~/ModalJoinedEvent/style.css">
+    <link rel="stylesheet" href="~/ModalJoinedEvent/bootstrap.min.css">*@
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Guid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Poster)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quota)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsPaid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Organizer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsValid)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Guid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Poster)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quota)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPaid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organizer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsValid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+    <style>
+        img {
+            width: 300px;
+        }
+
+        .align-items-center {
+            /* align-items: center !important; */
+            background: #101130;
+        }
+
+        .gradient-custom-2 {
+            /* fallback for old browsers */
+            background: #7e40f6;
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient( to right, rgba(126, 64, 246, 1), rgba(80, 139, 252, 1) );
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient( to right, rgba(126, 64, 246, 1), rgba(80, 139, 252, 1) );
+        }
+
+        .mask-custom {
+            background: #101130;
+            border-radius: 10px;
+            backdrop-filter: blur(25px);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            background-clip: padding-box;
+            box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+        }
+
+        .uiverse {
+            position: relative;
+            background: #ffffff;
+            color: #000;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            width: 150px;
+            height: 50px;
+            font-size: 17px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .tooltip {
+            position: absolute;
+            top: 0;
+            font-size: 14px;
+            background: #ffffff;
+            color: #ffffff;
+            padding: 5px 8px;
+            border-radius: 5px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+            .tooltip::before {
+                position: absolute;
+                content: "";
+                height: 8px;
+                width: 8px;
+                background: #ffffff;
+                bottom: -3px;
+                left: 50%;
+                transform: translate(-50%) rotate(45deg);
+                transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            }
+
+        .uiverse:hover .tooltip {
+            top: -45px;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        svg:hover span,
+        svg:hover .tooltip {
+            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .uiverse:hover,
+        .uiverse:hover .tooltip,
+        .uiverse:hover .tooltip::before {
+            background: linear-gradient(320deg, rgb(3, 77, 146), rgb(0, 60, 255));
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+
+
+<section class="vh-100" style="background-color: #eee; margin-top:50px;">
+    <section class="vh-100 ">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center h-100" style="margin-left:5px; margin-right:5px;">
+                <div class="col-md-12 col-xl-12">
+
+                    <div class="card mask-custom">
+                        <div class="card-body p-4 text-white">
+
+                            <div class="text-center pt-3 pb-2 mb-10">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
+                                     alt="Check" style="width:50px; height:50px;">
+                                <h2 class="my-4" style="color:white;">My Joined Event</h2>
+                            </div>
+
+                            <table class="table text-white mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Event Name</th>
+                                        <th scope="col">Organizer</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        @if (item.IsValid)
+                                        {
+                                            string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
+                                            string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
+                                            string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
+                                            string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
+                                            string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
+                                            string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+
+                                            string startDayName = item.StartDate.ToString("ddd", cultureId); // Get the day name from StartDate
+                                            string endDayName = item.EndDate.ToString("ddd", cultureId); // Get the day name from EndDate
+
+                                            string formatmonth;
+                                            if (item.StartDate.Month == item.EndDate.Month)
+                                            {
+                                                formatmonth = startMonth;
+                                            }
+                                            else
+                                            {
+                                                formatmonth = $"{startMonth} - {endMonth}";
+                                            }
+
+                                            string formatday;
+                                            if (item.StartDate.Day == item.EndDate.Day)
+                                            {
+                                                formatday = startDay;
+                                            }
+                                            else
+                                            {
+                                                formatday = $"{startDay} - {endDay}";
+                                            }
+
+                                            string formatDayName;
+                                            if (item.StartDate.Day == item.EndDate.Day)
+                                            {
+                                                formatDayName = startDayName;
+                                            }
+                                            else
+                                            {
+                                                formatDayName = $"{startDayName} - {endDayName}";
+                                            }
+
+                                            // Display only the start date
+                                            string startDateFormatted = $"{startDayName}, {startDay} {startMonth} {startYear}";
+
+                                            // Use the startDateFormatted variable as needed
+
+
+                                            <tr class="fw-normal">
+                                                <td class="align-middle">
+                                                    <span>@rowNumber</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span>@Html.DisplayFor(modelItem => item.Name)</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span>@Html.DisplayFor(modelItem => item.Organizer)</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span>@Html.DisplayFor(modelItem => item.Price)</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span> @startDateFormatted</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <div class="uiverse" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-@rowNumber">
+                                                        <span class="tooltip">Detail from Event</span>
+                                                        <span>
+                                                            Detail
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            rowNumber++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+@{
+    int number = 1;
 }
-    </tbody>
-</table>
+@foreach (var item in Model)
+{
+    @if (item.IsValid)
+    {
+        string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
+        string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
+        string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
+        string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
+        string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
+        string endYear = item.EndDate.ToString("yyyy", cultureId); // Get the year from StartDate
+        string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+        string endTime = item.EndDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+
+        string startDayName = item.StartDate.ToString("ddd", cultureId); // Get the day name from StartDate
+        string endDayName = item.EndDate.ToString("ddd", cultureId); // Get the day name from EndDate
+
+        string formatmonth;
+        if (item.StartDate.Month == item.EndDate.Month)
+        {
+            formatmonth = startMonth;
+        }
+        else
+        {
+            formatmonth = $"{startMonth} - {endMonth}";
+        }
+
+        string formatday;
+        if (item.StartDate.Day == item.EndDate.Day)
+        {
+            formatday = startDay;
+        }
+        else
+        {
+            formatday = $"{startDay} - {endDay}";
+        }
+
+        string formatDayName;
+        if (item.StartDate.Day == item.EndDate.Day)
+        {
+            formatDayName = startDayName;
+        }
+        else
+        {
+            formatDayName = $"{startDayName} - {endDayName}";
+        }
+
+        string startformat = $"{startDayName}, {startDay} {startMonth} {startYear} at {startTime}";
+        string endformat = $"{endDayName}, {endDay} {endMonth} {endYear} at {endTime}";
+
+        <div class="modal fade" id="exampleModalCenter-@number" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                <div class="modal-content" style="width:100%; max-width:none; border-radius:5px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="padding:0;">
+                        <div class="d-flex main-content" style="padding:20px;">
+                            <div class="d-flex justify-content-center align-item-center">
+                                <img class="bg-image promo-img mr-3" style="object-fit: cover;" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                            </div>
+                            <div class="content-text p-4 px-5 align-item-stretch" style="width:100%;">
+                                <div class="text-center">
+                                    <a href="#" class="share"><span class="icon-share"></span></a>
+                                    <h3 class="mb-1 line">@Html.DisplayFor(modelItem => item.Name)</h3>
+                                    <h5 class="mb-3">@Html.DisplayFor(modelItem => item.Organizer)</h5>
+
+
+                                    <p class="mb-2" style="text-align:justify">@Html.DisplayFor(modelItem => item.Description)</p>
+
+                                    <div class="d-flex text-center social w-50 mx-auto">
+                                        <div class="d-inline-block d-flex  mx-auto message">
+                                            @if (item.Status.ToString() == "Online")
+                                            {
+                                                <span style="padding-left:15px;"><i class="fas fa-globe"></i> @Html.DisplayFor(modelItem => item.Status)</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="padding-left:15px;"><i class="fas fas fa-building"></i> @Html.DisplayFor(modelItem => item.Status)</span>
+                                            }
+                                        </div>
+
+                                        <div class="d-inline-block d-flex  mx-auto message">
+                                            <span style="padding-left:15px;"><i class="fas fa-comment-dollar"> </i> @Html.DisplayFor(modelItem => item.Price)</span>
+                                        </div>
+
+                                        <div class="d-inline-block d-flex  mx-auto message">
+                                            <span style="padding-left:15px;"><i class="fas fa-users"> </i> @Html.DisplayFor(modelItem => item.Quota)</span>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <h6 class="mb-3"> <i class="fas fa-map-marker-alt"> </i> @Html.DisplayFor(modelItem => item.Location)</h6>
+                                <h6 class="mb-2"> <i class="fas fa-clock"> </i> @startformat </h6>
+                                <h6 class="mb-3"> <i class="fas fa-clock"> </i>  @endformat </h6>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        number++;
+    }
+}
+
+<script src="~/ModalJoinedEvent/jquery-3.3.1.min.js"></script>
+<script src="~/ModalJoinedEvent/bootstrap.min.js"></script>

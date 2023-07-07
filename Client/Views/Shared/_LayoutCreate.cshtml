@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <title>Tale SEO Agency CSS Template by TemplateMo website</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/CreateE/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="~/CreateE/assets/css/templatemo-tale-seo-agency.css">
+    <link rel="stylesheet" href="~/CreateE/assets/css/owl.css">
+    <link rel="stylesheet" href="~/CreateE/assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/logo/spark-logo.png" />
+
+    
+
+</head>
+<body>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+   @* <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - WebApplication1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>*@
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/js/wow.min.js" asp-append-version="true"></script>
+    <script src="~/js/tiny-slider.js" asp-append-version="true"></script>
+    <script src="~/js/glightbox.min.js" asp-append-version="true"></script>
+    <script src="~/js/count-up.min.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>*@
+
+    <script src="~/CreateE/vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="~/CreateE/assets/js/isotope.min.js"></script>
+    <script src="~/CreateE/assets/js/owl-carousel.js"></script>
+    <script src="~/CreateE/assets/js/tabs.js"></script>
+    <script src="~/CreateE/assets/js/popup.js"></script>
+    <script src="~/CreateE/assets/js/custom.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    
+</body>
+</html>

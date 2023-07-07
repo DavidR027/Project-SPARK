@@ -1,119 +1,455 @@
-﻿@model IEnumerable<Client.Models.Event>
+﻿@using System.Globalization;
+@using System.Security.Claims;
+@model IEnumerable<Event>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "ValidationEvent";
+    Layout = "_Layout";
+    CultureInfo cultureId = new CultureInfo("id-ID");
+    int rowNumber = 1;
+
+    string customClaimType = "GuidValue";
+    Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
+    Guid? guidValue = null;
+
+    if (guidClaim != null && Guid.TryParse(guidClaim.Value, out Guid parsedGuid))
+    {
+        guidValue = parsedGuid;
+    }
 }
-
-<h1>Index</h1>
-
-
 <head>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Client.styles.css" asp-append-version="true" />
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-</head>
-<div id="main-content" class="blog-page">
-    <div class="container">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Guid)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Poster)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Status)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Quota)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsPaid)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Location)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.StartDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EndDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Organizer)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsValid)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Guid)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @if (item.Poster != null)
-                            {
-                                <img class="d-block img-fluid" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quota)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsPaid)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Location)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Organizer)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsValid)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Validate", "Edit", new { @item.Guid }) |
-                            @Html.ActionLink("Delete", "Delete", new { @item.Guid })
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <link rel="stylesheet" href="~/css/indexadmin.css" asp-append-version="true" />
+    <style>
+        img {
+            width: 150px;
+        }
 
+        .align-items-center {
+            align-items: center !important;
+            background: #101130;
+        }
+
+
+        .mask-custom {
+            background: #101130;
+            border-radius: 2em;
+            backdrop-filter: blur(25px);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            background-clip: padding-box;
+            box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+        }
+
+        .uiverse {
+            position: relative;
+            background: #ffffff;
+            color: #000;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            width: 150px;
+            height: 50px;
+            font-size: 17px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .size {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+
+
+
+
+<section class="vh-100" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center h-100">
+            <div class="col-md-12 col-xl-12">
+
+                <div class="card mt-50">
+                    <div class="card-header p-3">
+                        <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>List Validation Event</h5>
+                    </div>
+
+                    <div class="card-body" data-mdb-perfect-scrollbar="true" style="width:60%; margin:auto;">
+
+                        <table class="table table-striped table-bordered mb-0 table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th scope="col" class="">No</th>
+                                    <th scope="col" class="">Event Name</th>
+                                    <th scope="col" class="">Description</th>
+                                    <th scope="col" class="">Poster</th>
+                                    <th scope="col" class="">Actions</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    @if (item.IsValid == false)
+                                    {
+                                        string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
+                                        string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
+                                        string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
+                                        string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
+                                        string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
+                                        string endYear = item.EndDate.ToString("yyyy", cultureId); // Get the year from StartDate
+                                        string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+                                        string endTime = item.EndDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+
+                                        string startDayName = item.StartDate.ToString("ddd", cultureId); // Get the day name from StartDate
+                                        string endDayName = item.EndDate.ToString("ddd", cultureId); // Get the day name from EndDate
+
+                                        string formatmonth;
+                                        if (item.StartDate.Month == item.EndDate.Month)
+                                        {
+                                            formatmonth = startMonth;
+                                        }
+                                        else
+                                        {
+                                            formatmonth = $"{startMonth} - {endMonth}";
+                                        }
+
+                                        string formatday;
+                                        if (item.StartDate.Day == item.EndDate.Day)
+                                        {
+                                            formatday = startDay;
+                                        }
+                                        else
+                                        {
+                                            formatday = $"{startDay} - {endDay}";
+                                        }
+
+                                        string formatDayName;
+                                        if (item.StartDate.Day == item.EndDate.Day)
+                                        {
+                                            formatDayName = startDayName;
+                                        }
+                                        else
+                                        {
+                                            formatDayName = $"{startDayName} - {endDayName}";
+                                        }
+
+                                        string startformat = $"{startDayName}, {startDay} {startMonth} {startYear} at {startTime}";
+                                        string endformat = $"{endDayName}, {endDay} {endMonth} {endYear} at {endTime}";
+
+
+                                        <tr class="fw-normal">
+                                            <td class="align-middle" hidden>
+                                                <span style="width:150px">@Html.DisplayFor(modelItem => item.Guid)</span>
+                                            </td>
+                                            <td class="align-middle text-center" style="width:5%;">
+                                                @rowNumber
+                                            </td>
+
+                                            <td class="align-middle text-center" style="width:10%;">
+                                                <span>@Html.DisplayFor(modelItem => item.Name)</span>
+                                            </td>
+
+                                            <td class="align-middle" style="width:20%;">
+                                                <span>@Html.Raw(item.Description.Length > 200 ? item.Description.Substring(0, 200) + "..." : item.Description)</span>
+                                            </td>
+                                            <td class="align-middle text-center" style="width:10%;">
+                                                <img class="myImg" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                                                <div id="myModal" class="modal">
+                                                    <span class="close">&times;</span>
+                                                    <img class="modal-content" id="img01">
+                                                    <div id="caption"></div>
+                                                </div>
+                                            </td>
+                                            @*
+                                    *@
+                                            <td class="align-middle" style="text-align:left; line-height:35px; width:10%;">
+                                                <div class="btn btn-primary" style="background-color:transparent; border-color:transparent;" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModalCenter-@rowNumber">
+                                                    <span class="text-primary"> <i class="fas fa-file-alt text-primary" title="Detail" style="margin-right:10px;"></i> Detail </span>
+                                                </div>
+
+                                                <div onclick="validateEvent('@item.Guid')" class="btn btn-validate">
+                                                    <span class="text-primary"><i class="fas fa-check-circle text-success" title="Validate Event" style="margin-right:10px;"></i>Validate</span>
+                                                </div>
+
+                                                <div onclick="deleteEvent('@item.Guid','@guidValue')" class="btn btn-delete">
+                                                    <span class="text-primary"><i class="fas fa-trash-alt text-info text-danger" title="Delete" style="margin-right:10px;"></i> Delete</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        rowNumber++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+
+                        <div id="myModal" class="modal">
+                            <span class="close">&times;</span>
+                            <img class="modal-content" id="img01">
+                            <div id="caption"></div>
+                        </div>
+
+                    
+                        <a class="btn btn-primary justify-content-right mt-10" href="/Event/Index">Back</a>
+                </div>
+
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+
+@{
+    int number = 1;
+}
+@foreach (var item in Model)
+{
+    @if (item.IsValid == false)
+    {
+        string startMonth = item.StartDate.ToString("MMMM", cultureId); // Get the month from StartDate
+        string endMonth = item.EndDate.ToString("MMMM", cultureId); // Get the month from EndDate
+        string startDay = item.StartDate.ToString("dd", cultureId); // Get the day from StartDate
+        string endDay = item.EndDate.ToString("dd", cultureId); // Get the day from EndDate
+        string startYear = item.StartDate.ToString("yyyy", cultureId); // Get the year from StartDate
+        string endYear = item.EndDate.ToString("yyyy", cultureId); // Get the year from StartDate
+        string startTime = item.StartDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+        string endTime = item.EndDate.ToString("HH:mm", cultureId); // Get the start time from StartDate
+
+        string startDayName = item.StartDate.ToString("ddd", cultureId); // Get the day name from StartDate
+        string endDayName = item.EndDate.ToString("ddd", cultureId); // Get the day name from EndDate
+
+        string formatmonth;
+        if (item.StartDate.Month == item.EndDate.Month)
+        {
+            formatmonth = startMonth;
+        }
+        else
+        {
+            formatmonth = $"{startMonth} - {endMonth}";
+        }
+
+        string formatday;
+        if (item.StartDate.Day == item.EndDate.Day)
+        {
+            formatday = startDay;
+        }
+        else
+        {
+            formatday = $"{startDay} - {endDay}";
+        }
+
+        string formatDayName;
+        if (item.StartDate.Day == item.EndDate.Day)
+        {
+            formatDayName = startDayName;
+        }
+        else
+        {
+            formatDayName = $"{startDayName} - {endDayName}";
+        }
+
+        string startformat = $"{startDayName}, {startDay} {startMonth} {startYear} at {startTime}";
+        string endformat = $"{endDayName}, {endDay} {endMonth} {endYear} at {endTime}";
+
+        <div class="modal fade" id="exampleModalCenter-@number" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                <div class="modal-content rounded-0" style="width:100%; max-width:none;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="padding:0;">
+                        <div class="d-flex main-content" style="padding:20px;">
+                            <div class="d-flex justify-content-center align-item-center">
+                                <img class="bg-image promo-img mr-3 size" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Poster)" alt="Poster" />
+                            </div>
+                            <div class="content-text p-4 px-5 align-item-stretch" style="width:100%;">
+                                <div class="text-center">
+                                    <a href="#" class="share"><span class="icon-share"></span></a>
+                                    <h3 class="mb-1 line">@Html.DisplayFor(modelItem => item.Name)</h3>
+                                    <h5 class="mb-3">@Html.DisplayFor(modelItem => item.Organizer)</h5>
+
+
+                                    <p class="mb-2" style="text-align:justify">@Html.DisplayFor(modelItem => item.Description)</p>
+
+                                    <p>Status : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Status) </span> </p>
+                                    <p>Quota : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Quota) </span> </p>
+                                    <p>Price : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Price) </span> </p>
+                                    <p>Location : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Location) </span> </p>
+                                    <p>Start Date : <span style="font-weight:bold;"> @startformat </span> </p>
+                                    <p>End Date : <span style="font-weight:bold;"> @endformat </span> </p>
+                                    <p>Organizer by : <span style="font-weight:bold;"> @Html.DisplayFor(modelItem => item.Organizer) </span> </p>
+                                    Validation Admin : <span class="checkbox-format">
+                                        @if (item.IsValid)
+                                        {
+                                            <i class="checkbox-icon fas fa-check-circle" style="color: green"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="checkbox-icon fas fa-hourglass-half" style="color:darkorange"> </i> <span> Waiting for validation</span>
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        number++;
+    }
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    var modal = document.getElementById("myModal");
+    var images = document.getElementsByClassName("myImg");
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+
+    // Loop through all the images
+    for (var i = 0; i < images.length; i++) {
+        var img = images[i];
+        img.onclick = function () {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        }
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+
+    function deleteEvent(eventGuid, adminGuid) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // AJAX request
+                $.ajax({
+                    url: "https://localhost:7042/api/Event/DeleteEvent/" + eventGuid +"/"+ adminGuid,
+                    type: "DELETE",
+                    success: function (response) {
+                        // Successful delete operation
+                        Swal.fire({
+                            title: "Item deleted!",
+                            icon: "success"
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Error occurred during delete operation
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                        Swal.fire({
+                            title: "Error",
+                            text: "An error occurred while deleting the item.",
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    function validateEvent(eventGuid) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, validate it!",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // AJAX request to get event data
+                $.ajax({
+                    url: "https://localhost:7042/api/Event/" + eventGuid,
+                    type: "GET",
+                    success: function (event) {
+                        console.log(event.data);
+                        var updatedData = {
+                            guid: event.data.guid,
+                            name: event.data.name,
+                            description: event.data.description,
+                            poster: event.data.poster,
+                            status: event.data.status,
+                            quota: event.data.quota,
+                            isPaid: event.data.isPaid,
+                            price: event.data.price,
+                            location: event.data.location,
+                            startDate: event.data.startDate,
+                            endDate: event.data.endDate,
+                            organizer: event.data.organizer,
+                            isValid: true,
+                            createdBy: event.data.createdBy
+                        };
+                        // Update event with PUT request
+                        $.ajax({
+                            url: "https://localhost:7042/api/Event/ValidateEvent/",
+                            type: "PUT",
+                            data: JSON.stringify(updatedData),
+                            contentType: "application/json",
+                            success: function (response) {
+                                // Successful validation operation
+                                Swal.fire({
+                                    title: "Item validated!",
+                                    icon: "success"
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                // Error occurred during validation operation
+                                console.log(xhr);
+                                console.log(status);
+                                console.log(error);
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "An error occurred while validating the item.",
+                                    icon: "error"
+                                });
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Error occurred while retrieving event data
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                        Swal.fire({
+                            title: "Error",
+                            text: "An error occurred while retrieving event data.",
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+</script>

@@ -37,7 +37,7 @@ namespace API.Repositories
                 return 5;
             }
             // Update password
-            account.Password = changePasswordVM.NewPassword;
+            account.Password = Hashing.HashPassword(changePasswordVM.NewPassword);
             account.IsUsed = true;
             try
             {

@@ -23,11 +23,11 @@ namespace Client.Repositories
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWToken"));
         }
 
-        public async Task<ResponseMessageVM> Delete(TId Guid)
+        public async Task<ResponseMessageVM> Delete(TId guid)
         {
             ResponseMessageVM entityVM = null;
-            StringContent content = new StringContent(JsonConvert.SerializeObject(Guid), Encoding.UTF8, "application/json");
-            using (var response = httpClient.DeleteAsync(request + Guid).Result)
+            StringContent content = new StringContent(JsonConvert.SerializeObject(guid), Encoding.UTF8, "application/json");
+            using (var response = httpClient.DeleteAsync(request + guid).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseMessageVM>(apiResponse);
@@ -51,6 +51,7 @@ namespace Client.Repositories
         {
             ResponseMessageVM entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+
             using (var response = httpClient.PostAsync(request, content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();

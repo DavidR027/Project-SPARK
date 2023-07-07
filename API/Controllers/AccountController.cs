@@ -13,6 +13,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AccountController : GeneralController<Account, AccountVM>
     {
         private readonly IAccountRepository _accountRepository;
@@ -45,7 +46,7 @@ namespace API.Controllers
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
-                    Message = "Account not found",
+                    Message = "Invalid username or password",
                     Data = null
                 });
             }
@@ -272,7 +273,7 @@ namespace API.Controllers
                     {
                         Code = StatusCodes.Status400BadRequest,
                         Status = HttpStatusCode.BadRequest.ToString(),
-                        Message = "Unable to Change Password",
+                        Message = "Password",
                         Data = null
                     });
                 case 1:

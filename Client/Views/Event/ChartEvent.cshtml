@@ -1,0 +1,50 @@
+﻿@{
+    var chartData = ViewBag.ChartData;
+}
+
+<link rel="stylesheet" href="~/css/Chart.css">
+
+<div class="top-section"></div>
+
+<div class="chart-container">
+    <div class="chart-wrapper">
+        <h1>Event per Month Chart</h1>
+        <br />
+        <!-- Include necessary scripts and stylesheets for the chart -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- Chart HTML element -->
+        <canvas id="eventChart"></canvas>
+
+        <!-- Render the chart using JavaScript -->
+        <script>
+            var data = JSON.parse('@Html.Raw(chartData)');
+            var labels = data.map(data => data.Month);
+            var counts = data.map(data => data.Count);
+
+            var ctx = document.getElementById('eventChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Event Count',
+                        data: counts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            precision: 0
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</div>

@@ -1,47 +1,108 @@
-﻿@model IEnumerable<Client.ViewModels.ListParticipant>
+﻿@model IEnumerable<Client.ViewModels.ParticipantList>
 
 @{
     ViewData["Title"] = "ListParticipant";
+    Layout = "_Layout";
+    int rownumber = 1;
 }
 
-<h1>ListParticipant</h1>
+<head>
+    <style>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        /* TABLES */
+        .table {
+            border-collapse: separate;
+            
+        }
+
+        .table-hover > tbody > tr:hover > td,
+        .table-hover > tbody > tr:hover > th {
+            background-color: #eee;
+        }
+
+        .table thead > tr > th {
+            border-bottom: 1px solid #C2C2C2;
+            padding-bottom: 0;
+
+        }
+
+        .table tbody > tr > td {
+            font-size: 0.875em;
+            background: #f5f5f5;
+            border-top: 10px solid #fff;
+            vertical-align: middle;
+           
+        }
+
+           
+
+        .table thead > tr > th span {
+            border-bottom: 2px solid #C2C2C2;
+            display: inline-block;
+            padding: 0 5px;
+            padding-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .align-items-center {
+            align-items: center !important;
+            background: #101130;
+        }
+
+        
+    </style>
+</head>
+
+
+<div class="d-flex justify-content-center mt-10">
+
+    <table class="table mt-100 text-center" style="margin-left: 10px; margin-right: 10px;">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                <th hidden>
+                    @Html.DisplayNameFor(model => model.UserGuid)
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Phone Number
+                </th>
+            </tr>
+        </thead>
+        <tbody">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.UserGuid)
+                    </td>
+                    <td>
+                        @rownumber
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                </tr>
+                rownumber++;
+            }
+        </tbody>
+        
+    </table>
+</div>
+
+<div class="d-flex justify-content-center mt-10">
+    <a href="javascript:history.back();" class="btn btn-primary">Back</a>
+</div>

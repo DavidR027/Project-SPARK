@@ -1,8 +1,10 @@
 ﻿@using System.Security.Claims;
+
 @model Client.Models.Event
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "_LayoutNavbar";
 
     string customClaimType = "GuidValue";
     Claim guidClaim = User.Claims.FirstOrDefault(c => c.Type == customClaimType);
@@ -15,99 +17,133 @@
 
 }
 
-<h1>Create</h1>
 
-<h4>Event</h4>
-<hr />
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Poster" class="control-label"></label>
-                <input type="hidden" asp-for="Poster" class="form-control" />
-                <input type="file" accept="image/*" class="form-control" onchange="validateAndEncodeFile(this)" maxlength="5000000" />
-                <span asp-validation-for="Poster" class="text-danger"></span>
-                <input type="hidden" id="encodedFile" name="encodedFile" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <div class="form-check">
-                    <input type="radio" id="onlineRadio" name="Status" value="Online" class="form-check-input" />
-                    <label for="onlineRadio" class="form-check-label">Online</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" id="offlineRadio" name="Status" value="Offline" class="form-check-input" />
-                    <label for="offlineRadio" class="form-check-label">Offline</label>
-                </div>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quota" class="control-label"></label>
-                <input asp-for="Quota" class="form-control" />
-                <span asp-validation-for="Quota" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input id="isPaidCheckbox" class="form-check-input" type="checkbox" asp-for="IsPaid" value="true" />
-                    @Html.DisplayNameFor(model => model.IsPaid)
-                </label>
-                <input type="hidden" name="IsPaid" value="false" />
-            </div>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
 
-            <div class="form-group" id="priceContainer">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" value="Free" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/CreateE/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="~/CreateE/assets/css/templatemo-tale-seo-agency.css">
+    <link rel="stylesheet" href="~/CreateE/assets/css/owl.css">
+    <link rel="stylesheet" href="~/CreateE/assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+    <style>
+    </style>
+
+</head>
+
+<div class="contact-us section" id="contact">
+    <div class="container">
+        <div class="row" style="display:flex; justify-content:center;">
+            <div class="col-lg-11">
+                <div class="contact-us-content">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div id="map">
+                                <image src="https://i.pinimg.com/736x/b0/a5/11/b0a511db97423cae060e667746da77de.jpg"
+                                        width="100%" height="670px" frameborder="0" style="border:0; border-radius: 23px;"
+                                        allowfullscreen=""></image>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label"></label>
+                                    <textarea asp-for="Description" class="form-control"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Poster" class="control-label"></label>
+                                    <input type="hidden" asp-for="Poster" class="form-control" />
+                                    <input type="file" accept="image/*" class="form-control" onchange="validateAndEncodeFile(this)" maxlength="5000000" />
+                                    <span asp-validation-for="Poster" class="text-danger"></span>
+                                    <input type="hidden" id="encodedFile" name="encodedFile" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Status" class="control-label"></label>
+                                    <div class="form-check">
+                                        <input type="radio" id="onlineRadio" name="Status" value="Online" class="form-check-input" />
+                                        <label for="onlineRadio" class="form-check-label">Online</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="radio" id="offlineRadio" name="Status" value="Offline" class="form-check-input" />
+                                        <label for="offlineRadio" class="form-check-label">Offline</label>
+                                    </div>
+                                    <span asp-validation-for="Status" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Quota" class="control-label"></label>
+                                    <input asp-for="Quota" class="form-control" />
+                                    <span asp-validation-for="Quota" class="text-danger"></span>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input id="isPaidCheckbox" class="form-check-input" type="checkbox" asp-for="IsPaid" value="true" />
+                                        @Html.DisplayNameFor(model => model.IsPaid)
+                                    </label>
+                                    <input type="hidden" name="IsPaid" value="false" />
+                                </div>
+
+                                <div class="form-group" id="priceContainer">
+                                    <label asp-for="Price" class="control-label"></label>
+                                    <input asp-for="Price" value="Free" class="form-control" />
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Location" class="control-label"></label>
+                                    <input asp-for="Location" class="form-control" />
+                                    <span asp-validation-for="Location" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="StartDate" class="control-label"></label>
+                                    <input asp-for="StartDate" class="form-control" />
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="EndDate" class="control-label"></label>
+                                    <input asp-for="EndDate" class="form-control" />
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Organizer" class="control-label"></label>
+                                    <input asp-for="Organizer" class="form-control" />
+                                    <span asp-validation-for="Organizer" class="text-danger"></span>
+                                </div>
+                                <div class="form-group form-check" hidden>
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" asp-for="IsValid" value="false" />
+                                        @Html.DisplayNameFor(model => model.IsValid)
+                                    </label>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="CreatedBy" class="control-label"></label>
+                                    <input asp-for="CreatedBy" value=@guidValue class="form-control" />
+                                    <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Organizer" class="control-label"></label>
-                <input asp-for="Organizer" class="form-control" />
-                <span asp-validation-for="Organizer" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check" hidden>
-                <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" asp-for="IsValid" value="false" /> 
-                    @Html.DisplayNameFor(model => model.IsValid)
-                </label>
-            </div>
-            <div class="form-group" hidden>
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" value=@guidValue class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 <script>
@@ -154,12 +190,46 @@
             }
         });
     });
+
+    //validasi tanggal input
+    var startDateInput = document.querySelector('#StartDate');
+    var endDateInput = document.querySelector('#EndDate');
+
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    startDateInput.addEventListener('change', validateDate);
+    endDateInput.addEventListener('change', validateDate);
+
+    function validateDate() {
+        var startDate = new Date(startDateInput.value);
+        var endDate = new Date(endDateInput.value);
+
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(0, 0, 0, 0);
+
+        if (startDate < today || endDate < today) {
+            alert("Invalid date, unable to choose yesterday's date !");
+            startDateInput.valueAsDate = today;
+            endDateInput.valueAsDate = today;
+        }
+    }
 </script>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Home</a>
 </div>
+<script src="~/CreateE/vendor/jquery/jquery.min.js"></script>
+<script src="~/CreateE/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="~/CreateE/assets/js/isotope.min.js"></script>
+<script src="~/CreateE/assets/js/owl-carousel.js"></script>
+<script src="~/CreateE/assets/js/tabs.js"></script>
+<script src="~/CreateE/assets/js/popup.js"></script>
+<script src="~/CreateE/assets/js/custom.js"></script>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

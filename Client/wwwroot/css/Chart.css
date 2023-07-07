@@ -1,0 +1,31 @@
+﻿body {
+    
+}
+
+h1 {
+    text-align: center;
+}
+
+.top-section {
+    background-color: #101130;
+    padding: 35px;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+}
+
+.chart-wrapper {
+    width: 800px;
+    height: 400px;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+}

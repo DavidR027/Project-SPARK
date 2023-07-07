@@ -14,18 +14,20 @@ namespace API.Repositories
         private readonly IPaymentRepository _paymentRepository;
         private readonly IUserRepository _userRepository;
 
+
         public EventRepository(SparkDbContext context, IPaymentRepository paymentRepository, IUserRepository userRepository) : base(context)
         {
             _paymentRepository = paymentRepository;
             _userRepository = userRepository;
         }
 
-        public IEnumerable<ListParticipantVM>? GetListParticipantByGuid(Guid guid)
+        public IEnumerable<ParticipantListVM>? GetParticipantListByGuid(Guid guid)
         {
             var participants = _context.Payments
             .Where(payment => payment.EventGuid == guid && payment.IsValid == true)
-            .Select(payment => new ListParticipantVM
+            .Select(payment => new ParticipantListVM
             {
+                UserGuid = payment.UserGuid,
                 FullName = payment.User.FirstName + " " + payment.User.LastName,
                 Email = payment.User.Email,
                 PhoneNumber = payment.User.PhoneNumber
@@ -92,6 +94,7 @@ namespace API.Repositories
             .Where(payment => payment.EventGuid == guid && payment.IsValid == false)
             .Select(payment => new WaitingListVM
             {
+                UserGuid = payment.UserGuid,
                 FullName = payment.User.FirstName + " " + payment.User.LastName,
                 Email = payment.User.Email,
                 PhoneNumber = payment.User.PhoneNumber,

@@ -4,6 +4,8 @@ using Client.Repositories.Interface;
 using Client.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Globalization;
 using System.IO;
 
 namespace Client.Controllers
@@ -49,16 +51,18 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [HttpGet("Event/ListParticipant/{guid}")]
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> ListParticipant(Guid guid)
         {
-            var result = await repository.GetListParticipantByGuid(guid);
-            var events = new List<ListParticipant>();
+            var result = await repository.GetParticipantListByGuid(guid);
+            var events = new List<ParticipantList>();
 
             if (result.Data != null)
             {
-                events = result.Data.Select(e => new ListParticipant
+                events = result.Data.Select(e => new ParticipantList
                 {
+                    UserGuid = e.UserGuid,
                     FullName = e.FullName,
                     Email = e.Email,
                     PhoneNumber = e.PhoneNumber
@@ -68,6 +72,37 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> AnnouceParticipant(Guid guid, string title, string message)
+        {
+            var result = await repository.GetParticipantListByGuid(guid);
+            var participantList = new List<ParticipantList>();
+
+
+            if (result.Data != null)
+            {
+                participantList = result.Data.Select(e => new ParticipantList
+                {
+                    UserGuid = e.UserGuid,
+                    FullName = e.FullName,
+                    Email = e.Email,
+                    PhoneNumber = e.PhoneNumber
+                }).ToList();
+            }
+
+            foreach (var participant in participantList)
+            {
+                await emailService.SetEmail(participant.Email)
+                    .SetSubject(title)
+                    .SetHtmlMessage(message)
+                    .SendEmail();
+            }
+
+            return RedirectToAction("Index", "Event");
+        }
+
+        [HttpGet("Event/WaitingList/{guid}")]
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> WaitingList(Guid guid)
         {
@@ -78,6 +113,7 @@ namespace Client.Controllers
             {
                 waitingList = result.Data.Select(e => new WaitingList
                 {
+                    UserGuid = e.UserGuid,
                     FullName = e.FullName,
                     Email = e.Email,
                     PhoneNumber = e.PhoneNumber,
@@ -134,6 +170,38 @@ namespace Client.Controllers
             return View(events);
         }
 
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EventHistory()
+        {
+            var result = await repository.Get();
+            var events = new List<Event>();
+
+            if (result.Data != null)
+            {
+                events = result.Data.Select(e => new Event
+                {
+                    Guid = e.Guid,
+                    Name = e.Name,
+                    Description = e.Description,
+                    Poster = e.Poster,
+                    Status = e.Status,
+                    Quota = e.Quota,
+                    IsPaid = e.IsPaid,
+                    Price = e.Price,
+                    Location = e.Location,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                    Organizer = e.Organizer,
+                    IsValid = e.IsValid,
+                    CreatedBy = e.CreatedBy,
+                }).ToList();
+            }
+
+            return View(events);
+        }
+
+        [HttpGet("Event/MyEvent/{guid}")]
         [Authorize(Roles = "EventMaker")]
         public async Task<IActionResult> MyEvent(Guid guid)
         {
@@ -164,6 +232,7 @@ namespace Client.Controllers
             return View(events);
         }
 
+        [HttpGet("Event/JoinedEvent/{guid}")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> JoinedEvent(Guid guid)
         {
@@ -234,8 +303,8 @@ namespace Client.Controllers
                 if (acara.IsValid)
                 {
                      emailService.SetEmail(email)
-                     .SetSubject($"Event {acara.Name} Status")
-                     .SetHtmlMessage($"We would like to inform you that {acara.Name} has been validated.")
+                     .SetSubject($"SPARK: '{acara.Name}' Event Status")
+                     .SetHtmlMessage($"Hello {acara.Organizer}! We would like to inform you that your event '{acara.Name}' has been validated.")
                      .SendEmailAsync();
                 }
 
@@ -252,6 +321,56 @@ namespace Client.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid guid)
+        {
+            var result = await repository.Get(guid);
+            var acara = new Event();
+            if (result.Data?.Guid is null)
+            {
+                return View(acara);
+            }
+            else
+            {
+                acara.Guid = result.Data.Guid;
+                acara.Name = result.Data.Name;
+                acara.Description = result.Data.Description;
+                acara.Poster = result.Data.Poster;
+                acara.Status = result.Data.Status;
+                acara.Quota = result.Data.Quota;
+                acara.IsPaid = result.Data.IsPaid;
+                acara.Price = result.Data.Price;
+                acara.Location = result.Data.Location;
+                acara.StartDate = result.Data.StartDate;
+                acara.EndDate = result.Data.EndDate;
+                acara.Organizer = result.Data.Organizer;
+                acara.IsValid = result.Data.IsValid;
+                acara.CreatedBy = result.Data.CreatedBy;
+            }
+
+            return View(acara);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> EditEM(Event acara, Guid guid)
+        {
+            var result = await repository.Put(acara);
+            var user = await userRepository.Get(acara.CreatedBy);
+            if (result.Code == 200)
+            {
+                return Redirect($"/Event/Detail/{guid}");
+            }
+            else if (result.Code == 409)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "EventMaker")]
+        public async Task<IActionResult> EditEM(Guid guid)
         {
             var result = await repository.Get(guid);
             var acara = new Event();
@@ -312,13 +431,56 @@ namespace Client.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, EventMaker")]
-        public async Task<IActionResult> Remove(Guid guid)
+        public async Task<IActionResult> Remove(Guid guid, Guid adminguid)
         {
+            var acara = await repository.Get(guid);
+            var user = await userRepository.Get(acara.Data.CreatedBy);
+            var admin = await userRepository.Get(adminguid);
+            var email = user.Data.Email;
             var result = await repository.Delete(guid);
             if (result.Code == 200)
             {
-                return RedirectToAction(nameof(Index));
+                emailService.SetEmail(email)
+                     .SetSubject($"SPARK: '{acara.Data.Name}' Event Status")
+                     .SetHtmlMessage($"Hello {acara.Data.Organizer}! We regret to inform you that your event '{acara.Data.Name}' has been invalidated by Admin {admin.Data.Username}. Please contact {admin.Data.Email} for further information.")
+                     .SendEmailAsync();
+                return RedirectToAction(nameof(IndexAdmin));
             }
+            return View();
+        }
+
+        [HttpGet("Event/ChartEvent")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChartEvent()
+        {
+            var result = await repository.Get();
+            var events = result.Data?.Select(e => new Event
+            {
+                Guid = e.Guid,
+                Name = e.Name,
+                Description = e.Description,
+                Poster = e.Poster,
+                Status = e.Status,
+                Quota = e.Quota,
+                IsPaid = e.IsPaid,
+                Price = e.Price,
+                Location = e.Location,
+                StartDate = e.StartDate,
+                EndDate = e.EndDate,
+                Organizer = e.Organizer,
+                IsValid = e.IsValid,
+                CreatedBy = e.CreatedBy,
+            }).ToList();
+
+            // Prepare data for chart
+            var chartData = events.GroupBy(e => e.StartDate.ToString("MMMM"))
+                                  .Select(g => new { Month = g.Key, Count = g.Count() })
+                                  .OrderByDescending(g => g.Month)
+                                  .ToList();
+
+            // Pass the chart data to the view as a JSON string
+            ViewBag.ChartData = JsonConvert.SerializeObject(chartData);
+
             return View();
         }
 

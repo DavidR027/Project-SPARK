@@ -75,7 +75,7 @@ namespace Client.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet("/User/Edit/{guid}")]
         [Authorize]
         public async Task<IActionResult> Edit(Guid guid)
         {

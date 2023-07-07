@@ -1,5 +1,6 @@
 ﻿using API.Contracts;
 using API.Models;
+using API.Utility;
 using API.ViewModels.Others;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    //[Authorize]
     public class GeneralController<TModel, TViewModel> : ControllerBase
     {
         private readonly IGeneralRepository<TModel> _repository;
@@ -29,6 +31,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAll()
         {
             var models = _repository.GetAll();
@@ -54,6 +57,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{guid}")]
+        [AllowAnonymous]
         public IActionResult GetByGuid(Guid guid)
         {
             var model = _repository.GetByGuid(guid);
